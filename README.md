@@ -4,7 +4,7 @@
 **Đề tài Tiểu luận chuyên nành** <br/>
 **Tên đề tài:**  Web tuyển dụng công việc ngành CNTT<br/>
 **Giáo viên hướng dẫn đề tài:** <br/>
- ..........
+ Nguyễn Minh Đạo<br/>
 **Nhóm thực hiện:**<br/>
   18110151-Trần Hoàng Long<br/>
   18110199-Trần Nhật Thành<br/>
