@@ -8,7 +8,7 @@ import './fonts/icomoon/style.css'
 function index() {
     return (
         <div>
-            <div class="content d-flex align-items-center bg-light">
+            <div class="content d-flex align-items-center">
                 
             </div>
             <footer class="footer-16371">
