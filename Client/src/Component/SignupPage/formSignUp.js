@@ -1,4 +1,3 @@
-
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -13,6 +12,8 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import UseFormRegiter from './useFormRegister';
+import validate from './validateInfo';
 
 function Copyright(props) {
   return (
@@ -28,25 +29,32 @@ function Copyright(props) {
 }
 
 const theme = createTheme();
-
-export default function SignUp() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
-    if(data.get('password')!==data.get('password2')){
-        console.error('mk xac nhan k dung')
-    }
-    else{
-        console.log({
-            firstname: data.get('firstName'),
-            lastName: data.get('lastName'),
-          email: data.get('email'),
-          password: data.get('password'),
-        });
-    }
+const formSignUp = ({submitForm}) => {
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
+  //   const data = new FormData(event.currentTarget);
+  //   // eslint-disable-next-line no-console
+  //   if(data.get('password')!==data.get('password2')){
+  //       console.error('Passwords do not match')
+  //   }
+  //   else if(!data.get('password')||!data.get('password2')){
+  //     console.error('Password is required');
+  //   }
+  //   else{
+  //       console.log({
+  //           firstname: data.get('firstName'),
+  //           lastName: data.get('lastName'),
+  //         email: data.get('email'),
+  //         password: data.get('password'),
+  //       });
+  //   }
    
-  };
+  // };
+
+  const { handleChange, handleSubmit, values, errors } = UseFormRegiter(
+    submitForm,
+    validate
+  );
 
   return (
     <ThemeProvider theme={theme}>
@@ -54,10 +62,13 @@ export default function SignUp() {
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
+            
+            marginTop: 10,
+            padding: 5,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
+           
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
@@ -78,6 +89,8 @@ export default function SignUp() {
                   label="First Name"
                   autoFocus
                   variant="standard" 
+                  value={values.firstName}
+                  onChange={handleChange}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -89,6 +102,8 @@ export default function SignUp() {
                   name="lastName"
                   autoComplete="lname"
                   variant="standard" 
+                  value={values.lastName}
+                  onChange={handleChange}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -100,7 +115,10 @@ export default function SignUp() {
                   name="email"
                   autoComplete="email"
                   variant="standard" 
+                  value={values.email}
+                  onChange={handleChange}
                 />
+                {errors.email && <p>{errors.email}</p>}
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -112,7 +130,10 @@ export default function SignUp() {
                   id="password"
                   autoComplete="new-password"
                   variant="standard" 
+                  value={values.password}
+                  onChange={handleChange}
                 />
+                 {errors.password && <p>{errors.password}</p>}
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -124,14 +145,17 @@ export default function SignUp() {
                   id="password2"
                   autoComplete="new-password"
                   variant="standard" 
+                  value={values.password2}
+                  onChange={handleChange}
                 />
+                 {errors.password2 && <p>{errors.password2}</p>}
               </Grid>
-              {/* <Grid item xs={12}>
+               {/* <Grid item xs={12}>
                 <FormControlLabel
                   control={<Checkbox value="allowExtraEmails" color="primary" />}
                   label="I want to receive inspiration, marketing promotions and updates via email."
                 />
-              </Grid> */}
+              </Grid>  */}
             </Grid>
             <Button
               type="submit"
@@ -143,7 +167,7 @@ export default function SignUp() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/signin" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>
@@ -155,3 +179,5 @@ export default function SignUp() {
     </ThemeProvider>
   );
 }
+
+export default formSignUp;
