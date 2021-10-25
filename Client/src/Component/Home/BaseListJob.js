@@ -38,7 +38,7 @@ export const BaseListJob = [
     {
         id: 3,
         position: 'tester',
-        title: 'Tester for new project',
+        title: 'Tester for new project and developer',
         description: 'This is main tester for project of mobile',
         coopName: 'SPKT',
         salary: 'optional',
@@ -73,6 +73,24 @@ export const BaseListJob = [
     },
     {
         id: 5,
+        position: 'tester',
+        title: 'Tester for new project',
+        description: 'This is main tester for project of mobile',
+        coopName: 'SPKT',
+        salary: 'optional',
+        address: 'HCM',
+        listLang: ['java', 'python'],
+        category: 'fulltime',
+        numberApply: 5,
+        startDate: (new Date()).getTime(),
+        endDate: (new Date()).getTime(),
+        createDate: (new Date()).getTime(),
+        major: 'IT',
+        listIntershipId: [1, 2, 3, 4, 5],
+        deleteFlag: false
+    },
+    {
+        id: 6,
         position: 'tester',
         title: 'Tester for new project',
         description: 'This is main tester for project of mobile',
@@ -163,6 +181,10 @@ export const TopCoop = [
     },
     {
         id: 4,
+        name: 'ABC'
+    },
+    {
+        id: 5,
         name: 'ABC'
     },
     {

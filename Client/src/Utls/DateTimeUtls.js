@@ -30,3 +30,9 @@ export const calculateDaysFromNowWithTime = (date) => {
 export const getDateWithFormat = (date) => {
     return moment(new Date(date)).format(yyyy_MM_DD);
 }
+
+//input: new Date().getTime() or "yyyy-MM-DD"
+//output: time ago
+export const calculateTimeAgo = (date) => {
+    return moment(new Date(date)).fromNow();
+}
