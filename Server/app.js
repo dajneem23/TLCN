@@ -36,9 +36,12 @@ const  connection =async()=>{
     });
     console.log("mongoose connect");
 } 
-connection()
+// connection()
 
 const InternshipRouter=require('./Routers/InternshipRouter')
 app.use('/intern',InternshipRouter)
+const ComplierRouter=require('./Routers/ComplierRouter')
+app.use('/complier',ComplierRouter )
+
 app.listen(5000,
   ()=>{console.log("server is running!!")});
