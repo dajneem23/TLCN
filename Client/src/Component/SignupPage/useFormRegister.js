@@ -34,7 +34,7 @@ const useFormRegister = (callback, validate) => {
         if (Object.keys(errors).length === 0 && isSubmitting) {
             console.log(values)
             toast.configure();
-            toast.success('Đăng ký thành công' ,{position:toast.POSITION.BOTTOM_LEFT});
+            toast.success('Đăng ký thành công' ,{position:toast.POSITION.BOTTOM_RIGHT});
         }
       },
       [errors,values]
