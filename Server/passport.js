@@ -14,7 +14,7 @@ const cookieExtractor= req=>{
 //authorrization 
 passport.use(new JWTStrategy({
     jwtFromRequest : cookieExtractor,
-    secretOrKey:process.env.secretkey
+    secretOrKey:process.env.secretKey
 
 },
     (payload,done)=>{
@@ -32,7 +32,7 @@ passport.use(new LocalStrategy(    {
     usernameField: 'userName',
     passwordField: 'password'
 },(username,password,done)=>{
-    console.log('password:'+password,'username:'+username)
+    // console.log('password:'+password,'username:'+username)
     Inern.findOne({username},(err,user)=>{
         console.log(user)
      if(err) return done(err);
