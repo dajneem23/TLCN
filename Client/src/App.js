@@ -7,6 +7,8 @@ import SignUp from "./Component/SignupPage/SignUp";
 import NotFound404 from "./Component/404NotFound/index";
 import Profile from './Component/Profile/index';
 import EditProFile from './Component/Profile/EditProfile/index';
+import logo from './logo.svg';
+import Home from './Component/Home/Home';
 
 function App() {
   return (
@@ -18,6 +20,7 @@ function App() {
         <Route path="/profile" component={Profile} />
         <Route path="/editprofile" component={EditProFile} />
         <Route component={NotFound404} />
+        <Route path="/" component={Home} />
       </Switch>
       <Footer />
     </Router>
