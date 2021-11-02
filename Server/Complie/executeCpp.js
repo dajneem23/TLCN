@@ -16,21 +16,21 @@ const executeCpp = (filepath) => {
     exec(
          `gcc ${filepath} -o ${outPath} && cd ${outputPath} && ./${jobId}.out`,
      async (error, stdout, stderr) => {
+       try {
+     
+         await fs.unlink(`${outPath}`,(err) => {
+           if (err) console.log(err); 
+           // console.log('successfully deleted /tmp/hello');
+         });
+         await fs.unlink(`${filepath}`,(err) => {
+           if (err) console.log( err);
+           // console.log('successfully deleted /tmp/hello');
+         });
+       } catch (error) {
+         console.error('there was an error:', error.message);
+       }
         error && reject({ error, stderr });
         stderr && reject(stderr);
-        try {
-      
-          await fs.unlink(`${outPath}`,(err) => {
-            if (err) console.log(err); 
-            // console.log('successfully deleted /tmp/hello');
-          });
-          await fs.unlink(`${filepath}`,(err) => {
-            if (err) console.log( err);
-            // console.log('successfully deleted /tmp/hello');
-          });
-        } catch (error) {
-          console.error('there was an error:', error.message);
-        }
         resolve(stdout);
       }
     );
