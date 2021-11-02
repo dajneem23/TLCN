@@ -1,0 +1,24 @@
+.page_container {
+    padding-top: 30px;
+    padding-bottom: 30px;
+    min-height: 700px;
+    height: 100%;
+    background-color: #EEEEEE;
+}
+
+.problem_title {
+    width: 100%;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 20px;
+    box-shadow: 0px 3px #cecdcd;
+}
+
+.problem_container {
+    padding: 20px;
+    background-color: white;
+    box-shadow: 5px 10px 18px #888888;
+    border-radius: 15px;
+}
