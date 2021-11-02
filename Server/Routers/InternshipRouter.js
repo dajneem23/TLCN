@@ -4,6 +4,7 @@ const passport = require('passport');
 const passportConfig = require('../passport');
 const dotenv=require('dotenv')
 const Internship= require('../Models/Internship');
+dotenv.config();
 
 const InternshipRouter=express.Router();
 const signToken=userID=>{
