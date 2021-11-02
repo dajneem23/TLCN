@@ -1,7 +1,9 @@
 const express = require('express');
-const {generateFile} =require('../generateFile')
-const {executeCpp}=require('../executeCpp')
+const {generateFile} =require('../Complie/generateFile')
+const {executePy} =require('../Complie/executePy')
+const {executeCpp}=require('../Complie/executeCpp')
 ComplierRouter=express.Router();
+const LANGUAE=['cpp','py','java','cs'];
 ComplierRouter.post('/',async (req,res)=>{
     const {code,language} =req.body
     // console.log(content.userName)
@@ -12,24 +14,83 @@ ComplierRouter.post('/',async (req,res)=>{
         })
         
     }
+    if(LANGUAE.indexOf(language)==-1){
+        return res.status(500).json({
+            'success':false,
+            'error':"language error"
+        })
+        
+    }
+
     try {
-        var  pathFile = await generateFile(language,code).catch(err=>{
-            console.log(err)
-        })
-        // console.log(pathFile)
-        var output = await executeCpp(pathFile).catch(err=>{
-            console.log(err)
-        })
+            
+        console.log(language)
+        switch(language){
+            case "cpp":{
+            var  pathFile = await generateFile(language,code).catch(err=>{
+                console.log(err)
+             })
+            var output =await complierCPP(code,pathFile)
+                break;
+            }
+            case "py":{
+                var  pathFile = await generateFile(language,code).catch(err=>{
+                    console.log(err)
+             })
+
+                var output =await complierPY(code,pathFile)
+                break
+            }
+            default: {
+                return res.status(500).json({
+                    "message":"language not support"
+                })
+            }
+        }
+        
+
     } catch (error) {
         throw error
     }
-   
-    return res.status(500).json({
+//    console.log(output)
+    return res.status(200).json({
         'code':code,
         'language':language,
-        'filePath':pathFile,
         'output':output
     })
 
 })
+const complierCPP=async (code,pathFile)=>{
+    /**
+     * 
+     * 
+     * 
+     */
+    let output = await executeCpp(pathFile).catch(err=>{
+        // console.log(err)
+        if(err.stderr){
+           
+                return  err.stderr.replace(/^[/].*cpp/g, "") 
+            
+        }
+    })
+
+    return output
+}
+const complierPY = async (code,pathFile)=>{
+    /**
+     * 
+     * 
+     */
+     let output = await executePy(pathFile).catch(err=>{
+        // console.log(err)
+        if(err.stderr){
+    
+                return  err
+            
+        }
+    })
+
+    return output
+}
 module.exports = ComplierRouter;

@@ -43,5 +43,5 @@ app.use('/intern',InternshipRouter)
 const ComplierRouter=require('./Routers/ComplierRouter')
 app.use('/complier',ComplierRouter )
 
-app.listen(5000,
+app.listen(6000,
   ()=>{console.log("server is running!!")});

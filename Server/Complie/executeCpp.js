@@ -7,8 +7,7 @@ const outputPath = path.join(__dirname, "outputs");
 if (!fs.existsSync(outputPath)) {
   fs.mkdirSync(outputPath, { recursive: true });
 }
-var gcc=process.env.GCC_PATH
-var bash=process.env.BASH_PATH
+
 const executeCpp = (filepath) => {
   const jobId = path.basename(filepath).split(".")[0];
   const outPath = path.join(outputPath, `${jobId}.out`);
@@ -16,9 +15,22 @@ const executeCpp = (filepath) => {
   return new Promise((resolve, reject) => {
     exec(
          `gcc ${filepath} -o ${outPath} && cd ${outputPath} && ./${jobId}.out`,
-      (error, stdout, stderr) => {
+     async (error, stdout, stderr) => {
         error && reject({ error, stderr });
         stderr && reject(stderr);
+        try {
+      
+          await fs.unlink(`${outPath}`,(err) => {
+            if (err) console.log(err); 
+            // console.log('successfully deleted /tmp/hello');
+          });
+          await fs.unlink(`${filepath}`,(err) => {
+            if (err) console.log( err);
+            // console.log('successfully deleted /tmp/hello');
+          });
+        } catch (error) {
+          console.error('there was an error:', error.message);
+        }
         resolve(stdout);
       }
     );
