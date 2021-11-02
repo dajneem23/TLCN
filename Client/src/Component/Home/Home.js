@@ -164,7 +164,7 @@ function CardNewJob(props) {
 function CardCoop(props) {
     return (
         <a href="/">
-            <Card variant="outlined" style={{ height: 100, width: 150, borderRadius: 10, margin: 10 }}>
+            <Card variant="outlined" style={{ height: 100, width: 150, borderRadius: '50%', margin: 10 }}>
                 <img src={logo} style={{ height: 100, width: 150 }} />
             </Card>
         </a>

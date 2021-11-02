@@ -19,8 +19,8 @@ function App() {
         <Route path="/signin" component={Login} />
         <Route path="/profile" component={Profile} />
         <Route path="/editprofile" component={EditProFile} />
-        <Route component={NotFound404} />
         <Route path="/" component={Home} />
+        <Route component={NotFound404} />
       </Switch>
       <Footer />
     </Router>
