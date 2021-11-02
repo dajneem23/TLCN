@@ -10,59 +10,68 @@ import TableRow from '@mui/material/TableRow';
 import { Container } from '@mui/material';
 import './style.css';
 import { Link } from 'react-router-dom';
+import { BasicListExercise } from './BasicListExercise';
+import sortIcon from "../../IMG//icon/sort.png"
+
+const HARD = "Hard";
+const MEDIUM = "Medium";
+const EASY = "Easy";
+const TITLE = "title";
+const STATUS = "status";
+const TYPE = "type";
+const AUTHOR = "author";
+
+const listDone = ["1", "4", "6", "7", "8", "12"];
 
 const columns = [
-    { id: 'name', label: 'Name', minWidth: 170 },
-    { id: 'code', label: 'ISO\u00a0Code', minWidth: 100 },
-    {
-        id: 'population',
-        label: 'Population',
-        minWidth: 170,
-        align: 'right',
-        format: (value) => value.toLocaleString('en-US'),
-    },
-    {
-        id: 'size',
-        label: 'Size\u00a0(km\u00b2)',
-        minWidth: 170,
-        align: 'right',
-        format: (value) => value.toLocaleString('en-US'),
-    },
-    {
-        id: 'density',
-        label: 'Density',
-        minWidth: 170,
-        align: 'right',
-        format: (value) => value.toFixed(2),
-    },
+    { id: 'title', label: 'Title', minWidth: 300 },
+    { id: 'status', label: 'Status', minWidth: 100, align: 'center', },
+    { id: 'type', label: 'Difficulty', minWidth: 100 },
+    { id: 'author', label: 'Author', minWidth: 100 },
 ];
 
-function createData(name, code, population, size) {
-    const density = population / size;
-    return { name, code, population, size, density };
+const titleStyle = {
+    fontSize: 15,
+    fontWeight: "550"
 }
 
-const rows = [
-    createData('India', 'IN', 1324171354, 3287263),
-    createData('China', 'CN', 1403500365, 9596961),
-    createData('Italy', 'IT', 60483973, 301340),
-    createData('United States', 'US', 327167434, 9833520),
-    createData('Canada', 'CA', 37602103, 9984670),
-    createData('Australia', 'AU', 25475400, 7692024),
-    createData('Germany', 'DE', 83019200, 357578),
-    createData('Ireland', 'IE', 4857000, 70273),
-    createData('Mexico', 'MX', 126577691, 1972550),
-    createData('Japan', 'JP', 126317000, 377973),
-    createData('France', 'FR', 67022000, 640679),
-    createData('United Kingdom', 'GB', 67545757, 242495),
-    createData('Russia', 'RU', 146793744, 17098246),
-    createData('Nigeria', 'NG', 200962417, 923768),
-    createData('Brazil', 'BR', 210147125, 8515767),
-];
+const easyStyle = {
+    fontSize: 13,
+    color: '#80FF00',
+    fontWeight: "550"
+}
+
+const mediumStyle = {
+    fontSize: 13,
+    color: '#FF9933',
+    fontWeight: "550"
+}
+
+const hardStyle = {
+    fontSize: 13,
+    color: 'red',
+    fontWeight: "550"
+}
+
+const authorStyle = {
+    fontSize: 13,
+}
+
+const statusStyle = {
+    fontSize: 13,
+    color: "#336600"
+}
 
 export default function StickyHeadTable() {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [isAsc, setFilter] = React.useState(true);
+
+    BasicListExercise.forEach(item => {
+        item.status = listDone.includes(item._id) ? "Done" : "-";
+    })
+
+    const [rows, setRows] = React.useState(BasicListExercise);
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -73,6 +82,21 @@ export default function StickyHeadTable() {
         setPage(0);
     };
 
+    const sort = (order) => {
+        const newRows = rows.sort((a,b) => {
+            let sort = 1;
+            if (isAsc) {
+                sort = a[order] > b[order] ? 1 : -1;
+            } else {
+                sort = a[order] < b[order] ? 1 : -1;
+            }
+            return sort
+        })
+        setRows(newRows);
+        setFilter(!isAsc);
+        console.log(newRows);
+    }
+
     return (
         <div className="page_container">
             <Container maxWidth='lg' className="problem_container">
@@ -80,7 +104,7 @@ export default function StickyHeadTable() {
                     <TableContainer >
                         <Table stickyHeader aria-label="sticky table">
                             <TableHead>
-                                <TableRow>
+                                <TableRow >
                                     {columns.map((column) => (
                                         <TableCell
                                             key={column.id}
@@ -88,23 +112,51 @@ export default function StickyHeadTable() {
                                             style={{ minWidth: column.minWidth }}
                                         >
                                             {column.label}
+                                            <img src={sortIcon} className = "sort_icon" onClick = {() => {
+                                                sort(column.id)
+                                            }}/>
                                         </TableCell>
                                     ))}
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {rows
-                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                     .map((row) => {
                                         return (
-                                            <TableRow hover role="checkbox" tabIndex={-1} key={row.code} component={Link} to={`/code`}>
+                                            <TableRow hover role="checkbox" tabIndex={-1} key={row._id} component={Link} to={`/code`}>
                                                 {columns.map((column) => {
                                                     const value = row[column.id];
+                                                    let display = value;
+                                                    let style;
+                                                    switch (column.id) {
+                                                        case 'title':
+                                                            style = titleStyle;
+                                                            break;
+                                                        case 'author':
+                                                            style = authorStyle;
+                                                            break;
+                                                        default:
+                                                            style = statusStyle;
+                                                            break;
+                                                    }
+                                                    switch (value) {
+                                                        case 1:
+                                                            display = EASY;
+                                                            style = easyStyle;
+                                                            break;
+                                                        case 2:
+                                                            display = MEDIUM;
+                                                            style = mediumStyle;
+                                                            break;
+                                                        case 3:
+                                                            display = HARD;
+                                                            style = hardStyle;
+                                                            break;
+                                                    }
+
                                                     return (
-                                                        <TableCell key={column.id} align={column.align}>
-                                                            {column.format && typeof value === 'number'
-                                                                ? column.format(value)
-                                                                : value}
+                                                        <TableCell key={column.id} align={column.align} style={style}>
+                                                            {display}
                                                         </TableCell>
                                                     );
                                                 })}
