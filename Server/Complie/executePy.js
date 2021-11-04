@@ -4,7 +4,7 @@ const executePy = (filepath) => {
   return new Promise((resolve, reject) => {
     exec(
       `python ${filepath}`,
-      (error, stdout, stderr) => {
+      async  (error, stdout, stderr) => {
         try {
           //deleted FILE  after executing
           await fs.unlink(`${filepath}`,(err) => {
