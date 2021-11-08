@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Tab, Tabs, Typography } from "@mui/material";
+import { Container, Grid, Tab, Tabs, Typography } from "@mui/material";
+import Button from '@mui/material/Button';
 import AceEditor from "react-ace";
 import PropTypes from 'prop-types';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
 import './style.css';
 import 'ace-builds/src-noconflict/mode-javascript'
 // there are many themes to import, I liked monokai.
 import 'ace-builds/src-noconflict/theme-monokai'
+import 'ace-builds/src-noconflict/theme-github'
 // this is an optional import just improved the interaction.
 import 'ace-builds/src-noconflict/ext-language_tools'
 import 'ace-builds/src-noconflict/ext-beautify'
@@ -26,6 +32,21 @@ export default function Exercise() {
         setValue(newValue);
     };
 
+    const [theme, setTheme] = useState("github");
+    const handleChangeTheme = (event) => {
+        setTheme(event.target.value);
+    }
+
+    const [language, setLanguage] = useState("javascript");
+    const handleChangeLanguage = (event) => {
+        setLanguage(event.target.value);
+    }
+
+    const [fontSize, setFontSize] = useState(14);
+    const handleChangeFontSize = (event) => {
+        setFontSize(event.target.value);
+    }
+
     return (
         <div className="page_container">
             <ProblemTitle title="Add two number" />
@@ -34,41 +55,87 @@ export default function Exercise() {
                     <Box sx={{ width: '100%' }}>
                         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                             <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-                                <Tab label="Item One" {...a11yProps(0)} />
-                                <Tab label="Item Two" {...a11yProps(1)} />
-                                <Tab label="Item Three" {...a11yProps(2)} />
+                                <Tab label="Problem" {...a11yProps(0)} />
+                                <Tab label="Discussions" {...a11yProps(1)} />
                             </Tabs>
                         </Box>
                         <TabPanel value={value} index={0}>
-                            Item One
+                            Mô tả cho đề bài
                         </TabPanel>
                         <TabPanel value={value} index={1}>
-                            Item Two
-                        </TabPanel>
-                        <TabPanel value={value} index={2}>
-                            Item Three
+                            Thảo luận...
                         </TabPanel>
                     </Box>
                 </Box>
-                {/* <AceEditor
+            </Container>
+            <Container className="problem_container">
+                <div className="editor_header_container">
+                    <div className="label_selection">Theme</div>
+                    <FormControl sx={{ m: 1, minWidth: 120 }}>
+                        <Select
+                            sx={{ height: 50 }}
+                            value={theme}
+                            onChange={handleChangeTheme}
+                            displayEmpty
+                            inputProps={{ 'aria-label': 'Without label' }}>
+                            <MenuItem value={'github'}>github</MenuItem>
+                            <MenuItem value={'monokai'}>monokai</MenuItem>
+                        </Select>
+                    </FormControl>
+                    <div className="label_selection">Language</div>
+                    <FormControl sx={{ m: 1, minWidth: 120 }}>
+                        <Select
+                            sx={{ height: 50 }}
+                            value={language}
+                            onChange={handleChangeLanguage}
+                            displayEmpty
+                            inputProps={{ 'aria-label': 'Without label' }}>
+                            <MenuItem value={'javascript'}>javascript</MenuItem>
+                            <MenuItem value={'C++'}>C++</MenuItem>
+                        </Select>
+                    </FormControl>
+                    <div className="label_selection">Font size</div>
+                    <FormControl sx={{ m: 1, minWidth: 120 }}>
+                        <Select
+                            sx={{ height: 50 }}
+                            value={fontSize}
+                            onChange={handleChangeFontSize}
+                            displayEmpty
+                            inputProps={{ 'aria-label': 'Without label' }}>
+                            <MenuItem value={14}>14</MenuItem>
+                            <MenuItem value={18}>18</MenuItem>
+                            <MenuItem value={22}>22</MenuItem>
+                        </Select>
+                    </FormControl>
+                </div>
+                <AceEditor
+                    width='100%'
                     placeholder='Start Coding'
-                    mode='javascript'
-                    theme='monokai'
-                    name='basic-code-editor'
+                    mode={language}
+                    theme={theme}
+                    name='editor'
                     onChange={currentCode => setCode(currentCode)}
-                    fontSize={18}
+                    fontSize={fontSize}
                     showPrintMargin={true}
                     showGutter={true}
                     highlightActiveLine={true}
                     value={code}
                     setOptions={{
+                        fontFamily: 'monospace',
                         enableBasicAutocompletion: true,
                         enableLiveAutocompletion: true,
                         enableSnippets: true,
                         showLineNumbers: true,
-                        tabSize: 4,
+                        tabSize: 1
                     }}
-                /> */}
+                />
+            </Container>
+            <Container maxWidth='lg'>
+                <div className="editor_header_container">
+                    <Button variant="contained" color="success">
+                        Submit
+                    </Button>
+                </div>
             </Container>
         </div>
     )
