@@ -9,6 +9,8 @@ import Profile from './Component/Profile/index';
 import EditProFile from './Component/Profile/EditProfile/index';
 import logo from './logo.svg';
 import Home from './Component/Home/Home';
+import CodeEditor from './Component/CodeEditor/CodeEditor';
+import Exercise from "./Component/CodeEditor/ExercisePage";
 
 function App() {
   return (
@@ -19,6 +21,9 @@ function App() {
         <Route path="/signin" component={Login} />
         <Route path="/profile" component={Profile} />
         <Route path="/editprofile" component={EditProFile} />
+        <Route path="/exercise" component={Exercise}/>
+        <Route path="/code" component={CodeEditor}/>
+        <Route path="/home" component={Home} />
         <Route path="/" component={Home} />
         <Route component={NotFound404} />
       </Switch>
