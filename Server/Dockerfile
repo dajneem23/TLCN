@@ -2,7 +2,6 @@
    
 FROM node:14
 
- 
 
 # Install nodemon for hot reloading
 RUN npm install -g nodemon
