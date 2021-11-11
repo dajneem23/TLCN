@@ -2,6 +2,7 @@ const express = require('express');
 const {generateFile} =require('../Complie/generateFile')
 const {executePy} =require('../Complie/executePy')
 const {executeCpp}=require('../Complie/executeCpp')
+const {executeJava} = require('../Complie/excecuteJava')
 ComplierRouter=express.Router();
 const LANGUAE=['cpp','py','java','cs'];
 ComplierRouter.post('/',async (req,res)=>{
@@ -39,6 +40,11 @@ ComplierRouter.post('/',async (req,res)=>{
              })
 
                 var output =await complierPY(code,pathFile)
+                break
+            }
+            case "java":{
+                var pathFile = await generateFile(language,code).catch(err=>{console.log(err)})
+                var output =await  complierJava(code,pathFile)
                 break
             }
             default: {
@@ -83,6 +89,22 @@ const complierPY = async (code,pathFile)=>{
      * 
      */
      let output = await executePy(pathFile).catch(err=>{
+        // console.log(err)
+        if(err.stderr){
+    
+                return  err
+            
+        }
+    })
+
+    return output
+}
+const complierJava = async (code,pathFile)=>{
+    /**
+     * 
+     * 
+     */
+     let output = await executeJava(pathFile).catch(err=>{
         // console.log(err)
         if(err.stderr){
     

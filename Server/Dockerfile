@@ -5,6 +5,8 @@ FROM node:14
 
 # Install nodemon for hot reloading
 RUN npm install -g nodemon
+RUN apt-get update && apt-get install -y openjdk-8-jdk
+
 
 # Create and set the working directory
 RUN mkdir -p /app/server
