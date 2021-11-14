@@ -9,6 +9,7 @@ import Profile from './Component/Profile/index';
 import EditProFile from './Component/Profile/EditProfile/index';
 import logo from './logo.svg';
 import Home from './Component/Home/Home';
+import Search from './Component/Search/index';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/signin" component={Login} />
         <Route path="/profile" component={Profile} />
         <Route path="/editprofile" component={EditProFile} />
+        <Route path="/job" component={Search} />
         <Route path="/" component={Home} />
         <Route component={NotFound404} />
       </Switch>
