@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from "react";
 import logo from "../../IMG/copy_60612516.png";
 import { FaUserAlt, FaSignOutAlt, FaExpeditedssl } from "react-icons/fa";
