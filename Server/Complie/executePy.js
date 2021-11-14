@@ -1,11 +1,10 @@
 const { exec } = require("child_process");
-const fs = require("fs");
 
 const executePy = (filepath) => {
   return new Promise((resolve, reject) => {
     exec(
       `python ${filepath}`,
-      async  (error, stdout, stderr) => {
+      (error, stdout, stderr) => {
         try {
           //deleted FILE  after executing
           await fs.unlink(`${filepath}`,(err) => {

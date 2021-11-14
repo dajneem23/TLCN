@@ -31,9 +31,9 @@ passport.use(new JWTStrategy({
 passport.use(new LocalStrategy(    {
     usernameField: 'userName',
     passwordField: 'password'
-},(userName,password,done)=>{
+},(username,password,done)=>{
     // console.log('password:'+password,'username:'+username)
-    Inern.findOne({userName},(err,user)=>{
+    Inern.findOne({username},(err,user)=>{
         console.log(user)
      if(err) return done(err);
 

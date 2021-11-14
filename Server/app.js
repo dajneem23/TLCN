@@ -36,16 +36,12 @@ const  connection =async()=>{
     });
     console.log("mongoose connect");
 } 
-connection()
+// connection()
 
-const InternshipRouter=require('./Routers/Internship.route')
+const InternshipRouter=require('./Routers/InternshipRouter')
 app.use('/intern',InternshipRouter)
-const ComplierRouter=require('./Routers/Complier.route')
+const ComplierRouter=require('./Routers/ComplierRouter')
 app.use('/complier',ComplierRouter )
-app.get('/test',(req, res)=>{
-  return  res.status(200).json({
-      ok:'true'
-  })
-})
-app.listen(4400,'0.0.0.0',
-  ()=>{console.log("server is running!!" +'4000')});
+
+app.listen(6000,
+  ()=>{console.log("server is running!!")});
