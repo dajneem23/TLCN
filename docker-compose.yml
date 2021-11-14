@@ -1,0 +1,71 @@
+version: "3"
+
+services:
+  server:
+    # Tell docker what file to build the server from
+    build:
+      context: ./Server
+      dockerfile: Dockerfile
+    # The ports to expose
+    expose:
+      - 4000
+    # Environment variables
+    environment:
+      - MONGO_URI=mongodb+srv://admin:admin@cluster0.rro5i.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
+      - PORT=4000
+      - JWT_SECRET=secretsecret
+      - JWT_EXPIRY=30d
+      - DEBUG=worker:*
+      - MORGAN=combined
+      - NODE_ENV=development
+    # Port mapping
+    ports:
+      - 4000:4000
+    # Volumes to mount
+    volumes:
+      - ./Server:/app/server/src
+    # Run command
+    # Nodemon for hot reloading (-L flag required for polling in Docker)
+    command: nodemon -L src/server.js
+    # Connect to other containers
+    # Restart action
+    restart: always
+    # depends_on: 
+    #   - ubuntu
+  client:
+    build:
+      context: ./Client
+      dockerfile: Dockerfile
+    environment:
+      - REACT_APP_PORT=3000
+      - CHOKIDAR_USEPOLLING=true
+    expose:
+      - 3000
+    ports:
+      - 3000:3000
+    volumes:
+      - ./Client/src:/app/client/src
+      - ./Client/public:/app/client/public
+    links:
+      - server
+    command: npm  start
+    # restart: always
+  # ubuntu:
+  #   build:
+  #     context: ./Docker
+  #     dockerfile: Dockerfile-ubuntu
+  #   container_name: ubuntu
+  #   image: ubuntu
+  #   restart: on-failure
+  #   command: ["sleep","infinity"]
+  nginx:
+    image: nginx:latest
+    container_name: nginx_container
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - server
+

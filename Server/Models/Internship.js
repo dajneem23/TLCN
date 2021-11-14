@@ -1,5 +1,5 @@
 const mongose = require('mongoose');
-const bcrypt= require('bcrypt');
+const bcrypt= require('bcryptjs');
 
 const Internship = new mongose.Schema(
     {
