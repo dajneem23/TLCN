@@ -2,7 +2,7 @@
 
 .bg-blue {
   /* background-image: linear-gradient(to right,  #ff3333, #e6e6e6); */
-  background-image: linear-gradient(to right, #363795, #0072ff);
+  background-image: linear-gradient(to right,#0f0f5f, #0d0d5e);
 }
 .navbar {
   position: fixed;

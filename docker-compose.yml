@@ -1,9 +1,6 @@
 version: "3"
 
 services:
-  ##########################
-  ### SETUP SERVER CONTAINER
-  ##########################
   server:
     # Tell docker what file to build the server from
     build:
@@ -33,9 +30,8 @@ services:
     # Connect to other containers
     # Restart action
     restart: always
-  ##########################
-  ### SETUP CLIENT CONTAINER
-  ##########################
+    # depends_on: 
+    #   - ubuntu
   client:
     build:
       context: ./Client
@@ -54,4 +50,22 @@ services:
       - server
     command: npm  start
     # restart: always
- 
+  # ubuntu:
+  #   build:
+  #     context: ./Docker
+  #     dockerfile: Dockerfile-ubuntu
+  #   container_name: ubuntu
+  #   image: ubuntu
+  #   restart: on-failure
+  #   command: ["sleep","infinity"]
+  nginx:
+    image: nginx:latest
+    container_name: nginx_container
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - server
+
