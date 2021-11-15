@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/alt-text */
 import React, { useEffect, useState } from 'react';
 import { BaseListJob, NewListJob, TopCoop } from './BaseListJob';
 import Carousel from 'react-material-ui-carousel'

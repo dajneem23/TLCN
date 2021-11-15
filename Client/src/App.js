@@ -12,6 +12,7 @@ import Home from './Component/Home/Home';
 import Search from './Component/Search/index';
 import CodeEditor from './Component/CodeEditor/CodeEditor';
 import Exercise from "./Component/CodeEditor/ExercisePage";
+import PostNewJob from "./Component/PostNewJob/index";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/signup" component={SignUp} />
         <Route path="/signin" component={Login} />
         <Route path="/profile" component={Profile} />
+        <Route path="/createjob" component={PostNewJob} />
         <Route path="/editprofile" component={EditProFile} />
         <Route path="/job" component={Search} />
         <Route path="/exercise" component={Exercise}/>

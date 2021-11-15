@@ -16,6 +16,7 @@
     "ace-builds": "^1.4.13",
     "axios": "^0.23.0",
     "bootstrap": "^5.1.1",
+    "downshift": "^6.1.7",
     "file-base64": "^1.0.0",
     "install": "^0.13.0",
     "moment": "^2.29.1",
