@@ -12,6 +12,7 @@ import Home from './Component/Home/Home';
 import Search from './Component/Search/index';
 import CodeEditor from './Component/CodeEditor/CodeEditor';
 import Exercise from "./Component/CodeEditor/ExercisePage";
+import JobsManagement from "./Component/JobsManager/JobManagement";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path="/exercise" component={Exercise}/>
         <Route path="/code" component={CodeEditor}/>
         <Route path="/home" component={Home} />
+        <Route path="/jobsmanager" component={JobsManagement} />
         <Route path="/" component={Home} />
         <Route component={NotFound404} />
       </Switch>
