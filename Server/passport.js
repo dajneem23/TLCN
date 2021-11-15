@@ -1,7 +1,7 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const JWTStrategy = require('passport-jwt').Strategy;
-const Inern = require('./Models/Internship');
+const User = require('./Models/User');
 const dotenv= require('dotenv');
 dotenv.config();
 const cookieExtractor= req=>{
@@ -18,7 +18,8 @@ passport.use(new JWTStrategy({
 
 },
     (payload,done)=>{
-        Inern.findById({_id:payload.sub},
+
+        User.findById({_id:payload.sub},
       
         (err,user)=>{
             if(err)return done(err,false);
@@ -28,18 +29,16 @@ passport.use(new JWTStrategy({
         })
     }))
 //authenicated local strategy using username and passwd
-passport.use(new LocalStrategy(    {
+passport.use(new LocalStrategy( {
     usernameField: 'userName',
     passwordField: 'password'
 },(userName,password,done)=>{
     // console.log('password:'+password,'username:'+username)
-    Inern.findOne({userName},(err,user)=>{
-        console.log(user)
+    User.findOne({userName},(err,user)=>{
      if(err) return done(err);
-
-     if(!user) return done(null,false);
-
-     user.comparePassword(password,done);
+     if(!user) return done(null,false, { message: 'Incorrect username.' });
+      user.comparePassword(password,done)
+ 
  })   
 })
 

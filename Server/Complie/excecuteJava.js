@@ -12,7 +12,7 @@ const executeJava = (filepath) => {
       `java ${filepath} ` ,
       async  (error, stdout, stderr) => {
         try {
-          //deleted FILE  after executing
+          //deleted file  after executing
         //   await fs.unlink(`${filepath}`,(err) => {
         //     if (err) console.log( err);
         //     // console.log('successfully deleted /tmp/hello');

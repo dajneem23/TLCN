@@ -1,9 +1,9 @@
 import axios from './axios'
-const internPath='/intern'
-export const Intern={
+const userPath='/user'
+export const User={
     Login:  async ({userName, password})=>{
         try{
-                 return  await axios.post(`${internPath}/signin`,{userName:userName,password:password})
+                 return  await axios.post(`${userPath}/signin`,{userName:userName,password:password})
         }
         catch(e){
             console.log(e)
@@ -11,11 +11,14 @@ export const Intern={
     },
     SignUp: async (args)=>{
         try {
-                return await axios.post(`${internPath}/signup`,args)
+                return await axios.post(`${userPath}/signup`,args)
         }
         catch(e){
             console.log(e)
         }
+    },
+    Info: async ()=>{
+        return await axios.get(`${userPath}/info`)
     }
 }
  

@@ -3,7 +3,7 @@ const express = require('express');
 const passport = require('passport');
 const passportConfig = require('../passport');
 const dotenv=require('dotenv')
-const Internship= require('../Models/Internship');
+const Internship= require('../Models/User');
 dotenv.config();
 
 const InternshipRouter=express.Router();
@@ -15,9 +15,7 @@ const signToken=userID=>{
 }
 
 InternshipRouter.post('/signup',(req,res)=>{
-    const {...content} =req.body
-    console.log(content.userName)
-    
+    const {...content} =req.body    
     Internship.findOne({'userName':content.userName},(err,user)=>{
             if(err) {res.status(500).json({
                 message:{msgBody:"Error has occured 1"},
