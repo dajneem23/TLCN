@@ -56,8 +56,8 @@ export const BaseListJob = [
     {
         id: 4,
         position: 'tester',
-        title: 'Tester for new project',
-        description: 'This is main tester for project of mobile',
+        title: 'Tester for new project This is main tester for project of mobile',
+        description: 'This is main tester for project of mobile ',
         coopName: 'SPKT',
         salary: 'optional',
         address: 'Hà Nội',
