@@ -189,7 +189,6 @@ const formSignUp = ({ submitForm }) => {
       </Container>
     </ThemeProvider>
   );
-
 };
 
 export default formSignUp;

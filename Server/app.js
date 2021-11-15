@@ -42,6 +42,8 @@ const InternshipRouter=require('./Routers/Internship.route')
 app.use('/intern',InternshipRouter)
 const ComplierRouter=require('./Routers/Complier.route')
 app.use('/complier',ComplierRouter )
+const JobRouter = require('./Routers/JobRouter');
+app.use('/job', JobRouter);
 app.get('/test',(req, res)=>{
   return  res.status(200).json({
       ok:'true'

@@ -39,9 +39,15 @@ export default function Header() {
             </a>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="/news">
+            <a className="nav-link" href="/job">
               {" "}
-              <FcNews /> News{" "}
+              <FcNews /> Jobs{" "}
+            </a>
+          </li>
+          <li className="nav-item">
+            <a className="nav-link" href="/code">
+              {" "}
+              <FcNews /> Exercise{" "}
             </a>
           </li>
           <li className="nav-item">
