@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { BaseListJob, NewListJob, TopCoop } from './BaseListJob';
 import Carousel from 'react-material-ui-carousel'
 import Box from '@mui/material/Box';
@@ -11,16 +11,30 @@ import createIcon from "../../IMG//icon/create.png"
 import uploadIcon from "../../IMG//icon/upload.png"
 import { Container, Grid } from '@mui/material';
 import { calculateTimeAgo, getDateWithFormat } from '../../Utls/DateTimeUtls'
+import { Job } from '../../Service/Job.service';
 
 export default function Home() {
 
     const [sWidth, setScreenWidth] = useState(window.innerWidth)
-
+    const [listAllJobs, setListAllJobs] = useState([])
+    const [listNewestJobs, setListNewestJobs] = useState([])
+    const [listHotestJobs, setListHotestJobs] = useState([])
+    
     useEffect(() => {
         window.addEventListener('resize', () => {
             setScreenWidth(window.innerWidth);
         });
-    })
+        Job.GetAllJobs().then((result) => {
+            // console.log(result.splice(0, 10));
+            setListAllJobs(result.splice(0,10));
+        })
+        Job.GetNewestJobs().then((result) => {
+            setListNewestJobs(result);
+        })
+        Job.GetHostestJobs().then((result) => {
+            setListHotestJobs(result);
+        })
+    }, [])
 
     return (
         <div>
@@ -33,7 +47,7 @@ export default function Home() {
                             </Typography>
                             <Carousel className="container_carousel">
                                 {
-                                    BaseListJob.map((item, i) => <CardHotJob key={i} item={item} />)
+                                    listHotestJobs.map((item, i) => <CardHotJob key={i} item={item} />)
                                 }
                             </Carousel>
                         </Grid>
@@ -41,7 +55,7 @@ export default function Home() {
                             <Typography variant="h5" component="div" style={{ margin: 20 }}>
                                 Newest jobs
                             </Typography>
-                            {NewListJob.map((item, i) => <CardNewJob key={i} item={item} />)}
+                            {listNewestJobs.map((item, i) => <CardNewJob key={i} item={item} />)}
                         </Grid>
                     </Grid>
                 </Box>
@@ -65,7 +79,7 @@ export default function Home() {
                         All jobs
                     </Typography >
                     <Grid container className="container_all_jobs">
-                        {BaseListJob.map((item, i) => {
+                        {listAllJobs.map((item, i) => {
                             return (
                                 <Grid className="container_grid_hover">
                                     <CardJob key={i} item={item} />
@@ -129,7 +143,7 @@ function CardHotJob(props) {
                             {props.item.address}
                         </Typography>
                         <Typography sx={{ fontSize: 18, marginTop: 5 }} gutterBottom>
-                            {props.item.listLang.map((item, key) => <span className="language_card">{item}</span>)}
+                            {props.item.language.map((item, key) => <span className="language_card">{item}</span>)}
                         </Typography>
                         <Typography sx={{ fontSize: 18, marginTop: 5, color: 'Highlight' }} gutterBottom>
                             {props.item.numberApply} jobs
@@ -145,8 +159,9 @@ function CardHotJob(props) {
 }
 
 function CardNewJob(props) {
+    const jobDetailsUrl = `/job/${props.item._id}`;
     return (
-        <a href="/" >
+        <a href={jobDetailsUrl} >
             <Card variant="outlined" className="container_card_new_job">
                 <div>
                     <p style={{ fontSize: 12, color: 'gray', fontWeight: 'bold', marginBottom: 5 }}>{props.item.coopName}</p>

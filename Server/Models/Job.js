@@ -14,7 +14,7 @@ const Job = new mongose.Schema(
         salary: {
             type: String
         },
-        avt: {
+        img: {
             type: String
         },
         address: {

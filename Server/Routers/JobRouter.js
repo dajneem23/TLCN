@@ -53,7 +53,7 @@ JobRouter.get('/getNewestJobs', async (req, res) => {
  * localhost:6000/job/getHotestJobs
  */
  JobRouter.get('/getHotestJobs', async (req, res) => {
-    console.log("GET getNewstJobs " + new Date());
+    console.log("GET getHostJobs " + new Date());
 
     let listJobs = await Job.find({ 'isDelete': false }).where('endDate').gt(new Date().getTime());
 
@@ -75,6 +75,7 @@ JobRouter.get('/getNewestJobs', async (req, res) => {
  * 
  * ex: localhost:6000/job/createNewJob
  */
+//passport.authenticate('jwt',{session : false})
 JobRouter.post('/createNewJob', (req, res) => {
     console.log("POST job/createNewJob " + new Date());
     const newJob = new Job(req.body);
