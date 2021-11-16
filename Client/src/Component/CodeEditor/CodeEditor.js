@@ -21,10 +21,15 @@ import { Box } from '@mui/system';
 //code
 //language
 //_id problems
+const JS = "javascript";
+const PY = "python";
+const CP = "c++";
+const CS = "c#";
 
 export default function Exercise() {
 
     const [code, setCode] = useState("");
+    const [lang, setLang] = useState("js");
     // const [mode, setMode] = useState("C++");
     const [value, setValue] = useState(0);
 
@@ -39,12 +44,25 @@ export default function Exercise() {
 
     const [language, setLanguage] = useState("javascript");
     const handleChangeLanguage = (event) => {
-        setLanguage(event.target.value);
+        const value = event.target.value;
+        setLanguage(value);
+        if (value == PY) {
+            setLang('py');
+        } else if (value == JS) {
+            setLang('js');
+        } else {
+            setLang('cpp');
+        }
     }
 
-    const [fontSize, setFontSize] = useState(14);
+    const [fontSize, setFontSize] = useState(16);
     const handleChangeFontSize = (event) => {
         setFontSize(event.target.value);
+    }
+
+    const onSubmit = (code, language) => {
+        console.log(code);
+        console.log(language);
     }
 
     return (
@@ -90,8 +108,10 @@ export default function Exercise() {
                             onChange={handleChangeLanguage}
                             displayEmpty
                             inputProps={{ 'aria-label': 'Without label' }}>
-                            <MenuItem value={'javascript'}>javascript</MenuItem>
-                            <MenuItem value={'C++'}>C++</MenuItem>
+                            <MenuItem value={JS}>Javascript</MenuItem>
+                            <MenuItem value={CS}>C#</MenuItem>
+                            <MenuItem value={CP}>C++</MenuItem>
+                            <MenuItem value={PY}>Python</MenuItem>
                         </Select>
                     </FormControl>
                     <div className="label_selection">Font size</div>
@@ -102,7 +122,7 @@ export default function Exercise() {
                             onChange={handleChangeFontSize}
                             displayEmpty
                             inputProps={{ 'aria-label': 'Without label' }}>
-                            <MenuItem value={14}>14</MenuItem>
+                            <MenuItem value={16}>16</MenuItem>
                             <MenuItem value={18}>18</MenuItem>
                             <MenuItem value={22}>22</MenuItem>
                         </Select>
@@ -132,7 +152,9 @@ export default function Exercise() {
             </Container>
             <Container maxWidth='lg'>
                 <div className="editor_header_container">
-                    <Button variant="contained" color="success">
+                    <Button variant="contained" color="success" onClick = {() => {
+                        onSubmit(code, lang);
+                    }}>
                         Submit
                     </Button>
                 </div>
