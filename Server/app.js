@@ -3,14 +3,17 @@ const cors = require('cors');
 const app = express();
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
- 
+const passport = require('passport')
+
 const cookieParser = require('cookie-parser');
  
 var bodyParser = require('body-parser');
+// app.use(express.bodyParser());
 app.use(express.json({limit: '50mb'}));
 app.use(express.urlencoded({limit: '50mb', extended: true}))
- 
 app.use(cookieParser());
+app.use(passport.initialize());
+app.use(passport.session());
 // app.use(express.json());
 app.use(function(req, res, next) {
    res.header("Access-Control-Allow-Origin", "*");// update to match the domain you will make the request from
@@ -38,10 +41,18 @@ const  connection =async()=>{
 } 
 // connection()
 
-const InternshipRouter=require('./Routers/InternshipRouter')
+const InternshipRouter=require('./Routers/Internship.route')
 app.use('/intern',InternshipRouter)
-const ComplierRouter=require('./Routers/ComplierRouter')
+const ComplierRouter=require('./Routers/Complier.route')
 app.use('/complier',ComplierRouter )
+const UserRoute=require('./Routers/User.route')
+app.use('/user',UserRoute )
 
-app.listen(6000,
-  ()=>{console.log("server is running!!")});
+app.get('/test',(req, res)=>{
+  return  res.status(200).json({
+      ok:'true'
+  })
+})
+const port=process.env.PORT
+app.listen(port,'0.0.0.0',
+  ()=>{console.log("server is running!! " +port)});

@@ -14,24 +14,27 @@ const executeCpp = (filepath) => {
 
   return new Promise((resolve, reject) => {
     exec(
-         `gcc ${filepath} -o ${outPath} && cd ${outputPath} && ./${jobId}.out`,
+         `docker exec -t gcc /bin/sh  -c "gcc ${filepath} -o ${outPath} && cd ${outputPath} &&  ./${jobId}.out"`,
      async (error, stdout, stderr) => {
        try {
      
-         await fs.unlink(`${outPath}`,(err) => {
-           if (err) console.log(err); 
-           // console.log('successfully deleted /tmp/hello');
-         });
-         await fs.unlink(`${filepath}`,(err) => {
-           if (err) console.log( err);
-           // console.log('successfully deleted /tmp/hello');
-         });
+        //  await fs.unlink(`${outPath}`,(err) => {
+        //    if (err) console.log(err); 
+        //    // console.log('successfully deleted /tmp/hello');
+        //  });
+        //  await fs.unlink(`${filepath}`,(err) => {
+        //    if (err) console.log( err);
+        //    // console.log('successfully deleted /tmp/hello');
+        //  });
        } catch (error) {
          console.error('there was an error:', error.message);
        }
-        error && reject({ error, stderr });
-        stderr && reject(stderr);
-        resolve(stdout);
+      //  if(error){console.log(error)}
+      //  if(stderr){console.log(stderr)}
+      //  if(stdout){console.log(stdout)}
+        // error && reject({ error, stderr });
+        // stderr && reject(stderr);
+        resolve([ error, stderr,stdout ]);
       }
     );
   });
