@@ -14,10 +14,10 @@ WORKDIR /app/server
 
 # Copy the dependency files over
 COPY package*.json /app/server/
-
+COPY --from=library/docker:latest /usr/local/bin/docker /usr/bin/docker
+COPY --from=docker/compose:1.23.2 /usr/local/bin/docker-compose /usr/bin/docker-compose
 # Install dependencies
 RUN npm install
-
 # Copy the server files over
 COPY . .
 
