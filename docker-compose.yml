@@ -77,8 +77,8 @@ services:
     #   dockerfile: Dockerfile-py
     # platform: linux/x86_64
     environment:
-      - PYTHONUNBUFFERED = 0
-      - PYTHONIOENCODING =UTF-8
+      - PYTHONUNBUFFERED=0
+      - PYTHONIOENCODING=UTF-8
     container_name: py 
     restart: always
     volumes:
