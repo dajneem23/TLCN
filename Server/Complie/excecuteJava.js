@@ -9,7 +9,7 @@ const executeJava = (filepath) => {
     const jobId = path.basename(filepath).split(".")[0];
     const outPath = path.join(outputPath, `${jobId}.out`);
     exec(
-      `java ${filepath} ` ,
+      `docker exec -t java /bin/sh  -c " java ${filepath}" ` ,
       async  (error, stdout, stderr) => {
         try {
           //deleted file  after executing
@@ -20,9 +20,10 @@ const executeJava = (filepath) => {
         } catch (error) {
           console.error('there was an error:', error.message);
         }
-        error && reject({ error, stderr });
-        stderr && reject(stderr);
-        resolve(stdout);
+        // console.log(error)
+        // error && reject({ error, stderr });
+        // stderr && reject(stderr);
+        resolve([ error, stderr,stdout]);
       }
     );
   });

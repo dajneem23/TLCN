@@ -22,10 +22,15 @@ const Problem = new mongose.Schema(
             type: String,
         },
         testCase:{
-            type: Array
+            type: Array,
+            required: true,
         },
         isDeleted:{
             type: Boolean,
+        },
+        pattern:{
+            type: Array,
+            required: true,
         }
     }
 )
