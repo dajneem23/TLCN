@@ -1,4 +1,4 @@
- 
+
 /* eslint-disable jsx-a11y/alt-text */
 import React, { useEffect, useRef, useState } from 'react';
 import { BaseListJob, NewListJob, TopCoop } from './BaseListJob';
@@ -21,20 +21,32 @@ export default function Home() {
     const [listAllJobs, setListAllJobs] = useState([])
     const [listNewestJobs, setListNewestJobs] = useState([])
     const [listHotestJobs, setListHotestJobs] = useState([])
-    
+
     useEffect(() => {
         window.addEventListener('resize', () => {
             setScreenWidth(window.innerWidth);
         });
         Job.GetAllJobs().then((result) => {
             // console.log(result.splice(0, 10));
-            setListAllJobs(result.splice(0,10));
+            if (result != undefined) {
+                setListAllJobs(result.splice(0, 10));
+            } else {
+                setListAllJobs([])
+            }
         })
         Job.GetNewestJobs().then((result) => {
-            setListNewestJobs(result);
+            if (result != undefined) {
+                setListNewestJobs(result);
+            } else {
+                setListNewestJobs([]);
+            }
         })
         Job.GetHostestJobs().then((result) => {
-            setListHotestJobs(result);
+            if (result != undefined) {
+                setListHotestJobs(result);
+            } else {
+                setListHotestJobs([]);
+            }
         })
     }, [])
 
@@ -97,7 +109,7 @@ export default function Home() {
                         <Grid className="card_create_cv">
                             <div className="card_create_cv_title">Create new CV</div>
                             <div>You don't have CV, create here!</div>
-                            <a href = "/">
+                            <a href="/">
                                 <div className="create_cv_button">
                                     <img src={createIcon} className='create_icon' /> Create CV
                                 </div>
@@ -106,7 +118,7 @@ export default function Home() {
                         <Grid className="card_upload_cv">
                             <div className="card_create_cv_title">Already have CV</div>
                             <div>If you have CV in your device, upload here!</div>
-                            <a href = "/"><div className="create_cv_button">
+                            <a href="/"><div className="create_cv_button">
                                 <img src={uploadIcon} className='create_icon' /> Upload CV
                             </div></a>
                         </Grid>
