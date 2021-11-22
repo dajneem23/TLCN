@@ -123,7 +123,7 @@ export default function Exercise() {
                             inputProps={{ 'aria-label': 'Without label' }}>
                             <MenuItem value={JS}>Javascript</MenuItem>
                             <MenuItem value={CS}>C#</MenuItem>
-                            <MenuItem value={CP}>C++</MenuItem>
+                            <MenuItem value={CP}>C</MenuItem>
                             <MenuItem value={PY}>Python</MenuItem>
                             <MenuItem value={JV}>Java</MenuItem>
                         </Select>

@@ -12,17 +12,9 @@ const executeJava = (filepath) => {
       `docker exec -t java /bin/sh  -c " java ${filepath}" ` ,
       async  (error, stdout, stderr) => {
         try {
-          //deleted file  after executing
-        //   await fs.unlink(`${filepath}`,(err) => {
-        //     if (err) console.log( err);
-        //     // console.log('successfully deleted /tmp/hello');
-        //   });
         } catch (error) {
           console.error('there was an error:', error.message);
         }
-        // console.log(error)
-        // error && reject({ error, stderr });
-        // stderr && reject(stderr);
         resolve([ error, stderr,stdout]);
       }
     );
