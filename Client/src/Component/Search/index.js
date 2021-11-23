@@ -21,6 +21,7 @@ import Select from "@mui/material/Select";
 import InputBase from "@mui/material/InputBase";
 import "./style.css";
 import ReactPaginate from "react-paginate";
+import { Job } from "../../Service/Job.service";
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
   "label + &": {
     marginTop: theme.spacing(3),
@@ -54,11 +55,24 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
   },
 }));
 export default function Seach() {
+  const [flag, setflag] = useState("");
   const [seachTerm, setSearchTerm] = useState("");
+  const [data, setdata] = useState([]);
   const [location, setLocation] = React.useState("");
   const [type, setType] = React.useState("");
   const [experience, setExperience] = React.useState("");
-  const [results, setResult] = React.useState(BaseListJob);
+  const [results, setResult] = React.useState([]);
+  const [sWidth, setScreenWidth] = useState(window.innerWidth);
+  const [listAllJobs, setListAllJobs] = useState([]);
+  useEffect(() => {
+    window.addEventListener("resize", () => {
+      setScreenWidth(window.innerWidth);
+    });
+    Job.GetAllJobs().then((result) => {
+      setListAllJobs(result);
+    });
+    console.log("aaaaa")
+  },[]);
   const handleChangeLocation = (event) => {
     setLocation(event.target.value);
   };
@@ -69,13 +83,15 @@ export default function Seach() {
     setExperience(event.target.value);
   };
   const onSearch = () => {
-    const listFillter = BaseListJob.filter(
-      (a) =>
-        a.address.toLowerCase().includes(location.toLowerCase()) &&
-        a.major.toLowerCase().includes(type.toLowerCase()) &&
-        a.title.toLowerCase().includes(seachTerm.toLowerCase())
+    Job.GetAllJobs().then((result) => {
+      setResult(result);
+    });
+    console.log(results);
+    const listFillter = results.filter((data) =>
+      data.title.toLowerCase().includes(seachTerm.toLowerCase())
     );
     setResult(listFillter);
+    console.log(listFillter);
   };
   const [pageNumber, setPageNumber] = useState(0);
 
@@ -177,7 +193,10 @@ export default function Seach() {
             </Select>
           </FormControl>
           <FormControl>
-          <Button variant="contained" size="medium" style= {{margin: 35}}
+            <Button
+              variant="contained"
+              size="medium"
+              style={{ margin: 35 }}
               onClick={() => {
                 onSearch();
               }}
@@ -228,9 +247,11 @@ export default function Seach() {
           <div className="card_date_to">{timeAgo}</div>
         </CardContent>
         <CardActions>
-          <Button size="small">
-            <Link to={`job/${props.item.id}`}>About Page</Link>
-          </Button>
+          <Link to={`job/${props.item._id}`} style={{ textDecoration: "none" }}>
+            <div className="btnInfo">
+              <button>View More</button>
+            </div>
+          </Link>
         </CardActions>
       </Card>
     );

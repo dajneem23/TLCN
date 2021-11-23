@@ -3,8 +3,10 @@
 .bg-blue {
   /* background-image: linear-gradient(to right,  #ff3333, #e6e6e6); */
   background-image: linear-gradient(to right,#0f0f5f, #0d0d5e);
+  z-index: inherit;
 }
 .navbar {
+  z-index:999;
   position: fixed;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
   width: 100%;
@@ -210,7 +212,9 @@
   display: flex;
   justify-content: space-between;
 }
-
+.btn-isAuth {
+  color: #ffff;
+}
 /***********************Header*************************/
 .title {
   height: 520px;
