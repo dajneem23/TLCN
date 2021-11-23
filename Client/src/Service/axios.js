@@ -4,7 +4,7 @@ dotenv.config()
 const axios =axiosBase.create({
     withCredentials :true,
     //this is devlopment host
-    baseURL: 'http://localhost:4400',  //`${process.env.APIHOST}:${process.env.APIPORT}`
+    baseURL: 'http://ec2-52-54-144-113.compute-1.amazonaws.com:4000',  //`${process.env.APIHOST}:${process.env.APIPORT}`
 })
 
 export default axios

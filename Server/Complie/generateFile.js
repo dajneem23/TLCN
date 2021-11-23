@@ -12,8 +12,17 @@ const generateFile = async (format, content) => {
   const jobId = uuid();
   const filename = `${jobId}.${format}`;
   const filepath = path.join(dirCodes, filename);
+  console.log(filepath,content);
+  
+  try {
   await fs.writeFileSync(filepath, content);
+  const data = await fs.readFileSync(filepath,{encoding: "utf8"}); 
+  // Display the file data 
+  console.log(data); 
   return filepath;
+} catch(err) {
+  console.error(err);
+}
 };
 
 module.exports = {

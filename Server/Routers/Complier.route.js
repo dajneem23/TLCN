@@ -72,47 +72,33 @@ const complierCPP=async (code,pathFile)=>{
      * 
      * 
      */
-    let output = await executeCpp(pathFile).catch(err=>{
-        // console.log(err)
-        if(err.stderr){
-           
-                return  err.stderr.replace(/^[/].*cpp/g, "") 
-            
-        }
-    })
-
-    return output
+    let [error,stderr, output] = await executeCpp(pathFile)
+    if(error) {console.log(error);}
+    if(stderr) {console.log(stderr);}
+    console.log(output)
+    return output.replace(
+        /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '');
 }
 const complierPY = async (code,pathFile)=>{
     /**
      * 
      * 
      */
-     let output = await executePy(pathFile).catch(err=>{
-        // console.log(err)
-        if(err.stderr){
-    
-                return  err
-            
-        }
-    })
-
-    return output
+     let [error,stderr, output] = await executePy(pathFile)
+     if(error) {console.log(error);}
+     if(stderr) {console.log(stderr);}
+    return output.replace(
+        /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '');
 }
 const complierJava = async (code,pathFile)=>{
     /**
      * 
      * 
      */
-     let output = await executeJava(pathFile).catch(err=>{
-        // console.log(err)
-        if(err.stderr){
-    
-                return  err
-            
-        }
-    })
-
-    return output
+     let [error,stderr, output]  = await executeJava(pathFile)
+        if(error) {console.log(error);}
+        if(stderr) {console.log(stderr);}
+    return output.replace(
+        /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '');
 }
 module.exports = ComplierRouter;
