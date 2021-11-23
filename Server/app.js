@@ -39,9 +39,9 @@ const  connection =async()=>{
     });
     console.log("mongoose connect");
 } 
-// connection()
+connection()
 
-const InternshipRouter=require('./Routers/Internship.route')
+const InternshipRouter=require('./Routers/DELTETE_Internship.route')
 app.use('/intern',InternshipRouter)
 const ComplierRouter=require('./Routers/Complier.route')
 app.use('/complier',ComplierRouter )
