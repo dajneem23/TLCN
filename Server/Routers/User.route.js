@@ -74,7 +74,6 @@ UserRoute.post('/signin',(req, res,next)=>{
 UserRoute.post('/update',async (req,res)=>{
     // const {username,_id,role} = req.user;
     const {...content} = req.body
-    console.log(content)
     if(!content._id){
         return res.status(500).json({"message":"missing required value"})
     }
@@ -82,7 +81,7 @@ UserRoute.post('/update',async (req,res)=>{
     //     return res.status(403).json({'message' :' Forbidden You dont have permission to access on one page'});
     // }
     try{
-        User.findByIdAndUpdate({_id: content._id},{new: true},{...content,'_id':content._id},(err, user)=>{
+        User.findOneAndUpdate({_id: content._id},{...content,'_id':content._id},{new: true},(err, user)=>{
             if(err) return res.status(500).send(err.message )
             if(!user)  return res.status(404).json({'message':"_id not found"})
             return res.status(200).json(user)
