@@ -17,14 +17,23 @@ import 'ace-builds/src-noconflict/theme-github'
 import 'ace-builds/src-noconflict/ext-language_tools'
 import 'ace-builds/src-noconflict/ext-beautify'
 import { Box } from '@mui/system';
+import { Compile } from '../../Service/Compile.service';
 
 //code
 //language
 //_id problems
+const JS = "javascript";
+const PY = "python";
+const CP = "c++";
+const CS = "c#";
+const JV = "java";
 
 export default function Exercise() {
 
+    const [isSubmit, setIsSubmit] = useState(false);
+    const [result, setResult] = useState("");
     const [code, setCode] = useState("");
+    const [lang, setLang] = useState("js");
     // const [mode, setMode] = useState("C++");
     const [value, setValue] = useState(0);
 
@@ -39,12 +48,34 @@ export default function Exercise() {
 
     const [language, setLanguage] = useState("javascript");
     const handleChangeLanguage = (event) => {
-        setLanguage(event.target.value);
+        const value = event.target.value;
+        setLanguage(value);
+        if (value == PY) {
+            setLang('py');
+        } else if (value == JS) {
+            setLang('js');
+        } else if (value == JV) {
+            setLang('java');
+        } else {
+            setLang('cpp');
+        }
     }
 
-    const [fontSize, setFontSize] = useState(14);
+    const [fontSize, setFontSize] = useState(16);
     const handleChangeFontSize = (event) => {
         setFontSize(event.target.value);
+    }
+
+    const onSubmit = (code, language) => {
+        console.log(code);
+        console.log(language);
+        Compile.CompileCode(language, code, "123123", "111111").then(result => {
+            setIsSubmit(true);
+            setResult(`this is result: ${result.data.output}`);
+        }).catch(error => {
+            setIsSubmit(true);
+            setResult(`error: ${error}`);
+        })
     }
 
     return (
@@ -90,8 +121,11 @@ export default function Exercise() {
                             onChange={handleChangeLanguage}
                             displayEmpty
                             inputProps={{ 'aria-label': 'Without label' }}>
-                            <MenuItem value={'javascript'}>javascript</MenuItem>
-                            <MenuItem value={'C++'}>C++</MenuItem>
+                            <MenuItem value={JS}>Javascript</MenuItem>
+                            <MenuItem value={CS}>C#</MenuItem>
+                            <MenuItem value={CP}>C</MenuItem>
+                            <MenuItem value={PY}>Python</MenuItem>
+                            <MenuItem value={JV}>Java</MenuItem>
                         </Select>
                     </FormControl>
                     <div className="label_selection">Font size</div>
@@ -102,7 +136,7 @@ export default function Exercise() {
                             onChange={handleChangeFontSize}
                             displayEmpty
                             inputProps={{ 'aria-label': 'Without label' }}>
-                            <MenuItem value={14}>14</MenuItem>
+                            <MenuItem value={16}>16</MenuItem>
                             <MenuItem value={18}>18</MenuItem>
                             <MenuItem value={22}>22</MenuItem>
                         </Select>
@@ -132,11 +166,17 @@ export default function Exercise() {
             </Container>
             <Container maxWidth='lg'>
                 <div className="editor_header_container">
-                    <Button variant="contained" color="success">
+                    <Button variant="contained" color="success" onClick={() => {
+                        onSubmit(code, lang);
+                    }}>
                         Submit
                     </Button>
                 </div>
             </Container>
+            {isSubmit &&
+                <Container className="problem_container">
+                    <div>{result}</div>
+                </Container>}
         </div>
     )
 }

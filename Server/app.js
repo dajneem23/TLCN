@@ -39,7 +39,7 @@ const  connection =async()=>{
     });
     console.log("mongoose connect");
 } 
-// connection()
+connection()
 
 const InternshipRouter=require('./Routers/Internship.route')
 app.use('/intern',InternshipRouter)
@@ -47,7 +47,8 @@ const ComplierRouter=require('./Routers/Complier.route')
 app.use('/complier',ComplierRouter )
 const UserRoute=require('./Routers/User.route')
 app.use('/user',UserRoute )
-
+const JobRouter = require('./Routers/JobRouter');
+app.use('/job', JobRouter);
 app.get('/test',(req, res)=>{
   return  res.status(200).json({
       ok:'true'

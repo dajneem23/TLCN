@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from "react";
 import logo from "../../IMG/copy_60612516.png";
 import { FaUserAlt, FaSignOutAlt, FaExpeditedssl } from "react-icons/fa";
@@ -38,9 +39,15 @@ export default function Header() {
             </a>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="/news">
+            <a className="nav-link" href="/job">
               {" "}
-              <FcNews /> News{" "}
+              <FcNews /> Jobs{" "}
+            </a>
+          </li>
+          <li className="nav-item">
+            <a className="nav-link" href="/code">
+              {" "}
+              <FcNews /> Exercise{" "}
             </a>
           </li>
           <li className="nav-item">

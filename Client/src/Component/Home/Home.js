@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from 'react';
+
+/* eslint-disable jsx-a11y/alt-text */
+import React, { useEffect, useRef, useState } from 'react';
 import { BaseListJob, NewListJob, TopCoop } from './BaseListJob';
 import Carousel from 'react-material-ui-carousel'
 import Box from '@mui/material/Box';
@@ -11,16 +13,42 @@ import createIcon from "../../IMG//icon/create.png"
 import uploadIcon from "../../IMG//icon/upload.png"
 import { Container, Grid } from '@mui/material';
 import { calculateTimeAgo, getDateWithFormat } from '../../Utls/DateTimeUtls'
+import { Job } from '../../Service/Job.service';
 
 export default function Home() {
 
     const [sWidth, setScreenWidth] = useState(window.innerWidth)
+    const [listAllJobs, setListAllJobs] = useState([])
+    const [listNewestJobs, setListNewestJobs] = useState([])
+    const [listHotestJobs, setListHotestJobs] = useState([])
 
     useEffect(() => {
         window.addEventListener('resize', () => {
             setScreenWidth(window.innerWidth);
         });
-    })
+        Job.GetAllJobs().then((result) => {
+            // console.log(result.splice(0, 10));
+            if (result != undefined) {
+                setListAllJobs(result.splice(0, 10));
+            } else {
+                setListAllJobs([])
+            }
+        })
+        Job.GetNewestJobs().then((result) => {
+            if (result != undefined) {
+                setListNewestJobs(result);
+            } else {
+                setListNewestJobs([]);
+            }
+        })
+        Job.GetHostestJobs().then((result) => {
+            if (result != undefined) {
+                setListHotestJobs(result);
+            } else {
+                setListHotestJobs([]);
+            }
+        })
+    }, [])
 
     return (
         <div>
@@ -33,7 +61,7 @@ export default function Home() {
                             </Typography>
                             <Carousel className="container_carousel">
                                 {
-                                    BaseListJob.map((item, i) => <CardHotJob key={i} item={item} />)
+                                    listHotestJobs.map((item, i) => <CardHotJob key={i} item={item} />)
                                 }
                             </Carousel>
                         </Grid>
@@ -41,7 +69,7 @@ export default function Home() {
                             <Typography variant="h5" component="div" style={{ margin: 20 }}>
                                 Newest jobs
                             </Typography>
-                            {NewListJob.map((item, i) => <CardNewJob key={i} item={item} />)}
+                            {listNewestJobs.map((item, i) => <CardNewJob key={i} item={item} />)}
                         </Grid>
                     </Grid>
                 </Box>
@@ -65,7 +93,7 @@ export default function Home() {
                         All jobs
                     </Typography >
                     <Grid container className="container_all_jobs">
-                        {BaseListJob.map((item, i) => {
+                        {listAllJobs.map((item, i) => {
                             return (
                                 <Grid className="container_grid_hover">
                                     <CardJob key={i} item={item} />
@@ -81,7 +109,7 @@ export default function Home() {
                         <Grid className="card_create_cv">
                             <div className="card_create_cv_title">Create new CV</div>
                             <div>You don't have CV, create here!</div>
-                            <a href = "/">
+                            <a href="/">
                                 <div className="create_cv_button">
                                     <img src={createIcon} className='create_icon' /> Create CV
                                 </div>
@@ -90,7 +118,7 @@ export default function Home() {
                         <Grid className="card_upload_cv">
                             <div className="card_create_cv_title">Already have CV</div>
                             <div>If you have CV in your device, upload here!</div>
-                            <a href = "/"><div className="create_cv_button">
+                            <a href="/"><div className="create_cv_button">
                                 <img src={uploadIcon} className='create_icon' /> Upload CV
                             </div></a>
                         </Grid>
@@ -129,7 +157,7 @@ function CardHotJob(props) {
                             {props.item.address}
                         </Typography>
                         <Typography sx={{ fontSize: 18, marginTop: 5 }} gutterBottom>
-                            {props.item.listLang.map((item, key) => <span className="language_card">{item}</span>)}
+                            {props.item.language.map((item, key) => <span className="language_card">{item}</span>)}
                         </Typography>
                         <Typography sx={{ fontSize: 18, marginTop: 5, color: 'Highlight' }} gutterBottom>
                             {props.item.numberApply} jobs
@@ -145,8 +173,9 @@ function CardHotJob(props) {
 }
 
 function CardNewJob(props) {
+    const jobDetailsUrl = `/job/${props.item._id}`;
     return (
-        <a href="/" >
+        <a href={jobDetailsUrl} >
             <Card variant="outlined" className="container_card_new_job">
                 <div>
                     <p style={{ fontSize: 12, color: 'gray', fontWeight: 'bold', marginBottom: 5 }}>{props.item.coopName}</p>

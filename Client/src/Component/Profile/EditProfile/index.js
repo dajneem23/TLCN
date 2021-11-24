@@ -1,11 +1,17 @@
+/* eslint-disable jsx-a11y/alt-text */
 import React, { useState } from "react";
 import "./style.css";
 
 export default function EditProFile() {
   const [values, setValues] = useState({
-    firstName: "",
-    lastName: "",
+    fullName: "",
     email: "",
+    phoneNumber:"",
+    sex:"",
+    dob:"",
+    experience:"",
+    address:"",
+
   });
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,7 +37,6 @@ export default function EditProFile() {
               src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"
             />
             <span className="font-weight-bold">Edogaru</span>
-            <span className="text-black-50">edogaru@mail.com.my</span>
             <span> </span>
           </div>
         </div>
@@ -41,25 +46,14 @@ export default function EditProFile() {
               <h4 className="text-right">Profile Settings</h4>
             </div>
             <div className="row mt-2">
-              <div className="col-md-6">
-                <label className="labels">First Name</label>
+              <div className="col-md-12">
+                <label className="labels">Full Name</label>
                 <input
                   type="text"
                   className="form-control"
-                  name="firstName"
-                  id="firstName"
+                  name="fullName"
+                  id="fullName"
                   value={values.firstName}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="col-md-6">
-                <label className="labels">Last Name</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="lastName"
-                  name="lastName"
-                  value={values.lastName}
                   onChange={handleChange}
                 />
               </div>
@@ -67,15 +61,61 @@ export default function EditProFile() {
             <div className="row mt-3">
               <div className="col-md-12">
                 <label className="labels">Mobile Number</label>
-                <input type="text" className="form-control" />
+                <input
+                  type="text"
+                  className="form-control"
+                  name="phoneNumber"
+                  id="phoneNumber"
+                  value={values.phoneNumber}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="col-md-12">
+                <label className="labels">Sex</label>
+                <select
+                  id="sex"
+                  name="sex"
+                  className="form-control"
+                  value={values.sex}
+                  onChange={handleChange}
+                >
+                  <option value="none">None</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                </select>
+              </div>
+              <div className="col-md-12">
+                <label className="labels">DoB</label>
+                <input
+                  type="date"
+                  className="form-control"
+                  name="dob"
+                  id="dob"
+                  value={values.dob}
+                  onChange={handleChange}
+                />
               </div>
               <div className="col-md-12">
                 <label className="labels">Experience</label>
-                <input type="number" className="form-control" />
+                <input
+                  type="number"
+                  className="form-control"
+                  name="experience"
+                  id="experience"
+                  value={values.experience}
+                  onChange={handleChange}
+                />
               </div>
               <div className="col-md-12">
-                <label className="labels">Location</label>
-                <input type="text" className="form-control" />
+                <label className="labels">Address</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="address"
+                  id="address"
+                  value={values.address}
+                  onChange={handleChange}
+                />
               </div>
               <div className="col-md-12">
                 <label className="labels">Email</label>
@@ -87,10 +127,6 @@ export default function EditProFile() {
                   value={values.email}
                   onChange={handleChange}
                 />
-              </div>
-              <div className="col-md-12">
-                <label className="labels">Education</label>
-                <input type="text" className="form-control" />
               </div>
             </div>
             <div className="mt-5 text-center">

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 
 import * as React from "react";
 import Avatar from "@mui/material/Avatar";
@@ -188,7 +189,6 @@ const formSignUp = ({ submitForm }) => {
       </Container>
     </ThemeProvider>
   );
-
 };
 
 export default formSignUp;
