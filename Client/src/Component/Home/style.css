@@ -1,7 +1,9 @@
 .container_home {
     background-color: #EEEEEE;
 }
-
+.container_carousel{
+    z-index: 1;
+}
 .card_hot_job{
     width: 100%;
     height: 100%;
