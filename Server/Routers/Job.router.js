@@ -4,11 +4,11 @@ const passport = require('passport');
 const passportConfig = require('../passport');
 const dotenv = require('dotenv')
 const Job = require('../Models/Job');
+const User = require('../Models/User');
 dotenv.config();
 
 const TOP3 = 3;
 const TOP5 = 5;
-
 const JobRouter = express.Router();
 
 /**
@@ -20,7 +20,9 @@ JobRouter.get('/getAllJobs', async (req, res) => {
     console.log("GET getAllJobs");
     let listJobs = await Job.find({ 'isDelete': false });
     res.status(200).json({
-        listAllJobs: listJobs
+        message: "Get successfully",
+        listAllJobs: listJobs,
+        msgError: false
     })
 })
 
@@ -42,7 +44,9 @@ JobRouter.get('/getNewestJobs', async (req, res) => {
     }
 
     res.status(200).json({
-        listNewestJob: listNewestJob
+        message: "Get successfully",
+        listNewestJob: listNewestJob,
+        msgError: false
     })
 
 })
@@ -52,7 +56,7 @@ JobRouter.get('/getNewestJobs', async (req, res) => {
  * 
  * localhost:6000/job/getHotestJobs
  */
- JobRouter.get('/getHotestJobs', async (req, res) => {
+JobRouter.get('/getHotestJobs', async (req, res) => {
     console.log("GET getHostJobs " + new Date());
 
     let listJobs = await Job.find({ 'isDelete': false }).where('endDate').gt(new Date().getTime());
@@ -65,7 +69,10 @@ JobRouter.get('/getNewestJobs', async (req, res) => {
     }
 
     res.status(200).json({
-        listHotestJobs: listHotestJobs
+        message: "Get successfully",
+        listHotestJobs: listHotestJobs,
+        msgError: false
+
     })
 
 })
@@ -76,25 +83,44 @@ JobRouter.get('/getNewestJobs', async (req, res) => {
  * ex: localhost:6000/job/createNewJob
  */
 //passport.authenticate('jwt',{session : false})
-JobRouter.post('/createNewJob', (req, res) => {
-    console.log("POST job/createNewJob " + new Date());
+JobRouter.post('/createNewJob', passport.authenticate('jwt', { session: false }), async (req, res) => {
     const newJob = new Job(req.body);
-    newJob.save(err => {
+    const { userName, _id, role } = req.user;
+    // if role is not co-op
+    if (role == null || role != 1) {
+        return res.status(403).json({ 'message': ' Forbidden You dont have permission to access on one page', msgError: true });
+    }
+
+    newJob.createBy = userName;
+    newJob.save(async (err, ok) => {
         if (err) {
-            res.status(500).json({
+            return res.status(500).json({
                 message: { msgBody: err.message },
                 msgError: true
             })
-            return
-        } else {
-            res.status(200).json({
-                message: { msgBody: "Create new job successfully", newJob: newJob },
-                msgError: false
-            })
-            return
         }
+
+        let user = await User.findById(_id);
+        user.listJobDetails.push(ok._id);
+        user.save();
+
+        return res.status(200).json({
+            message: { msgBody: "Create new job successfully", newJob: newJob },
+            msgError: false
+        })
     })
+
 })
+
+// JobRouter.post('/createNewJobs', async (req, res) => {
+//     const {username,_id,role} = req.user;
+
+//     console.log(req.user);
+//     // if(role != admin || _id != content._id){
+//     //     return res.status(403).json({'message' :' Forbidden You dont have permission to access on one page'});
+//     // }
+
+// })
 
 
 module.exports = JobRouter;
