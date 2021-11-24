@@ -70,9 +70,32 @@ UserRoute.post('/signin',(req, res,next)=>{
         }
     })(req, res, next);
 })
-UserRoute.get('/info',passport.authenticate('jwt',{session : false}),(req,res)=>{
-    const {username,_id} = req.user;
-    res.status(200).json({isAuthenticated : true, user : {username,_id}});
+// ,passport.authenticate('jwt',{session : false})
+UserRoute.post('/update',async (req,res)=>{
+    // const {username,_id,role} = req.user;
+    const {...content} = req.body
+    if(!content._id){
+        return res.status(500).json({"message":"missing required value"})
+    }
+    // if(role != admin || _id != content._id){
+    //     return res.status(403).json({'message' :' Forbidden You dont have permission to access on one page'});
+    // }
+    try{
+        User.findOneAndUpdate({_id: content._id},{...content,'_id':content._id},{new: true},(err, user)=>{
+            if(err) return res.status(500).send(err.message )
+            if(!user)  return res.status(404).json({'message':"_id not found"})
+            return res.status(200).json(user)
+        })
+    }
+    catch(e){
+        return res.status(500).json({'message' :e.message});
+    }
+
 });
+UserRoute.get('/info',passport.authenticate('jwt',{session : false}),(req,res)=>{
+    const {username,_id,role} = req.user;
+   return res.status(200).json({isAuthenticated : true, user : {username,_id,role}});
+});
+
  
 module.exports =UserRoute;
