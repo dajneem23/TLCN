@@ -28,7 +28,7 @@ function App() {
         <Route path="/job/:id" component={JobDetail} />
         <Route path="/job" component={Search} />
         <Route path="/exercise" component={Exercise} />
-        <Route path="/code" component={CodeEditor} />
+        <Route path="/code/:id" component={CodeEditor} />
         <Route path="/home" component={Home} />
         <Route path="/jobsmanager" component={JobsManagement} />
         <Route path="/" component={Home} />

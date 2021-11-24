@@ -58,7 +58,7 @@ ProblemRouter.get('/getProblemById', async(req, res) => {
 
     return res.status(200).json({
         message: "Get successfully",
-        propblem: problem,
+        problem: problem,
         msgError: false
     })
 })
