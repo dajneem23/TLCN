@@ -2,13 +2,15 @@
 /* eslint-disable no-unused-vars */
  
 import React ,{createContext,useState,useEffect,useRef} from 'react' ;
-import {User} from '../Service/User.service'
+import {User} from '../Service/User.service';
+import Loading from '../Component/LoadingPage/index'
+
 
 
 export const AuthContext = createContext();
 
 export default ({children})=>{
-    const [user,setUser]=useState(null);
+    const [user,setUser]=useState("");
     const [isAuthenticated,setisAuthenticated]=useState(false);
     const [isLoaded,setIsloaded]=useState(false);
     const [info,setinfo]= useState(false);
@@ -28,7 +30,7 @@ export default ({children})=>{
 
     return (
         <div>
-        {isLoaded? <h1>loading</h1>:
+        {isLoaded? <Loading/>:
         <AuthContext.Provider value={{user,setUser,isAuthenticated,setisAuthenticated,info,setinfo}}>
             {children}
         </AuthContext.Provider>

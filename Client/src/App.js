@@ -5,14 +5,15 @@ import Footer from "./Component/Footer/index";
 import Login from "./Component/LoginPage/Login";
 import SignUp from "./Component/SignupPage/SignUp";
 import NotFound404 from "./Component/404NotFound/index";
-import Profile from './Component/Profile/index';
-import EditProFile from './Component/Profile/EditProfile/index';
-import Home from './Component/Home/Home';
-import Search from './Component/Search/index';
-import CodeEditor from './Component/CodeEditor/CodeEditor';
+import Profile from "./Component/Profile/index";
+import EditProFile from "./Component/Profile/EditProfile/index";
+import Home from "./Component/Home/Home";
+import Search from "./Component/Search/index";
+import CodeEditor from "./Component/CodeEditor/CodeEditor";
 import Exercise from "./Component/CodeEditor/ExercisePage";
 import JobsManagement from "./Component/JobsManager/JobManagement";
 import PostNewJob from "./Component/PostNewJob/index";
+import JobDetail from "./Component/JobDetail/index";
 
 function App() {
   return (
@@ -24,9 +25,10 @@ function App() {
         <Route path="/profile" component={Profile} />
         <Route path="/createjob" component={PostNewJob} />
         <Route path="/editprofile" component={EditProFile} />
+        <Route path="/job/:id" component={JobDetail} />
         <Route path="/job" component={Search} />
-        <Route path="/exercise" component={Exercise}/>
-        <Route path="/code" component={CodeEditor}/>
+        <Route path="/exercise" component={Exercise} />
+        <Route path="/code/:id" component={CodeEditor} />
         <Route path="/home" component={Home} />
         <Route path="/jobsmanager" component={JobsManagement} />
         <Route path="/" component={Home} />

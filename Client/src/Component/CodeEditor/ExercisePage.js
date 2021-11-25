@@ -15,6 +15,8 @@ import './style.css';
 import { Link } from 'react-router-dom';
 import { BasicListExercise } from './BasicListExercise';
 import sortIcon from "../../IMG//icon/sort.png"
+import { useEffect } from 'react';
+import { Compile } from '../../Service/Compile.service';
 
 const HARD = "Hard";
 const MEDIUM = "Medium";
@@ -69,12 +71,21 @@ export default function Exercise() {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const [isAsc, setFilter] = React.useState(true);
+    const [listProblems, setListProblems] = React.useState([]);
+    const [rows, setRows] = React.useState([]);
 
     BasicListExercise.forEach(item => {
         item.status = listDone.includes(item._id) ? "Done" : "-";
     })
 
-    const [rows, setRows] = React.useState(BasicListExercise);
+    useEffect(() => {
+        Compile.GetAllProblems().then(result => {
+            setListProblems(result);
+            setRows(result);
+        })
+    },[])
+
+    
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -126,7 +137,7 @@ export default function Exercise() {
                                 {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                     .map((row) => {
                                         return (
-                                            <TableRow hover role="checkbox" tabIndex={-1} key={row._id} component={Link} to={`/code`}>
+                                            <TableRow hover role="checkbox" tabIndex={-1} key={row._id} component={Link} to={`/code/${row._id}`}>
                                                 {columns.map((column) => {
                                                     const value = row[column.id];
                                                     let display = value;
