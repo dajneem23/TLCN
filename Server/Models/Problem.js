@@ -8,7 +8,22 @@ const TestCase = new mongose.Schema(
         },
         output: {
             type: Array
-        }
+        },
+        typeC: {
+            type: String
+        },
+        typeCP: {
+            type: String
+        },
+        typeCS: {
+            type: String
+        },
+        typeJava: {
+            type: String
+        },
+        typePy: {
+            type: String
+        },
     }
 )
 
