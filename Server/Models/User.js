@@ -62,7 +62,7 @@ const User = new mongose.Schema(
         wishList:{
             type:Array
         },
-        listAprove:{
+        listApprove:{
             type:Array
         },
         isdelete:{
