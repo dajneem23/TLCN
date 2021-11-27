@@ -70,8 +70,8 @@ export default function Seach() {
     });
     Job.GetAllJobs().then((result) => {
       setListAllJobs(result);
+      setResult(result);
     });
-    console.log("aaaaa")
   },[]);
   const handleChangeLocation = (event) => {
     setLocation(event.target.value);
@@ -83,11 +83,8 @@ export default function Seach() {
     setExperience(event.target.value);
   };
   const onSearch = () => {
-    Job.GetAllJobs().then((result) => {
-      setResult(result);
-    });
     console.log(results);
-    const listFillter = results.filter((data) =>
+    const listFillter = listAllJobs.filter((data) =>
       data.title.toLowerCase().includes(seachTerm.toLowerCase())
     );
     setResult(listFillter);
