@@ -112,15 +112,65 @@ JobRouter.post('/createNewJob', passport.authenticate('jwt', { session: false })
 
 })
 
-// JobRouter.post('/createNewJobs', async (req, res) => {
-//     const {username,_id,role} = req.user;
+JobRouter.get('/getJobById', async (req, res) => {
+    const id = req.query.id;
+    const job = await Job.findById(id);
 
-//     console.log(req.user);
-//     // if(role != admin || _id != content._id){
-//     //     return res.status(403).json({'message' :' Forbidden You dont have permission to access on one page'});
-//     // }
+    if (job == null || job == undefined ) {
+        return res.status(403).json({ 'message': 'Can not find this job', msgError: true });
+    }
 
-// })
+    if (job.isDelete) {
+        return res.status(403).json({ 'message': 'Can not find this job', msgError: true });
+    }
+
+    return res.status(200).json({
+        message: "Get successfully",
+        job: job,
+        msgError: false
+    })
+
+})
+
+JobRouter.get('/getJobsByCoopId', passport.authenticate('jwt', { session: false }), async (req, res) => {
+    console.log("getJobsByCoopId")
+    const { userName, _id, role } = req.user;
+    // if role is not co-op
+    if (role == null || role != 1) {
+        return res.status(403).json({ 'message': ' Forbidden You dont have permission to access on one page', msgError: true });
+    }
+
+    const listJobs = await Job.find({'createBy' : userName});
+    
+    return res.status(200).json({
+        message: "Get successfully",
+        listJobs: listJobs,
+        msgError: false
+    })
+})
+
+JobRouter.get('/getSuggestJobsByJobId', async (req, res) => {
+    const id = req.query.id;
+    const job = await Job.findById(id);
+
+    if (job == null || job == undefined ) {
+        return res.status(403).json({ 'message': 'Can not find this problem', msgError: true });
+    }
+
+    const listSuggest = await Job.find({
+        $and : [
+            {$or : [ {'category' : job.category}, {'major' : job.major}]}, 
+            {'isDelete' : false},
+            {'_id' : {$ne : job._id}}
+        ]});
+
+    return res.status(200).json({
+        message: "Get successfully",
+        listJobs: listSuggest,
+        msgError: false
+    })
+
+})
 
 
 module.exports = JobRouter;
