@@ -28,5 +28,17 @@ export const Job = {
             console.log(e)
         }
     },
+    GetJobByID: async (id) => {
+        try {
+            const result = await axios.get(`${jobPath}/getJobById`, {
+                params : {
+                    id : id
+                }
+            });
+            return result.data.job;
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
 }
