@@ -1,0 +1,184 @@
+.title_page {
+    text-align: center;
+    font-size: 30px;
+}
+
+.page_container {
+    padding-top: 30px;
+    padding-bottom: 30px;
+    min-height: 700px;
+    height: 100%;
+    background-color: #EEEEEE;
+}
+
+.container {
+    padding: 20px;
+    margin-bottom: 30px;
+    background-color: white;
+    box-shadow: 5px 10px 18px #888888;
+    border-radius: 15px;
+}
+
+.cv_container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.cv_export {
+    width: 840px;
+    border: black solid 1px;
+    border-bottom: none;
+    padding: 50px;
+}
+
+.cv_img {
+    width: 140px;
+    height: 190px;
+}
+
+.cv_info_container {
+    display: flex;
+    flex-direction: row;
+}
+
+.cv_info_child_container {
+    margin-left: 30px;
+    display: flex;
+    padding-top: 5px;
+    flex-direction: column;
+    width: 597px;
+}
+
+.cv_info_name {
+    font-weight: bold;
+    outline: none;
+    border: none;
+    font-size: 25px;
+    color: darkblue;
+}
+
+.cv_info_name:focus {
+    outline: auto;
+}
+
+.cv_info_major {
+    font-weight: bold;
+    outline: none;
+    border: none;
+    font-size: 18px;
+    color: darkblue;
+}
+
+.cv_info_major:focus {
+    outline: auto;
+}
+
+.cv_info_details_title {
+    display: flex;
+    flex-direction: column;
+}
+
+.cv_info_details_des {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    margin-left: 10px;
+}
+
+.div_row {
+    display: flex;
+    flex-direction: row;
+}
+
+.div_column {
+    display: flex;
+    flex-direction: column;
+}
+
+.cv_input_normal {
+    outline: none;
+    border: none;
+    font-size: 17px;
+    font-weight: 400;
+}
+
+.cv_input_project {
+    outline: none;
+    border: none;
+    font-size: 20px;
+    font-weight: 800;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.cv_input_normal_noline {
+    outline: none;
+    border: none;
+    font-size: 17px;
+    font-weight: 400;
+    width: 100%;
+}
+
+.cv_input_bold {
+    outline: none;
+    border: none;
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.cv_input_normal:focus {
+    outline: auto;
+}
+
+.cv_input_bold:focus {
+    outline: auto;
+}
+
+.cv_input_project:focus {
+    outline: auto;
+}
+
+.cv_objective_container {
+    display: flex;
+    margin-top: 25px;
+    flex-direction: column;
+}
+
+.cv_divider_line {
+    border-top: 0.5px solid #000000;
+}
+
+.cv_sub_divider_line {
+    border-top: 0.1px solid #FEFEFE;
+    margin-left: 100px;
+}
+
+.btn_add {
+    visibility: hidden;
+}
+
+.objective_title:hover .btn_add {
+    visibility: visible;
+}
+
+.img_container:hover .btn_update_img {
+    visibility: visible;
+}
+
+.btn_update_img {
+    visibility: hidden;
+}
+
+
+table, th, td {
+    border:1px solid black;
+}
+
+th {
+    width: 200px;
+}
+
+th, td {
+    padding: 5px;
+}

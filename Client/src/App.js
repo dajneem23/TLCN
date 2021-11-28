@@ -14,6 +14,7 @@ import Exercise from "./Component/CodeEditor/ExercisePage";
 import JobsManagement from "./Component/JobsManager/JobManagement";
 import PostNewJob from "./Component/PostNewJob/index";
 import JobDetail from "./Component/JobDetail/index";
+import CreateCV from "./Component/CV/CreateCV";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path="/job" component={Search} />
         <Route path="/exercise" component={Exercise} />
         <Route path="/code/:id" component={CodeEditor} />
+        <Route path="/createcv" component={CreateCV}/>
         <Route path="/home" component={Home} />
         <Route path="/jobsmanager" component={JobsManagement} />
         <Route path="/" component={Home} />
