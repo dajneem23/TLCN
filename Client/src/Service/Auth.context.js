@@ -18,9 +18,9 @@ export default ({children})=>{
     useEffect(()=>{
         setIsloaded(true);
         User.Info().then(data=>{
-            console.log(data)
-            setUser(data.user);
-            setisAuthenticated(data.isAuthenticated);
+            console.log(data.data)
+            setUser(data.data.user);
+            setisAuthenticated(data.data.isAuthenticated);
         })
         const timer = setTimeout(() => {
             setIsloaded(false);

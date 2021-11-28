@@ -3,10 +3,13 @@ import React, { useState } from "react";
 import FileBase64 from "react-file-base64";
 import TagInput from "../TagsInput/index";
 import "./style.css";
+import { Editor } from "react-draft-wysiwyg";
+import { EditorState, convertToRaw } from "draft-js";
 
 export default function PostNewJob() {
   const [tags, setTags] = useState([]);
-  const flag =false;
+  const [editorState, setEditorState] = useState([]);
+  const flag = false;
   const [values, setValues] = useState({
     title: "",
     description: "",
@@ -20,8 +23,9 @@ export default function PostNewJob() {
     endDate: "",
     img: "",
   });
-  const defaultImg = "https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg";
-  
+  const defaultImg =
+    "https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg";
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setValues({
@@ -29,14 +33,16 @@ export default function PostNewJob() {
       [name]: value,
     });
   };
-
+  const onEditorStateChange = (editorState) => {
+    setEditorState(editorState);
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
     values.language = tags;
     console.log(values);
   };
   function handleSelecetedTags(items) {
-      setTags(items);
+    setTags(items);
   }
   return (
     <div className="container rounded bg-white mt-5 mb-5">
@@ -45,7 +51,7 @@ export default function PostNewJob() {
           <div className="d-flex flex-column align-items-center text-center p-3 py-5">
             <div className="profile-img">
               <img
-                src={values.img.length==0 ? defaultImg : values.img }
+                src={values.img.length == 0 ? defaultImg : values.img}
                 alt=""
               />
               <div className="file btn btn-lg btn-primary">
@@ -82,16 +88,14 @@ export default function PostNewJob() {
             <div className="row mt-3">
               <div className="col-md-12">
                 <label className="labels">Description</label>
-                <textarea
-                  type="text"
-                  cols="40"
-                  rows="5"
-                  className="form-control"
-                  name="description"
-                  id="description"
-                  value={values.description}
-                  onChange={handleChange}
+                <Editor
+                  editorState={editorState}
+                  toolbarClassName="toolbarClassName"
+                  wrapperClassName="wrapperClassName"
+                  editorClassName="editorClassName"
+                  onEditorStateChange={()=>onEditorStateChange()}
                 />
+                ;
               </div>
               <div className="col-md-12">
                 <label className="labels">Salary</label>
