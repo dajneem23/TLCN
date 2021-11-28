@@ -39,6 +39,15 @@ export const Job = {
         } catch (error) {
             console.log(error);
         }
+    },
+    CreateNewJob: async (newJob) => {
+        try {
+            const result = await axios.post(`${jobPath}/createNewJob`, newJob)
+            return result;
+        } catch (error) {
+            console.log(error)
+        }
     }
+
 
 }

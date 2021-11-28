@@ -10,7 +10,7 @@ function index() {
     return (
         <div>
             <footer class="footer-16371">
-                <div class="container">
+                <div class="container_footer">
                     <div class="row justify-content-center">
                         <div class="col-md-9 text-center">
                             <div class="footer-site-logo mb-4">

@@ -15,24 +15,35 @@ import JobsManagement from "./Component/JobsManager/JobManagement";
 import PostNewJob from "./Component/PostNewJob/index";
 import JobDetail from "./Component/JobDetail/index";
 import CreateCV from "./Component/CV/CreateCV";
+import { useContext, useEffect } from "react";
+import { AuthContext } from "./Service/Auth.context";
+
+const ROLE_COOP = 1;
+const ROLE_INTER = 2;
+const ROLE_ADMIN = 0;
 
 function App() {
+
+  const { user, setUser, isAuthenticated, setisAuthenticated, info, setinfo } = useContext(AuthContext);
+
+  console.log(user);
+
   return (
     <Router>
       <Header />
       <Switch>
-        <Route path="/signup" component={SignUp} />
-        <Route path="/signin" component={Login} />
-        <Route path="/profile" component={Profile} />
-        <Route path="/createjob" component={PostNewJob} />
-        <Route path="/editprofile" component={EditProFile} />
+        <Route path="/signup" component={isAuthenticated ? Profile : SignUp} />
+        <Route path="/signin" component={isAuthenticated ? Profile : Login} />
+        <Route path="/profile" component={isAuthenticated ? Profile : Login} />
+        <Route path="/createjob" component={user && user.role == ROLE_COOP ? PostNewJob : NotFound404} />
+        <Route path="/editprofile" component={isAuthenticated ? EditProFile : Login} />
         <Route path="/job/:id" component={JobDetail} />
         <Route path="/job" component={Search} />
         <Route path="/exercise" component={Exercise} />
         <Route path="/code/:id" component={CodeEditor} />
-        <Route path="/createcv" component={CreateCV}/>
+        <Route path="/createcv" component={isAuthenticated ? CreateCV : Login} />
         <Route path="/home" component={Home} />
-        <Route path="/jobsmanager" component={JobsManagement} />
+        <Route path="/jobsmanager" component={user && user.role == ROLE_ADMIN ? JobsManagement : NotFound404} />
         <Route path="/" component={Home} />
         <Route component={NotFound404} />
       </Switch>

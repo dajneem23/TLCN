@@ -2,11 +2,18 @@
 import React, { useState } from "react";
 import FileBase64 from "react-file-base64";
 import TagInput from "../TagsInput/index";
-import "./style.css";
+import { Editor } from "react-draft-wysiwyg";
+import { EditorState, convertToRaw } from "draft-js";
+import draftToHtml from 'draftjs-to-html';
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import { Job } from "../../Service/Job.service";
+
+// import "./style.css";
 
 export default function PostNewJob() {
   const [tags, setTags] = useState([]);
-  const flag =false;
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
+  const flag = false;
   const [values, setValues] = useState({
     title: "",
     description: "",
@@ -20,6 +27,9 @@ export default function PostNewJob() {
     endDate: "",
     img: "",
   });
+  const defaultImg =
+    "https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg";
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setValues({
@@ -28,13 +38,27 @@ export default function PostNewJob() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const onEditorStateChange = (editorState) => {
+    setEditorState(editorState)
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     values.language = tags;
-    console.log(values);
+    values.description = draftToHtml(convertToRaw(editorState.getCurrentContent()));
+    
+    const startDate = values.startDate;
+    const endDate = values.endDate;
+
+    const result = await Job.CreateNewJob({
+      ...values, 
+      startDate:new Date(startDate).getTime(),
+      endDate: new Date(endDate).getTime()
+    });
+    console.log(result);
   };
   function handleSelecetedTags(items) {
-      setTags(items);
+    setTags(items);
   }
   return (
     <div className="container rounded bg-white mt-5 mb-5">
@@ -43,7 +67,7 @@ export default function PostNewJob() {
           <div className="d-flex flex-column align-items-center text-center p-3 py-5">
             <div className="profile-img">
               <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog"
+                src={values.img.length == 0 ? defaultImg : values.img}
                 alt=""
               />
               <div className="file btn btn-lg btn-primary">
@@ -59,7 +83,7 @@ export default function PostNewJob() {
             </div>
           </div>
         </div>
-        <form className="col-md-8 border-right" onSubmit={handleSubmit}>
+        <form className="col-md-8 border-right">
           <div className="p-3 py-5">
             <div className="d-flex justify-content-between align-items-center mb-3">
               <h4 className="text-right">Create new job</h4>
@@ -80,15 +104,11 @@ export default function PostNewJob() {
             <div className="row mt-3">
               <div className="col-md-12">
                 <label className="labels">Description</label>
-                <textarea
-                  type="text"
-                  cols="40"
-                  rows="5"
-                  className="form-control"
-                  name="description"
-                  id="description"
-                  value={values.description}
-                  onChange={handleChange}
+                <Editor
+                  toolbarClassName="toolbarClassName"
+                  wrapperClassName="wrapperClassName"
+                  editorClassName="editorClassName"
+                  onEditorStateChange={onEditorStateChange}
                 />
               </div>
               <div className="col-md-12">
@@ -183,7 +203,7 @@ export default function PostNewJob() {
               </div>
             </div>
             <div className="mt-5 text-center">
-              <button className="btn btn-primary profile-button" type="submit">
+              <button className="btn btn-primary profile-button" type="button" onClick={handleSubmit}>
                 Save Job
               </button>
             </div>
