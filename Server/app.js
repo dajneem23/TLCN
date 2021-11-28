@@ -41,8 +41,6 @@ const  connection =async()=>{
 } 
 connection()
 
-const InternshipRouter=require('./Routers/DELTETE_Internship.route')
-app.use('/intern',InternshipRouter)
 const ComplierRouter=require('./Routers/Complier.route')
 app.use('/complier',ComplierRouter )
 const UserRoute=require('./Routers/User.route')

@@ -1,11 +1,9 @@
 const { exec } = require("child_process");
 const fs = require("fs");
-
+var testcase=[3,3,5].join(' ')
 const executePy = (filepath) => {
   return new Promise((resolve, reject) => {
-    exec(
-      `docker exec -t py /bin/sh  -c  "python3 ${filepath}"`,
-      async  (error, stdout, stderr) => {
+    exec(`docker exec -t py /bin/sh  -c  "python3 ${filepath} ${testcase}"`,async  (error, stdout, stderr) => {
         try {
           //deleted FILE  after executing
           // await fs.unlink(`${filepath}`,(err) => {
@@ -22,8 +20,7 @@ const executePy = (filepath) => {
         // error && reject({ error, stderr });
         // stderr && reject(stderr);
         resolve([ error, stderr, stdout ]);
-      }
-    );
+    } );
   });
 };
 

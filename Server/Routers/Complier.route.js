@@ -15,35 +15,25 @@ ComplierRouter.post('/',async (req,res)=>{
         })
         
     }
-    if(LANGUAE.indexOf(language)==-1){
-        return res.status(500).json({
-            'success':false,
-            'error':"language error"
-        })
-        
-    }
+
 
     try {
             
         console.log(language)
         switch(language){
+            case "c":
             case "cpp":{
-            var  pathFile = await generateFile(language,code).catch(err=>{
-                console.log(err)
-             })
-            var output =await complierCPP(code,pathFile)
+    
+            var output =await complierCPP(language,pathFile)
                 break;
             }
             case "py":{
-                var  pathFile = await generateFile(language,code).catch(err=>{
-                    console.log(err)
-             })
+           
 
                 var output =await complierPY(code,pathFile)
                 break
             }
             case "java":{
-                var pathFile = await generateFile(language,code).catch(err=>{console.log(err)})
                 var output =await  complierJava(code,pathFile)
                 break
             }
@@ -66,13 +56,13 @@ ComplierRouter.post('/',async (req,res)=>{
     })
 
 })
-const complierCPP=async (code,pathFile)=>{
+const complierCPP=async (language,pathFile)=>{
     /**
      * 
      * 
      * 
      */
-    let [error,stderr, output] = await executeCpp(pathFile)
+    let [error,stderr, output] = await executeCpp(pathFile,language)
     if(error) {console.log(error);}
     if(stderr) {console.log(stderr);}
     console.log(output)
