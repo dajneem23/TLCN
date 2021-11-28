@@ -2,13 +2,17 @@
 import React, { useState } from "react";
 import FileBase64 from "react-file-base64";
 import TagInput from "../TagsInput/index";
-import "./style.css";
 import { Editor } from "react-draft-wysiwyg";
 import { EditorState, convertToRaw } from "draft-js";
+import draftToHtml from 'draftjs-to-html';
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import { Job } from "../../Service/Job.service";
+
+// import "./style.css";
 
 export default function PostNewJob() {
   const [tags, setTags] = useState([]);
-  const [editorState, setEditorState] = useState([]);
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const flag = false;
   const [values, setValues] = useState({
     title: "",
@@ -33,13 +37,25 @@ export default function PostNewJob() {
       [name]: value,
     });
   };
+
   const onEditorStateChange = (editorState) => {
-    setEditorState(editorState);
+    setEditorState(editorState)
   };
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     values.language = tags;
-    console.log(values);
+    values.description = draftToHtml(convertToRaw(editorState.getCurrentContent()));
+    
+    const startDate = values.startDate;
+    const endDate = values.endDate;
+
+    const result = await Job.CreateNewJob({
+      ...values, 
+      startDate:new Date(startDate).getTime(),
+      endDate: new Date(endDate).getTime()
+    });
+    console.log(result);
   };
   function handleSelecetedTags(items) {
     setTags(items);
@@ -67,7 +83,7 @@ export default function PostNewJob() {
             </div>
           </div>
         </div>
-        <form className="col-md-8 border-right" onSubmit={handleSubmit}>
+        <form className="col-md-8 border-right">
           <div className="p-3 py-5">
             <div className="d-flex justify-content-between align-items-center mb-3">
               <h4 className="text-right">Create new job</h4>
@@ -89,13 +105,11 @@ export default function PostNewJob() {
               <div className="col-md-12">
                 <label className="labels">Description</label>
                 <Editor
-                  editorState={editorState}
                   toolbarClassName="toolbarClassName"
                   wrapperClassName="wrapperClassName"
                   editorClassName="editorClassName"
-                  onEditorStateChange={()=>onEditorStateChange()}
+                  onEditorStateChange={onEditorStateChange}
                 />
-                ;
               </div>
               <div className="col-md-12">
                 <label className="labels">Salary</label>
@@ -189,7 +203,7 @@ export default function PostNewJob() {
               </div>
             </div>
             <div className="mt-5 text-center">
-              <button className="btn btn-primary profile-button" type="button">
+              <button className="btn btn-primary profile-button" type="button" onClick={handleSubmit}>
                 Save Job
               </button>
             </div>
