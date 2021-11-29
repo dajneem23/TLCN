@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from "react";
-import FormSignUp from "./formSignUp";
+import React, { useState } from 'react';
+import FormSignUp from './formSignUpCoop';
 
 const SignUp = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);

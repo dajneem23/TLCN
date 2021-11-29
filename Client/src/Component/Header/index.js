@@ -55,15 +55,15 @@ export default function Header() {
             </a>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="/about">
+            <a className="nav-link" href="/usersmanager">
               {" "}
-              <FcAbout /> About{" "}
+              <FcAbout /> User Manager{" "}
             </a>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="/contacts">
+            <a className="nav-link" href="/jobsmanager">
               {" "}
-              <FcContacts /> Contacts{" "}
+              <FcContacts /> Job Manager{" "}
             </a>
           </li>
         </ul>

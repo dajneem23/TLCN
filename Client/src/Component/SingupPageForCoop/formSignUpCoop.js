@@ -12,7 +12,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import UseFormRegiter from "./useFormRegister";
+import UseFormRegiter from "./useFormRegisterCoop";
 import validate from "./validateInfo";
 
 // function Copyright(props) {
@@ -77,7 +77,7 @@ const formSignUp = ({ submitForm }) => {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign up for Intern
+            Sign up for Co-op
           </Typography>
           <Box
             component="form"
@@ -85,12 +85,12 @@ const formSignUp = ({ submitForm }) => {
             onSubmit={handleSubmit}
             sx={{ mt: 3 }}
           >
-            <Grid container spacing={2}>
+             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
                   fullWidth
                   id="fullname"
-                  label="Full Name"
+                  label="Co-op Name"
                   name="fullname"
                   autoComplete="fullname"
                   variant="standard"
@@ -101,7 +101,7 @@ const formSignUp = ({ submitForm }) => {
               <Grid item xs={12}>
                 <TextField
                   fullWidth
-                  id="userName"
+                  id=""
                   label="UserName"
                   name="userName"
                   autoComplete="userName"
