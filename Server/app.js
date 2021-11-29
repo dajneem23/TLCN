@@ -16,7 +16,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 // app.use(express.json());
 app.use(function(req, res, next) {
-   res.header("Access-Control-Allow-Origin", "http://18.211.249.250:3000, http://localhost:3000");// update to match the domain you will make the request from
+   res.header("Access-Control-Allow-Origin", "http://18.211.249.250:3000");// update to match the domain you will make the request from
    
    res.header('Access-Control-Allow-Credentials', true);
    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
