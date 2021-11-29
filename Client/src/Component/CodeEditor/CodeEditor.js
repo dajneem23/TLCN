@@ -69,23 +69,23 @@ export default function Exercise() {
         switch (value) {
             case PY:
                 setLang('py');
-                setCode(problem.codePy)
+                setCode(problem.codeDefault['py'])
                 break;
             case JV:
                 setLang('java');
-                setCode(problem.codeJava);
+                setCode(problem.codeDefault['java']);
                 break;
             case C:
                 setLang('c');
-                setCode(problem.codeC);
+                setCode(problem.codeDefault['c']);
                 break;
             case CP:
                 setLang('cpp');
-                setCode(problem.codeCP);
+                setCode(problem.codeDefault['cpp']);
                 break;
             case CS:
                 setLang('cs');
-                setCode(problem.codeCS);
+                setCode(problem.codeDefault['cs']);
                 break;
             default:
                 break;
