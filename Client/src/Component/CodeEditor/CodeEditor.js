@@ -55,16 +55,6 @@ export default function Exercise() {
     const handleChangeLanguage = (event) => {
         const value = event.target.value;
         setLanguage(value);
-        if (value == PY) {
-            setLang('py');
-            setCode(problem.codePy)
-        } else if (value == JV) {
-            setLang('java');
-            setCode(problem.codeJava);
-        } else {
-            setLang('cpp');
-            setCode(problem.codeCP)
-        }
 
         switch (value) {
             case PY:
@@ -112,8 +102,7 @@ export default function Exercise() {
     useEffect(() => {
         Compile.GetProblemsById(id).then(result => {
             setProblem(result);
-            setCode(result.codePy);
-            console.log(result);
+            setCode(result.codeDefault['py']);
         });
     }, [])
 
@@ -139,9 +128,12 @@ export default function Exercise() {
                                 <div>{problem.testCase.pop().output.join(" ")}</div>
                             </div>} */}
                             {
-                                problem.testCase &&
+                                problem.testCase && problem.testCase.length > 0 &&
                                 <div>
-                                    {problem.testCase.toString()}
+                                    <div>Input</div>
+                                    <div>{problem.testCase[problem.testCase.length - 1].input.join(" ")}</div>
+                                    <div>Output</div>
+                                    <div>{problem.testCase[problem.testCase.length - 1].output.join(" ")}</div>
                                 </div>
                             }
                         </TabPanel>
