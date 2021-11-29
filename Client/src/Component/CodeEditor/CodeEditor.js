@@ -113,6 +113,7 @@ export default function Exercise() {
         Compile.GetProblemsById(id).then(result => {
             setProblem(result);
             setCode(result.codePy);
+            console.log(result);
         });
     }, [])
 
