@@ -1,8 +1,5 @@
 const express = require('express');
-const {generateFile} =require('../Complie/generateFile')
-const {executePy} =require('../Complie/executePy')
-const {executeCpp}=require('../Complie/executeCpp')
-const {executeJava} = require('../Complie/excecuteJava')
+const {CreateProcess} = require('../Complie/createProcess')
 ComplierRouter=express.Router();
 const LANGUAE=['cpp','py','java','cs'];
 ComplierRouter.post('/',async (req,res)=>{
@@ -12,29 +9,21 @@ ComplierRouter.post('/',async (req,res)=>{
         return res.status(500).json({
             'success':false,
             'error':"code is required"
-        })
-        
+        })   
     }
-
-
     try {
-            
-        console.log(language)
-        switch(language){
+            switch(language){
             case "c":
             case "cpp":{
-    
-            var output =await complierCPP(language,pathFile)
+            var output =await complierCPP(language,code)
                 break;
             }
             case "py":{
-           
-
-                var output =await complierPY(code,pathFile)
+                var output =await complierPY(language,code)
                 break
             }
             case "java":{
-                var output =await  complierJava(code,pathFile)
+                var output =await  complierJava(language,code)
                 break
             }
             default: {
@@ -48,7 +37,6 @@ ComplierRouter.post('/',async (req,res)=>{
     } catch (error) {
         throw error
     }
-//    console.log(output)
     return res.status(200).json({
         'code':code,
         'language':language,
@@ -56,7 +44,7 @@ ComplierRouter.post('/',async (req,res)=>{
     })
 
 })
-const complierCPP=async (language,pathFile)=>{
+const complierCPP=async (language,code)=>{
     /**
      * 
      * 

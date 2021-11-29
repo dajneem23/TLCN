@@ -1,8 +1,7 @@
-const {spawn}  = require("child_process");
+const {spawnSync}  = require("child_process");
 const fs = require("fs");
 require('format-unicorn') 
 const {generateFile} =require('./generateFile')
-
 const Config = require("./config")
 const path = require("path");
 const testCase=[0,1,3,4]
@@ -36,16 +35,16 @@ const CreateProcess= async(language,code,testcase,typeInput) =>{
 let container=Config[language].container
 
 try{
-  var process = spawn('docker',['exec','-t',container,'/bin/sh','-c',command],{ cwd: outputPath} )
- var error =process.stderr.on('data',(error)=>{
-  return error.toString()
-  })
-  var result  =  process.stdout.on('data',function(output) {
-    console.log(output.toString())
-    return output.toString().split('\n')
-  });
-  // console.log(result)
-  return [result,error]
+  var process = spawnSync('docker',['exec','-t',container,'/bin/sh','-c',command,...testcase],{ cwd: outputPath} )
+//  var error =await process.stderr.on('data',(error)=>{
+//   return error.toString()
+//   })
+//   var result  =await  process.stdout.on('data',function(output) {
+//     return output.toString().split('\n')
+//   });
+//   // console.log(result)
+  console.log( [process.stdout ? process.stdout.toString(): '',process.stder?process.stder.toString():''])
+  return [process.stdout ? process.stdout.toString(): '',process.stder?process.stder.toString():'']
 }
 catch(e){
 
@@ -62,7 +61,7 @@ const CreateInput=(language,testcase,type) =>{
   switch(language){
     case 'py':{
       testcase.forEach((element,index) => {
-        let arg=type=='int'?'arg{index}={case}\n':'arg{index}="{case}"\n'
+        let arg=type=='string'?'arg{index}="{case}"\n':'arg{index}={case}\n'
         output += arg.formatUnicorn({index:index,case:testcase[index]})
       });
       return output
@@ -71,16 +70,12 @@ const CreateInput=(language,testcase,type) =>{
       testcase.forEach((element,index) => {
         let arg='';
        switch(type){
-         case 'int':{
-           arg='int arg{index}={case};\n'
-           break;
-         }
-         case 'float':{
-          arg='float arg{index}={case};\n'
-          break;
-        } 
         case 'string':{
           arg='string arg{index}="{case}";\n'
+          break;
+        }
+        default:{ 
+          arg= `${type} arg{index}={case};\n`
           break;
         }
        
@@ -93,19 +88,14 @@ const CreateInput=(language,testcase,type) =>{
       testcase.forEach((element,index) => {
         let arg='';
        switch(type){
-         case 'int':{
-           arg='int arg{index}={case};\n'
-           break;
-         }
-         case 'float':{
-          arg='float arg{index}={case};\n'
-          break;
-        } 
         case 'string':{
           arg='string arg{index}="{case}";\n'
           break;
         }
-       
+        default:{ 
+          arg= `${type} arg{index}={case};\n`
+          break;
+        }
        }
         output += arg.formatUnicorn({index:index,case:testcase[index]})
       });
@@ -115,16 +105,12 @@ const CreateInput=(language,testcase,type) =>{
       testcase.forEach((element,index) => {
         let arg='';
        switch(type){
-         case 'int':{
-           arg='int arg{index}={case};\n'
-           break;
-         }
-         case 'float':{
-          arg='float arg{index}={case};\n'
-          break;
-        } 
         case 'String':{
           arg='String arg{index}="{case}";\n'
+          break;
+        }
+        default:{ 
+          arg= `${type} arg{index}={case};\n`
           break;
         }
        
@@ -137,16 +123,12 @@ const CreateInput=(language,testcase,type) =>{
       testcase.forEach((element,index) => {
         let arg='';
        switch(type){
-         case 'int':{
-           arg='int arg{index}={case};\n'
-           break;
-         }
-         case 'float':{
-          arg='float arg{index}={case};\n'
-          break;
-        } 
-        case 'string':{
+        case 'String':{
           arg='String arg{index}="{case}";\n'
+          break;
+        }
+        default:{ 
+          arg= `${type} arg{index}={case};\n`
           break;
         }
        
@@ -161,4 +143,10 @@ const CreateInput=(language,testcase,type) =>{
   }
 }
 // console.log(CreateInput('cs',['name',1,2,3,'qwe'],'int'))
-CreateProcess('c','#include<stdio.h>\nint main()\n{{input}\nint c=arg1+arg2+arg0;\nprintf("%d",c);\nreturn 0;\n}',[1,2,3],'int').then(data=>console.log)
+CreateProcess('c','#include<stdio.h>\nint main(int argc, char *argv[])\n{float c;sscanf(argv[0], "%1f", &c);\nprintf("%f",c);\nreturn 0;\n}',[1,2,3],'int').then(data=>console.log)
+//  CreateProcess('java','public class Test {\npublic static void main(String[] args){\n{input}\n int c= arg0+arg1+arg2;\n\nSystem.out.println(c);}\n}\n',[1,2,3],'int').then(data=>console.log)
+// CreateProcess('c','#include<stdio.h>\n int sum(int n){\nint add = 0;\nfor(int i=1; i<=n; i++){add += i;}\nreturn add;\n }\nint main()\n{{input}\nint c=arg1+arg2+arg0;\nprintf("%d",sum(arg0));\nreturn 0;\n}\n',["5",2,3],'int').then(data=>console.log)
+// CreateProcess('py','{input}\nprint(arg0+arg1+arg2)',["5",2,3],'int').then(console.log)
+module.exports = {
+  CreateProcess,
+};
