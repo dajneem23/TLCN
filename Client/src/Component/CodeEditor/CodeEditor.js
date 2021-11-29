@@ -10,6 +10,7 @@ import Select from '@mui/material/Select';
 
 import './style.css';
 import 'ace-builds/src-noconflict/mode-javascript'
+import 'ace-builds/src-noconflict/mode-java'
 // there are many themes to import, I liked monokai.
 import 'ace-builds/src-noconflict/theme-monokai'
 import 'ace-builds/src-noconflict/theme-github'
@@ -17,14 +18,26 @@ import 'ace-builds/src-noconflict/theme-github'
 import 'ace-builds/src-noconflict/ext-language_tools'
 import 'ace-builds/src-noconflict/ext-beautify'
 import { Box } from '@mui/system';
+import { Compile } from '../../Service/Compile.service';
+import { useParams } from 'react-router';
 
 //code
 //language
 //_id problems
+const PY = "python";
+const C = "c";
+const CP = "c++";
+const CS = "c#";
+const JV = "java";
 
 export default function Exercise() {
 
+    const { id } = useParams()
+    const [problem, setProblem] = useState({});
+    const [isSubmit, setIsSubmit] = useState(false);
+    const [result, setResult] = useState("");
     const [code, setCode] = useState("");
+    const [lang, setLang] = useState(PY);
     // const [mode, setMode] = useState("C++");
     const [value, setValue] = useState(0);
 
@@ -37,19 +50,75 @@ export default function Exercise() {
         setTheme(event.target.value);
     }
 
-    const [language, setLanguage] = useState("javascript");
+    const [language, setLanguage] = useState(PY);
+
     const handleChangeLanguage = (event) => {
-        setLanguage(event.target.value);
+        const value = event.target.value;
+        setLanguage(value);
+        if (value == PY) {
+            setLang('py');
+            setCode(problem.codePy)
+        } else if (value == JV) {
+            setLang('java');
+            setCode(problem.codeJava);
+        } else {
+            setLang('cpp');
+            setCode(problem.codeCP)
+        }
+
+        switch (value) {
+            case PY:
+                setLang('py');
+                setCode(problem.codePy)
+                break;
+            case JV:
+                setLang('java');
+                setCode(problem.codeJava);
+                break;
+            case C:
+                setLang('c');
+                setCode(problem.codeC);
+                break;
+            case CP:
+                setLang('cpp');
+                setCode(problem.codeCP);
+                break;
+            case CS:
+                setLang('cs');
+                setCode(problem.codeCS);
+                break;
+            default:
+                break;
+        }
     }
 
-    const [fontSize, setFontSize] = useState(14);
+    const [fontSize, setFontSize] = useState(16);
     const handleChangeFontSize = (event) => {
         setFontSize(event.target.value);
     }
 
+    const onSubmit = (code, language) => {
+        console.log(code);
+        console.log(language);
+        Compile.CompileCode(language, code, "123123", "111111").then(result => {
+            setIsSubmit(true);
+            setResult(`this is result: ${result.data.output}`);
+        }).catch(error => {
+            setIsSubmit(true);
+            setResult(`error: ${error}`);
+        })
+    }
+
+    useEffect(() => {
+        Compile.GetProblemsById(id).then(result => {
+            setProblem(result);
+            setCode(result.codePy);
+        });
+    }, [])
+
     return (
         <div className="page_container">
-            <ProblemTitle title="Add two number" />
+            <ProblemTitle title={problem.title} />
             <Container maxWidth="lg" className="problem_container">
                 <Box>
                     <Box sx={{ width: '100%' }}>
@@ -60,7 +129,7 @@ export default function Exercise() {
                             </Tabs>
                         </Box>
                         <TabPanel value={value} index={0}>
-                            Mô tả cho đề bài
+                            {problem.description}
                         </TabPanel>
                         <TabPanel value={value} index={1}>
                             Thảo luận...
@@ -90,8 +159,11 @@ export default function Exercise() {
                             onChange={handleChangeLanguage}
                             displayEmpty
                             inputProps={{ 'aria-label': 'Without label' }}>
-                            <MenuItem value={'javascript'}>javascript</MenuItem>
-                            <MenuItem value={'C++'}>C++</MenuItem>
+                            <MenuItem value={C}>C</MenuItem>
+                            <MenuItem value={CS}>C#</MenuItem>
+                            <MenuItem value={CP}>C++</MenuItem>
+                            <MenuItem value={PY}>Python</MenuItem>
+                            <MenuItem value={JV}>Java</MenuItem>
                         </Select>
                     </FormControl>
                     <div className="label_selection">Font size</div>
@@ -102,7 +174,7 @@ export default function Exercise() {
                             onChange={handleChangeFontSize}
                             displayEmpty
                             inputProps={{ 'aria-label': 'Without label' }}>
-                            <MenuItem value={14}>14</MenuItem>
+                            <MenuItem value={16}>16</MenuItem>
                             <MenuItem value={18}>18</MenuItem>
                             <MenuItem value={22}>22</MenuItem>
                         </Select>
@@ -111,7 +183,7 @@ export default function Exercise() {
                 <AceEditor
                     width='100%'
                     placeholder='Start Coding'
-                    mode={language}
+                    mode="java"
                     theme={theme}
                     name='editor'
                     onChange={currentCode => setCode(currentCode)}
@@ -132,11 +204,17 @@ export default function Exercise() {
             </Container>
             <Container maxWidth='lg'>
                 <div className="editor_header_container">
-                    <Button variant="contained" color="success">
+                    <Button variant="contained" color="success" onClick={() => {
+                        onSubmit(code, lang);
+                    }}>
                         Submit
                     </Button>
                 </div>
             </Container>
+            {isSubmit &&
+                <Container className="problem_container">
+                    <div>{result}</div>
+                </Container>}
         </div>
     )
 }

@@ -111,6 +111,22 @@ export default function Profile() {
                 </div>
                 <div className="row">
                   <div className="col-md-6">
+                    <label>Sex</label>
+                  </div>
+                  <div className="col-md-6">
+                    <p>Female</p>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-md-6">
+                    <label>DoB</label>
+                  </div>
+                  <div className="col-md-6">
+                    <p>19/09/1996</p>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-md-6">
                     <label>Phone</label>
                   </div>
                   <div className="col-md-6">
@@ -122,12 +138,20 @@ export default function Profile() {
                     <label>Experience</label>
                   </div>
                   <div className="col-md-6">
-                    <p>Expert</p>
+                    <p>2 year</p>
                   </div>
                 </div>
                 <div className="row">
                   <div className="col-md-6">
-                    <label>Location</label>
+                    <label>Major</label>
+                  </div>
+                  <div className="col-md-6">
+                    <p>Frontend developer</p>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-md-6">
+                    <label>Address</label>
                   </div>
                   <div className="col-md-6">
                     <p>1110A7, Phạm Văn Đồng</p>
@@ -142,49 +166,34 @@ export default function Profile() {
               >
                 <div className="row">
                   <div className="col-md-6">
-                    <label>Experience</label>
+                    <label>CV</label>
                   </div>
                   <div className="col-md-6">
-                    <p>Expert</p>
+                    <p>Your CV here</p>
                   </div>
                 </div>
                 <div className="row">
                   <div className="col-md-6">
-                    <label>Hourly Rate</label>
+                    <label>ListSubmition</label>
                   </div>
                   <div className="col-md-6">
-                    <p>10$/hr</p>
+                    <p>[1,2,3]</p>
                   </div>
                 </div>
                 <div className="row">
                   <div className="col-md-6">
-                    <label>Total Projects</label>
+                    <label>WishLish</label>
                   </div>
                   <div className="col-md-6">
-                    <p>230</p>
+                    <p>[1,22,3]</p>
                   </div>
                 </div>
                 <div className="row">
                   <div className="col-md-6">
-                    <label>English Level</label>
+                    <label>ListAprove</label>
                   </div>
                   <div className="col-md-6">
-                    <p>Expert</p>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-md-6">
-                    <label>Availability</label>
-                  </div>
-                  <div className="col-md-6">
-                    <p>6 months</p>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-md-12">
-                    <label>Your Bio</label>
-                    <br />
-                    <p>Your detail description</p>
+                    <p>[1,22,3]</p>
                   </div>
                 </div>
               </div>

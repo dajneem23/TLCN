@@ -62,7 +62,7 @@ const User = new mongose.Schema(
         wishList:{
             type:Array
         },
-        listAprove:{
+        listApprove:{
             type:Array
         },
         isdelete:{
@@ -83,7 +83,7 @@ const User = new mongose.Schema(
                return this.role==2
             },'coop only']
         },
-        coopdees:{
+        coopdes:{
             type:String,
             required:[()=>{
                return  this.role==2

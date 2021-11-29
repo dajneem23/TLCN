@@ -45,7 +45,10 @@ const ComplierRouter=require('./Routers/Complier.route')
 app.use('/complier',ComplierRouter )
 const UserRoute=require('./Routers/User.route')
 app.use('/user',UserRoute )
-
+const JobRouter = require('./Routers/Job.router');
+app.use('/job', JobRouter);
+const ProblemRouter = require('./Routers/Problem.router');
+app.use('/problem', ProblemRouter);
 app.get('/test',(req, res)=>{
   return  res.status(200).json({
       ok:'true'

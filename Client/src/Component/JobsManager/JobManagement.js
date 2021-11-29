@@ -1,6 +1,3 @@
-/* eslint-disable default-case */
-/* eslint-disable jsx-a11y/alt-text */
-/* eslint-disable no-unused-vars */
 import * as React from 'react';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
@@ -13,79 +10,35 @@ import TableRow from '@mui/material/TableRow';
 import { Container } from '@mui/material';
 import './style.css';
 import { Link } from 'react-router-dom';
-import { BasicListExercise } from './BasicListExercise';
+import { BaseListJob } from '../Home/BaseListJob';
 import sortIcon from "../../IMG//icon/sort.png"
-import { useEffect } from 'react';
-import { Compile } from '../../Service/Compile.service';
-
-const HARD = "Hard";
-const MEDIUM = "Medium";
-const EASY = "Easy";
-const TITLE = "title";
-const STATUS = "status";
-const TYPE = "type";
-const AUTHOR = "author";
-
-const listDone = ["1", "4", "6", "7", "8", "12"];
+import { getDateWithFormat } from '../../Utls/DateTimeUtls';
 
 const columns = [
     { id: 'title', label: 'Title', minWidth: 300 },
-    { id: 'status', label: 'Status', minWidth: 100, align: 'center', },
-    { id: 'type', label: 'Difficulty', minWidth: 100 },
-    { id: 'author', label: 'Author', minWidth: 100 },
+    { id: 'createDate', label: 'Create', minWidth: 100, align: 'center' },
+    { id: 'startDate', label: 'From', minWidth: 100, align: 'center' },
+    { id: 'endDate', label: 'To', minWidth: 100, align: 'center' },
 ];
 
 const titleStyle = {
     fontSize: 15,
-    fontWeight: "550"
+    fontWeight: "550",
+    maxLines: 1, 
+    overflow: 'hidden', 
+    textOverflow: 'ellipsis'
 }
 
-const easyStyle = {
-    fontSize: 13,
-    color: '#80FF00',
-    fontWeight: "550"
-}
-
-const mediumStyle = {
-    fontSize: 13,
-    color: '#FF9933',
-    fontWeight: "550"
-}
-
-const hardStyle = {
-    fontSize: 13,
-    color: 'red',
-    fontWeight: "550"
-}
-
-const authorStyle = {
-    fontSize: 13,
-}
-
-const statusStyle = {
-    fontSize: 13,
-    color: "#336600"
-}
-
-export default function Exercise() {
+export default function JobsManagement() {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const [isAsc, setFilter] = React.useState(true);
-    const [listProblems, setListProblems] = React.useState([]);
-    const [rows, setRows] = React.useState([]);
 
-    BasicListExercise.forEach(item => {
-        item.status = listDone.includes(item._id) ? "Done" : "-";
-    })
+    // BaseListJob.forEach(item => {
+    //     item.status = listDone.includes(item._id) ? "Done" : "-";
+    // })
 
-    useEffect(() => {
-        Compile.GetAllProblems().then(result => {
-            setListProblems(result);
-            setRows(result);
-        })
-    },[])
-
-    
+    const [rows, setRows] = React.useState(BaseListJob);
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -108,12 +61,12 @@ export default function Exercise() {
         })
         setRows(newRows);
         setFilter(!isAsc);
-        console.log(newRows);
     }
 
     return (
         <div className="page_container">
             <Container maxWidth='lg' className="problem_container">
+                <div className = 'page_title'>LIST JOBS</div>
                 <Paper sx={{ width: '100%', overflow: 'hidden' }}>
                     <TableContainer >
                         <Table stickyHeader aria-label="sticky table">
@@ -129,7 +82,7 @@ export default function Exercise() {
                                             <img src={sortIcon} className = "sort_icon" onClick = {() => {
                                                 sort(column.id)
                                             }}/>
-                                        </TableCell>
+                                        </TableCell>                
                                     ))}
                                 </TableRow>
                             </TableHead>
@@ -137,39 +90,19 @@ export default function Exercise() {
                                 {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                     .map((row) => {
                                         return (
-                                            <TableRow hover role="checkbox" tabIndex={-1} key={row._id} component={Link} to={`/code/${row._id}`}>
+                                            <TableRow hover role="checkbox" tabIndex={-1} key={row.id} component={Link} to={`/job/${row.id}`}>
                                                 {columns.map((column) => {
                                                     const value = row[column.id];
                                                     let display = value;
-                                                    let style;
-                                                    switch (column.id) {
-                                                        case 'title':
-                                                            style = titleStyle;
-                                                            break;
-                                                        case 'author':
-                                                            style = authorStyle;
-                                                            break;
-                                                        default:
-                                                            style = statusStyle;
-                                                            break;
+                                                    let style = {}
+                                                    if (column.id != "title") {
+                                                        display = getDateWithFormat(value);
+                                                    } else {
+                                                        style = {...titleStyle}
                                                     }
-                                                    switch (value) {
-                                                        case 1:
-                                                            display = EASY;
-                                                            style = easyStyle;
-                                                            break;
-                                                        case 2:
-                                                            display = MEDIUM;
-                                                            style = mediumStyle;
-                                                            break;
-                                                        case 3:
-                                                            display = HARD;
-                                                            style = hardStyle;
-                                                            break;
-                                                    }
-
+                                                    
                                                     return (
-                                                        <TableCell key={column.id} align={column.align} style={style}>
+                                                        <TableCell key={column.id} align={column.align} style = {style}>
                                                             {display}
                                                         </TableCell>
                                                     );

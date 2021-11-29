@@ -1,4 +1,31 @@
 const mongose = require('mongoose');
+const Submition = require('./Submition');
+
+const TestCase = new mongose.Schema(
+    {
+        input: {
+            type: Array
+        },
+        output: {
+            type: Array
+        },
+        typeC: {
+            type: String
+        },
+        typeCP: {
+            type: String
+        },
+        typeCS: {
+            type: String
+        },
+        typeJava: {
+            type: String
+        },
+        typePy: {
+            type: String
+        },
+    }
+)
 
 const Problem = new mongose.Schema(
     {
@@ -7,33 +34,47 @@ const Problem = new mongose.Schema(
             required: true,
 
         },
-        description:{
+        description: {
             type: String,
             required: true,
         },
-        category:{
+        category: {
             type: String,
             required: true,
         },
-        type:{
+        type: {
+            type: Number,
+        },
+        author: {
             type: String,
         },
-        author:{
-            type: String,
+        listSubmits: {
+            type: [Submition],
         },
-        testCase:{
-            type: Array,
+        testCase: {
+            type: [TestCase],
             required: true,
         },
-        isDeleted:{
+        codeC: {
+            type: String,
+        },
+        codeCP: {
+            type: String,
+        },
+        codeCS: {
+            type: String,
+        },
+        codePy: {
+            type: String,
+        },
+        codeJava: {
+            type: String,
+        },
+        isDeleted: {
             type: Boolean,
-        },
-        pattern:{
-            type: Array,
-            required: true,
+            default: false,
         }
     }
 )
 
-
-module.exports=mongose.model('Problem',Problem)
+module.exports = mongose.model('Problem', Problem);

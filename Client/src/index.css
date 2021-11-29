@@ -6,12 +6,11 @@
   --primary-dark: rgba(255, 255, 255, 0);
   --primary-red: #ef4035;
   --primary-hover-red: #f33501;
-  --primary-nav-radient: linear-gradient(to right, #363795, #0072ff);
+  --primary-nav-radient: linear-gradient(to right, #0f0f5f, #0d0d5e);
 }
 
 * {
   font-family: 'Roboto', sans-serif;
-  font-weight: bold;
   font-size: 18px;
   
 }
