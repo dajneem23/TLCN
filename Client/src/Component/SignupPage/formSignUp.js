@@ -87,19 +87,20 @@ const formSignUp = ({ submitForm }) => {
             sx={{ mt: 3 }}
           >
             <Grid container spacing={2}>
+             
               <Grid item xs={12}>
                 <TextField
-                  autoComplete="fname"
-                  name="fullname"
                   required
                   fullWidth
-                  id="fullname"
-                  label=" Fullname"
-                  autoFocus
+                  id="userName"
+                  label="UserName"
+                  name="userName"
+                  autoComplete="userName"
                   variant="standard"
-                  value={values.fullname}
+                  value={values.userName}
                   onChange={handleChange}
                 />
+                {errors.userName && <p className="error">{errors.userName}</p>}
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -114,20 +115,6 @@ const formSignUp = ({ submitForm }) => {
                   value={values.email}
                   onChange={handleChange}
                 />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="userName"
-                  label="UserName"
-                  name="userName"
-                  autoComplete="userName"
-                  variant="standard"
-                  value={values.userName}
-                  onChange={handleChange}
-                />
-                {errors.userName && <p className="error">{errors.userName}</p>}
               </Grid>
               <Grid item xs={12}>
                 <TextField
