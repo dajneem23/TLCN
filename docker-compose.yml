@@ -103,25 +103,14 @@ services:
     # working_dir: /Server/Complie/codes
     # restart: always
     tty: true
-  dotnet: 
-    image: mcr.microsoft.com/dotnet/aspnet:5.0
-    # platform: linux/x86_64
-    container_name: dotnet 
+  mono:
+    image: mono:latest
+    container_name: mono
     volumes:
       - ./Server:/app/server
     # working_dir: /Server/Complie/codes
     restart: always
     tty: true
-  bash: 
-    image: bash:5-alpine3.14
-    volumes:
-      - ./Server:/app/server
-    # working_dir: /Server/Complie/outputs
-    # platform: linux/x86_64
-    restart: always
-    container_name: bash 
-    tty: true
-
 
 
 

@@ -1,8 +1,5 @@
 const express = require('express');
-const {generateFile} =require('../Complie/generateFile')
-const {executePy} =require('../Complie/executePy')
-const {executeCpp}=require('../Complie/executeCpp')
-const {executeJava} = require('../Complie/excecuteJava')
+const {CreateProcess} = require('../Complie/createProcess')
 ComplierRouter=express.Router();
 const LANGUAE=['cpp','py','java','cs'];
 ComplierRouter.post('/',async (req,res)=>{
@@ -12,39 +9,21 @@ ComplierRouter.post('/',async (req,res)=>{
         return res.status(500).json({
             'success':false,
             'error':"code is required"
-        })
-        
+        })   
     }
-    if(LANGUAE.indexOf(language)==-1){
-        return res.status(500).json({
-            'success':false,
-            'error':"language error"
-        })
-        
-    }
-
     try {
-            
-        console.log(language)
-        switch(language){
+            switch(language){
+            case "c":
             case "cpp":{
-            var  pathFile = await generateFile(language,code).catch(err=>{
-                console.log(err)
-             })
-            var output =await complierCPP(code,pathFile)
+            var output =await complierCPP(language,code)
                 break;
             }
             case "py":{
-                var  pathFile = await generateFile(language,code).catch(err=>{
-                    console.log(err)
-             })
-
-                var output =await complierPY(code,pathFile)
+                var output =await complierPY(language,code)
                 break
             }
             case "java":{
-                var pathFile = await generateFile(language,code).catch(err=>{console.log(err)})
-                var output =await  complierJava(code,pathFile)
+                var output =await  complierJava(language,code)
                 break
             }
             default: {
@@ -58,7 +37,6 @@ ComplierRouter.post('/',async (req,res)=>{
     } catch (error) {
         throw error
     }
-//    console.log(output)
     return res.status(200).json({
         'code':code,
         'language':language,
@@ -66,13 +44,13 @@ ComplierRouter.post('/',async (req,res)=>{
     })
 
 })
-const complierCPP=async (code,pathFile)=>{
+const complierCPP=async (language,code)=>{
     /**
      * 
      * 
      * 
      */
-    let [error,stderr, output] = await executeCpp(pathFile)
+    let [error,stderr, output] = await executeCpp(pathFile,language)
     if(error) {console.log(error);}
     if(stderr) {console.log(stderr);}
     console.log(output)
