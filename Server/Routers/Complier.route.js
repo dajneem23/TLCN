@@ -24,6 +24,8 @@ ComplierRouter.post("/", async (req, res) => {
   }
 
   try {
+    console.log(problem.testCase.pop());
+    console.log(problem.testCase);
     var [output, error] = await CreateProcess(language, code, problem.testCase.pop(), problem.type[language]);
   } catch (error) {
     return res.status(500).json({
