@@ -38,9 +38,8 @@ services:
     links: 
       - java
       - gcc
-      - bash
+      - mono
       - py
-      - dotnet
   client:
     container_name: client 
     build:
