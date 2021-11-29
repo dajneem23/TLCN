@@ -101,7 +101,7 @@ function Auth() {
         <li className="nav-item">
           <a className="nav-link" href="/profile">
             {" "}
-           {user.userName}
+            {user.userName}
           </a>
         </li>
         <li className="nav-item">

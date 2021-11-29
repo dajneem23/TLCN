@@ -227,3 +227,28 @@ a.text-lightred:hover {
 .bg-lightred {
     background-color: #ff5722
 }
+.card_title_detail {
+    font-size: 22px;
+    font-weight: 500;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: initial;
+    z-index: -1;
+    min-width: 400px;
+}
+.container_all_jobsdetail {
+    width: 100%;
+    height: 100%;
+   
+    padding: 10px;
+}
+.container_card_all_jobdetail {
+    width:100%;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    padding: 5px;
+    margin: 10px;
+    position: relative;
+    box-shadow: 2px 2px #888888;
+}
