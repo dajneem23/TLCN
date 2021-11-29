@@ -17,8 +17,6 @@ const generateFile = async (format, content) => {
   try {
   await fs.writeFileSync(filepath, content);
   const data = await fs.readFileSync(filepath,{encoding: "utf8"}); 
-  // Display the file data 
-  console.log(data); 
   return filepath;
 } catch(err) {
   console.error(err);

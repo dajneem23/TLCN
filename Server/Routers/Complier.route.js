@@ -1,82 +1,45 @@
-const express = require('express');
-const {CreateProcess} = require('../Complie/createProcess')
-ComplierRouter=express.Router();
-const LANGUAE=['cpp','py','java','cs'];
-ComplierRouter.post('/',async (req,res)=>{
-    const {code,language} =req.body
-    // console.log(content.userName)
-    if(!code){
-        return res.status(500).json({
-            'success':false,
-            'error':"code is required"
-        })   
-    }
-    try {
-            switch(language){
-            case "c":
-            case "cpp":{
-            var output =await complierCPP(language,code)
-                break;
-            }
-            case "py":{
-                var output =await complierPY(language,code)
-                break
-            }
-            case "java":{
-                var output =await  complierJava(language,code)
-                break
-            }
-            default: {
-                return res.status(500).json({
-                    "message":"language not support"
-                })
-            }
-        }
-        
+const express = require("express");
+const { CreateProcess } = require("../Complie/createProcess");
+const Problem = require('../Models/Problem');
+ComplierRouter = express.Router();
+const LANGUAE = ["cpp", "py", "java", "cs", "c"];
+ComplierRouter.post("/", async (req, res) => {
+  const { code, language,problemId,userId } = req.body;
+  if (!code) {
+    return res.status(500).json({
+      success: false,
+      error: "code is required",
+    });
+  }
+  if (LANGUAE.indexOf(language) == -1) {
+    return res.status(500).json({
+      success: false,
+      error: "language error",
+    });
+  }
+  const problem = await Problem.findById(id);
 
-    } catch (error) {
-        throw error
-    }
-    return res.status(200).json({
-        'code':code,
-        'language':language,
-        'output':output
-    })
+  if (problem == null || problem == undefined || problem.isDelete ) {
+      return res.status(404).json({ 'message': 'Can not find this problem', msgError: true });
+  }
+ 
+  try {
 
-})
-const complierCPP=async (language,code)=>{
-    /**
-     * 
-     * 
-     * 
-     */
-    let [error,stderr, output] = await executeCpp(pathFile,language)
-    if(error) {console.log(error);}
-    if(stderr) {console.log(stderr);}
-    console.log(output)
-    return output.replace(
-        /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '');
-}
-const complierPY = async (code,pathFile)=>{
-    /**
-     * 
-     * 
-     */
-     let [error,stderr, output] = await executePy(pathFile)
-     if(error) {console.log(error);}
-     if(stderr) {console.log(stderr);}
-    return output.replace(
-        /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '');
-}
-const complierJava = async (code,pathFile)=>{
-    /**
-     * 
-     * 
-     */
-     let [error,stderr, output]  = await executeJava(pathFile)
-        if(error) {console.log(error);}
-        if(stderr) {console.log(stderr);}
-    return output.replace(
-        /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '');
-}
+    var [output, error] = CreateProcess(language, code, problem.testcase.pop(), prolem.type[language]);
+  
+
+} catch (error) {
+    throw error;
+  }
+  return res.status(200).json({
+    code: code,
+    language: language,
+    output: output.replace(
+      /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g,
+      ""
+    ),
+    error: error,
+  });
+});
+
 module.exports = ComplierRouter;
