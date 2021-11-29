@@ -100,7 +100,7 @@ export default function Exercise() {
     const onSubmit = (code, language) => {
         console.log(code);
         console.log(language);
-        Compile.CompileCode(language, code, "123123", "111111").then(result => {
+        Compile.CompileCode(language, code, id, "111111").then(result => {
             setIsSubmit(true);
             setResult(`this is result: ${result.data.output}`);
         }).catch(error => {
