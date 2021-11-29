@@ -13,10 +13,9 @@ if (!fs.existsSync(outputPath)) {
   fs.mkdirSync(outputPath, { recursive: true });
 }
 const CreateProcess = async (language, code, testcase, typeInput) => {
-  console.log(...testcase);
   var filepath = await generateFile(
     language,
-    code.formatUnicorn({ input: CreateInput(language, testcase, typeInput) })
+    code
   ).catch((err) => {
     console.log(err);
   });
