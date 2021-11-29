@@ -131,10 +131,13 @@ export default function Exercise() {
                         </Box>
                         <TabPanel value={value} index={0}>
                             {problem.description}
-                            <div>Input</div>
-                            <div>{problem.testCase.pop().input.join(" ")}</div>
-                            <div>Output</div>
-                            <div>{problem.testCase.pop().output.join(" ")}</div>
+                            {problem.testCase && 
+                            <div>
+                                <div>Input</div>
+                                <div>{problem.testCase.pop().input.join(" ")}</div>
+                                <div>Output</div>
+                                <div>{problem.testCase.pop().output.join(" ")}</div>
+                            </div>}
                         </TabPanel>
                         <TabPanel value={value} index={1}>
                             Thảo luận...
