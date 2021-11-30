@@ -103,6 +103,7 @@ export default function Exercise() {
         Compile.GetProblemsById(id).then(result => {
             setProblem(result);
             setCode(result.codeDefault['py']);
+            setLang('py');
         });
     }, [])
 
