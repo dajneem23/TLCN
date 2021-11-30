@@ -98,10 +98,15 @@ function Auth() {
   return (
     <div className="collapse navbar-collapse" id="navbarSupportedContent">
       <ul className="navbar-nav ml-auto">
+      <li className="nav-item">
+          <a className="nav-link" href="/chatbox">
+            chatbox
+          </a>
+        </li>
         <li className="nav-item">
           <a className="nav-link" href="/profile">
             {" "}
-           {user._id}
+            {user._id}
           </a>
         </li>
         <li className="nav-item">

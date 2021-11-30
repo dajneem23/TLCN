@@ -1,0 +1,117 @@
+.page_container {
+    padding-top: 30px;
+    padding-bottom: 30px;
+    height: 650px;
+    background-color: #EEEEEE;
+    display: flex;
+    flex-direction: row;
+}
+
+.contact_container {
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+    height: 700px;
+    overflow: auto;
+}
+
+.chat_container {
+    display: flex;
+    flex-direction: column;
+    width: 55%;
+    height: 100%;
+    overflow: auto;
+    justify-content: end;
+    align-items: center;
+    background-color: white;
+}
+
+.tool_container {
+    display: flex;
+    flex-direction: column;
+    width: 25%;
+    height: 700px;
+    overflow: auto;
+}
+
+.avt_img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.contact_item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px;
+}
+
+.contact_item_focus {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #0f0f5f;
+    border-radius: 10px;
+}
+
+.contact_name {
+    display: inline-block;
+    margin-left: 10px;
+    margin-right: 10px;
+    max-lines: 1;
+    white-space: nowrap;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
+}
+
+.contact_item:hover {
+    cursor: pointer;
+}
+
+.a_normal {
+    color: black;
+}
+
+/* Text Input */
+.wrapForm {
+    display: flex;
+    justify-content: center;
+    bottom: 10px;
+    width: 95%;
+    margin: 10px;
+}
+
+.wrapText {
+    width: 100%
+}
+
+/* Message */
+.message_item_container {
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+}
+
+.message_item_container:hover {
+    border: 1px solid #0f0f5f;
+    border-radius: 10px;
+}
+
+.message_container {
+    width: 95%;
+}
+.message_avt_container {
+    display: flex;
+    justify-content: start;
+    width: 10%;
+}
+
+.message_content {
+    width: 75%;
+}
+
+.message_time {
+    width: 10%;
+}

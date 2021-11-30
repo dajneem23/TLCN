@@ -17,6 +17,7 @@ import JobDetail from "./Component/JobDetail/index";
 import CreateCV from "./Component/CV/CreateCV";
 import { useContext, useEffect } from "react";
 import { AuthContext } from "./Service/Auth.context";
+import ChatBox from "./Component/Chatbox/ChatBox";
 
 const ROLE_COOP = 1;
 const ROLE_INTER = 2;
@@ -42,6 +43,7 @@ function App() {
         <Route path="/exercise" component={Exercise} />
         <Route path="/code/:id" component={CodeEditor} />
         <Route path="/createcv" component={isAuthenticated ? CreateCV : Login} />
+        <Route path="/chatbox/:id" component={isAuthenticated ? ChatBox : Login} />
         <Route path="/home" component={Home} />
         <Route path="/jobsmanager" component={user && user.role == ROLE_ADMIN ? JobsManagement : NotFound404} />
         <Route path="/" component={Home} />
