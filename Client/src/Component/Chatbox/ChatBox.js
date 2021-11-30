@@ -46,24 +46,6 @@ export default function ChatBox() {
     )
 }
 
-function TextInput() {
-    return (
-        <>
-            <form className="wrapForm" noValidate autoComplete="off">
-                <TextField
-                    id="standard-text"
-                    label="メッセージを入力"
-                    className="wrapText"
-                //margin="normal"
-                />
-                <Button variant="contained" color="primary">
-                    <SendIcon />
-                </Button>
-            </form>
-        </>
-    )
-}
-
 function Message(props) {
     return (
         <div className="message_item_container">
