@@ -9,11 +9,11 @@
   --primary-nav-radient: linear-gradient(to right, #0f0f5f, #0d0d5e);
 }
 
-* {
+/* * {
   font-family: 'Roboto', sans-serif;
   font-size: 18px;
   
-}
+} */
 
 body {
   margin: 0;

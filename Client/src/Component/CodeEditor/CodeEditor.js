@@ -55,16 +55,6 @@ export default function Exercise() {
     const handleChangeLanguage = (event) => {
         const value = event.target.value;
         setLanguage(value);
-        if (value == PY) {
-            setLang('py');
-            setCode(problem.codePy)
-        } else if (value == JV) {
-            setLang('java');
-            setCode(problem.codeJava);
-        } else {
-            setLang('cpp');
-            setCode(problem.codeCP)
-        }
 
         switch (value) {
             case PY:
@@ -100,7 +90,7 @@ export default function Exercise() {
     const onSubmit = (code, language) => {
         console.log(code);
         console.log(language);
-        Compile.CompileCode(language, code, "123123", "111111").then(result => {
+        Compile.CompileCode(language, code, id, "111111").then(result => {
             setIsSubmit(true);
             setResult(`this is result: ${result.data.output}`);
         }).catch(error => {
@@ -112,7 +102,8 @@ export default function Exercise() {
     useEffect(() => {
         Compile.GetProblemsById(id).then(result => {
             setProblem(result);
-            setCode(result.codePy);
+            setCode(result.codeDefault['py']);
+            setLang('py');
         });
     }, [])
 
@@ -130,6 +121,22 @@ export default function Exercise() {
                         </Box>
                         <TabPanel value={value} index={0}>
                             {problem.description}
+                            {/* {problem.testCase && 
+                            <div>
+                                <div>Input</div>
+                                <div>{problem.testCase.pop().input.join(" ")}</div>
+                                <div>Output</div>
+                                <div>{problem.testCase.pop().output.join(" ")}</div>
+                            </div>} */}
+                            {
+                                problem.testCase && problem.testCase.length > 0 &&
+                                <div>
+                                    <div>Input</div>
+                                    <div>{problem.testCase[problem.testCase.length - 1].input.join(" ")}</div>
+                                    <div>Output</div>
+                                    <div>{problem.testCase[problem.testCase.length - 1].output.join(" ")}</div>
+                                </div>
+                            }
                         </TabPanel>
                         <TabPanel value={value} index={1}>
                             Thảo luận...

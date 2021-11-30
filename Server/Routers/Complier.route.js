@@ -4,7 +4,7 @@ const Problem = require('../Models/Problem');
 ComplierRouter = express.Router();
 const LANGUAE = ["cpp", "py", "java", "cs", "c"];
 ComplierRouter.post("/", async (req, res) => {
-  const { code, language,problemId,userId } = req.body;
+  const { code, language, problemId, userId } = req.body;
   if (!code) {
     return res.status(500).json({
       success: false,
@@ -17,19 +17,19 @@ ComplierRouter.post("/", async (req, res) => {
       error: "language error",
     });
   }
-  const problem = await Problem.findById(id);
+  const problem = await Problem.findById(problemId);
 
-  if (problem == null || problem == undefined || problem.isDelete ) {
-      return res.status(404).json({ 'message': 'Can not find this problem', msgError: true });
+  if (problem == null || problem == undefined || problem.isDelete) {
+    return res.status(404).json({ 'message': 'Can not find this problem', msgError: true });
   }
- 
+
   try {
-
-    var [output, error] = CreateProcess(language, code, problem.testcase.pop(), prolem.type[language]);
-  
-
-} catch (error) {
-    throw error;
+    var [output, error] = await CreateProcess(language, code, problem.testCase.pop().input, problem.type[language]);
+  } catch (error) {
+    return res.status(500).json({
+      "message": error.message,
+      msgError: true
+    })
   }
   return res.status(200).json({
     code: code,
