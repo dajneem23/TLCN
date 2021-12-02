@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Grid, Tab, Tabs, Typography } from "@mui/material";
+import { Container, Tab, Tabs, Typography } from "@mui/material";
 import Button from '@mui/material/Button';
 import AceEditor from "react-ace";
 import PropTypes from 'prop-types';
@@ -36,6 +36,8 @@ export default function Exercise() {
     const [isSubmit, setIsSubmit] = useState(false);
     const [result, setResult] = useState("");
     const [code, setCode] = useState("");
+    const [button, setButton] = useState({'enable':false,'color':'success'});
+
     const [lang, setLang] = useState(PY);
     // const [mode, setMode] = useState("C++");
     const [value, setValue] = useState(0);
@@ -87,10 +89,13 @@ export default function Exercise() {
     }
 
     const onSubmit = (code, language) => {
+
         console.log(code);
         console.log(language);
+        setButton({'enable':true,'color':'error'});
         Compile.CompileCode(language, code, id, "111111").then(result => {
             setIsSubmit(true);
+            setButton({'enable':false,'color':'success'});
             setResult(`Result: match ${result.data.match}\n Runtime: ${result.data.runtime}ms`);
             console.log(Object.values(result.data.results))
         }).catch(error => {
@@ -211,7 +216,7 @@ export default function Exercise() {
             </Container>
             <Container maxWidth='lg'>
                 <div className="editor_header_container">
-                    <Button variant="contained" color="success" onClick={() => {
+                    <Button  disabled={button.enable} variant="contained" color={button.color} onClick={() => {
                         onSubmit(code, lang);
                     }}>
                         Submit
