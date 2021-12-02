@@ -3,7 +3,6 @@ import { Container, Grid, Tab, Tabs, Typography } from "@mui/material";
 import Button from '@mui/material/Button';
 import AceEditor from "react-ace";
 import PropTypes from 'prop-types';
-import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
@@ -92,7 +91,8 @@ export default function Exercise() {
         console.log(language);
         Compile.CompileCode(language, code, id, "111111").then(result => {
             setIsSubmit(true);
-            setResult(`this is result: ${result.data.output}`);
+            setResult(`Result: match ${result.data.match}\n Runtime: ${result.data.runtime}ms`);
+            console.log(Object.values(result.data.results))
         }).catch(error => {
             setIsSubmit(true);
             setResult(`error: ${error}`);
