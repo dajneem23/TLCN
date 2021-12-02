@@ -8,6 +8,7 @@ const testCase = [0, 1, 3, 4];
 // docker exec -t py /bin/sh
 
 const outputPath = path.join(__dirname, "outputs");
+const codePath = path.join(__dirname, "codes");
 
 if (!fs.existsSync(outputPath)) {
   fs.mkdirSync(outputPath, { recursive: true });
@@ -42,6 +43,13 @@ const CreateProcess = async (language, code, testcase, typeInput) => {
       });
       break;
     }
+    case "cs":{
+      command = Config[language].command.formatUnicorn({
+        codePath: codePath,
+        jobId: jobId,
+      });
+      break;
+    }
     default: {
       command = Config[language].command.formatUnicorn({ filepath: filepath });
       break;
@@ -63,8 +71,15 @@ const CreateProcess = async (language, code, testcase, typeInput) => {
       ],
       { cwd: outputPath }
     );
+    // console.log([
+    //   process.stdout ? process.stdout.toString() : "",
+    //   process.stder ? process.stder.toString() : "",
+    // ])
     return [
-      process.stdout ? process.stdout.toString() : "",
+      process.stdout ? process.stdout.toString().replace(
+        /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g,
+        ""
+      ).split("\r\n") : "",
       process.stder ? process.stder.toString() : "",
     ];
   } catch (e) {
@@ -72,90 +87,7 @@ const CreateProcess = async (language, code, testcase, typeInput) => {
   }
 };
 
-const CreateInput = (language, testcase, type) => {
-  let output = "";
-  switch (language) {
-    case "py": {
-      testcase.forEach((element, index) => {
-        let arg =
-          type == "string" ? 'arg{index}="{case}"\n' : "arg{index}={case}\n";
-        output += arg.formatUnicorn({ index: index, case: testcase[index] });
-      });
-      return output;
-    }
-    case "c": {
-      testcase.forEach((element, index) => {
-        let arg = "";
-        switch (type) {
-          case "string": {
-            arg = 'string arg{index}="{case}";\n';
-            break;
-          }
-          default: {
-            arg = `${type} arg{index}={case};\n`;
-            break;
-          }
-        }
-        output += arg.formatUnicorn({ index: index, case: testcase[index] });
-      });
-      return output;
-    }
-    case "cpp": {
-      testcase.forEach((element, index) => {
-        let arg = "";
-        switch (type) {
-          case "string": {
-            arg = 'string arg{index}="{case}";\n';
-            break;
-          }
-          default: {
-            arg = `${type} arg{index}={case};\n`;
-            break;
-          }
-        }
-        output += arg.formatUnicorn({ index: index, case: testcase[index] });
-      });
-      return output;
-    }
-    case "java": {
-      testcase.forEach((element, index) => {
-        let arg = "";
-        switch (type) {
-          case "String": {
-            arg = 'String arg{index}="{case}";\n';
-            break;
-          }
-          default: {
-            arg = `${type} arg{index}={case};\n`;
-            break;
-          }
-        }
-        output += arg.formatUnicorn({ index: index, case: testcase[index] });
-      });
-      return output;
-    }
-    case "cs": {
-      testcase.forEach((element, index) => {
-        let arg = "";
-        switch (type) {
-          case "String": {
-            arg = 'String arg{index}="{case}";\n';
-            break;
-          }
-          default: {
-            arg = `${type} arg{index}={case};\n`;
-            break;
-          }
-        }
-        output += arg.formatUnicorn({ index: index, case: testcase[index] });
-      });
-      return output;
-    }
-    default: {
-      return "";
-    }
-  }
-};
+
 // console.log(CreateInput('cs',['name',1,2,3,'qwe'],'int'))
 // CreateProcess(
 //   "c",
@@ -166,6 +98,8 @@ const CreateInput = (language, testcase, type) => {
 //  CreateProcess('java','public class Test {\npublic static void main(String[] args){\n{input}\n int c= arg0+arg1+arg2;\n\nSystem.out.println(c);}\n}\n',[1,2,3],'int').then(data=>console.log)
 // CreateProcess('c','#include<stdio.h>\n int sum(int n){\nint add = 0;\nfor(int i=1; i<=n; i++){add += i;}\nreturn add;\n }\nint main()\n{{input}\nint c=arg1+arg2+arg0;\nprintf("%d",sum(arg0));\nreturn 0;\n}\n',["5",2,3],'int').then(data=>console.log)
 // CreateProcess('py','{input}\nprint(arg0+arg1+arg2)',["5",2,3],'int').then(console.log)
+// CreateProcess('cs','using System;\nnamespace HelloWorld { class Program { static void Main(string [] args) { Console.WriteLine(123);Console.WriteLine(456);} } }',["5",2,3],'int').then(console.log)
+
 module.exports = {
   CreateProcess,
 };

@@ -21,7 +21,7 @@ module.exports = Config={
     },
     cs:{
         "container":"mono",
-        "command":"mono {filepath}"  ,
+        "command":"cd {codePath} && mcs -out:{jobId}.exe {jobId}.cs && mono {jobId}.exe"  ,
         "main":"using System;\nusing System.Collections.Generic;\nusing System.Linq;\nusing System.Text;\nusing System.Threading.Tasks;\nnamespace ConsoleApp1\n{\nclass Program\n{\nstatic void Main(string[] args)\n{\n{input}\n{code}\n}\n}\n}\n"
     }
 }
