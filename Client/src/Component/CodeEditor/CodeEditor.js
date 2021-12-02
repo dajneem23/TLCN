@@ -108,7 +108,7 @@ export default function Exercise() {
     }, [])
 
     return (
-        <div className="page_container">
+        <div className="page_code_container">
             <ProblemTitle title={problem.title} />
             <Container maxWidth="lg" className="problem_container">
                 <Box>
