@@ -53,11 +53,10 @@ const testCode=async (language,code,problem)=> {
       testCase.input,
       testCase.type[language]
     );
-    console.log(testCase.output)
     for( let i =0;i< testCase.output.length;i++){
       count += testCase.output[i]==output[i]
     }
-    Results.push({input: testCase.input,expectOutput:testCase.output ,output: output, error: error }); 
+    Results.push({input: testCase.input,expectOutput:testCase.output ,output: output }); 
   }
 
   return {results:Results,match:`${count}/${numTestcase}`};

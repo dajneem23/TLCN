@@ -1,7 +1,4 @@
 version: "3"
-volumes:
-  Server:
-    external: true
 services:
   server:
     container_name: server
@@ -110,6 +107,9 @@ services:
     # working_dir: /Server/Complie/codes
     restart: always
     tty: true
+volumes:
+  Server:
+    external: true
 
 
 

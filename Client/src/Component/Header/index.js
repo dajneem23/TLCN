@@ -49,7 +49,7 @@ export default function Header() {
             </a>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="/code">
+            <a className="nav-link" href="/exercise">
               {" "}
               <FcNews /> Exercise{" "}
             </a>
