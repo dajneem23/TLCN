@@ -27,4 +27,4 @@ const Submition = new mongose.Schema(
     }
 )
 
-module.exports = Submition;
+module.exports = mongose.model('Submition', Submition)
