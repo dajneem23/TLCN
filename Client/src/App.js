@@ -48,8 +48,7 @@ function App() {
         <Route path="/code/:id" component={CodeEditor} />
         <Route path="/createcv" component={isAuthenticated ? CreateCV : Login} />
         <Route path="/home" component={Home} />
-        <Route path="/jobsmanager" component={user && user.role == ROLE_ADMIN ? JobsManagement : NotFound404} />
-        <Route path="/jobsmanager" component={JobsManagement} />
+        <Route path="/jobsmanager" component={(user && user.role == ROLE_ADMIN || user && user.role == ROLE_COOP) ? JobsManagement : NotFound404} />
         <Route path="/usersmanager" component={UserManagement} />
         <Route path="/" component={Home} />
         <Route component={NotFound404} />
