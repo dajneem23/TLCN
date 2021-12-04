@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Container, Tab, Tabs, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
 import AceEditor from "react-ace";
@@ -19,6 +19,7 @@ import "ace-builds/src-noconflict/ext-beautify";
 import { Box } from "@mui/system";
 import { Compile } from "../../Service/Compile.service";
 import { useParams } from "react-router";
+import { AuthContext } from "../../Service/Auth.context";
 
 //code
 //language
@@ -31,6 +32,8 @@ const JV = "java";
 
 export default function Exercise() {
   const { id } = useParams();
+  const { user, setUser, isAuthenticated, setisAuthenticated, info, setinfo } =
+    useContext(AuthContext);
   const [problem, setProblem] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
   const [result, setResult] = useState("");
@@ -40,7 +43,28 @@ export default function Exercise() {
   const [lang, setLang] = useState(PY);
   // const [mode, setMode] = useState("C++");
   const [value, setValue] = useState(0);
-  
+  const [listSubmited, setListSubmited] = useState([]);
+  useEffect(() => {
+    Compile.GetSubmitByUserId(user._id || "619a0ed806d1fa5372cab99f", id).then(
+      (result) => {
+        // delete result.message;
+        result.result.map((item, i) => {
+          delete item._id;
+          delete item.isDeleted;
+          delete item.__v;
+          delete item.userId;
+          delete item.problemId;
+          item.submitDate = new Date(item.submitDate).toLocaleString();
+          item.result = item.result.match;
+          //item.results= item.resluts.match;
+          console.log("item1", item);
+        });
+        setListSubmited(result.result);
+        console.log(result.result);
+      }
+    );
+  }, []);
+  console.log("Sub", listSubmited);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -91,7 +115,12 @@ export default function Exercise() {
     console.log(code);
     console.log(language);
     setButton({ enable: true, color: "error" });
-    Compile.CompileCode(language, code, id, "111111")
+    Compile.CompileCode(
+      language,
+      code,
+      id,
+      user._id || "619a0ed806d1fa5372cab99f"
+    )
       .then((result) => {
         setIsSubmit(true);
         setButton({ enable: false, color: "success" });
@@ -158,7 +187,36 @@ export default function Exercise() {
               )}
             </TabPanel>
             <TabPanel value={value} index={1}>
-              Thảo luận...
+              {listSubmited ? (
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Code</th>
+                      <th>Language</th>
+                      <th>Testcase done</th>
+                      <th>Runtime</th>
+                      <th>Date Submit</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {listSubmited.map((item) => {
+                      // changed here
+                      console.log("item: ", item);
+                      return (
+                        <tr>
+                          {Object.values(item).map((field) => {
+                            // changed here
+                            console.log("field: ", field);
+                            return <td>{field}</td>;
+                          })}
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              ) : (
+                ""
+              )}
             </TabPanel>
           </Box>
         </Box>
@@ -253,9 +311,9 @@ export default function Exercise() {
             <table>
               <thead>
                 <tr>
-                    <th>input</th>
-                    <th>expectOutput</th>
-                    <th>output</th>
+                  <th>input</th>
+                  <th>expectOutput</th>
+                  <th>output</th>
                 </tr>
               </thead>
               <tbody>
@@ -264,10 +322,10 @@ export default function Exercise() {
                   console.log("item: ", item);
                   return (
                     <tr>
-                      {Object.entries(item).map((field) => {
+                      {Object.values(item).map((field) => {
                         // changed here
                         console.log("field: ", field);
-                        return <td>{field.join(' ')}</td>;
+                        return <td>{field.join(" ")}</td>;
                       })}
                     </tr>
                   );
