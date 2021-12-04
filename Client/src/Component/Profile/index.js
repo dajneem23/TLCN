@@ -6,7 +6,8 @@ export default function Profile() {
   const [data, setData] = React.useState({
     image: "",
   });
-
+  const defaultImg =
+  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog";
   const onSubmit = React.useCallback(
     (e) => {
       e.preventDefault();
@@ -22,7 +23,7 @@ export default function Profile() {
           <div className="col-md-4">
             <div className="profile-img">
               <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog"
+                src={!data.image ? defaultImg : data.image} alt=""
                 alt=""
               />
               <div className="file btn btn-lg btn-primary">

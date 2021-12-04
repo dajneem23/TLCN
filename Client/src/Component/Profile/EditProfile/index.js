@@ -13,6 +13,8 @@ export default function EditProFile() {
     address:"",
 
   });
+  const defaultImg =
+  "https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg";
   const handleChange = (e) => {
     const { name, value } = e.target;
     setValues({
@@ -34,7 +36,7 @@ export default function EditProFile() {
             <img
               className="rounded-circle mt-5"
               width="150px"
-              src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"
+              src={!values.img ? defaultImg : values.img} alt=""
             />
             <span className="font-weight-bold">Edogaru</span>
             <span> </span>

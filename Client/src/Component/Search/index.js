@@ -22,6 +22,14 @@ import InputBase from "@mui/material/InputBase";
 import "./style.css";
 import ReactPaginate from "react-paginate";
 import { Job } from "../../Service/Job.service";
+import CardHeader from "@mui/material/CardHeader";
+import CardMedia from "@mui/material/CardMedia";
+import Chip from "@mui/material/Chip";
+import Avatar from "@mui/material/Avatar";
+import IconButton from "@mui/material/IconButton";
+import { red } from "@mui/material/colors";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
   "label + &": {
     marginTop: theme.spacing(3),
@@ -72,7 +80,11 @@ export default function Seach() {
       setListAllJobs(result);
       setResult(result);
     });
-  },[]);
+    return()=>{
+      setLocation("");
+      setSearchTerm("");
+    }
+  }, []);
   const handleChangeLocation = (event) => {
     setLocation(event.target.value);
   };
@@ -84,15 +96,21 @@ export default function Seach() {
   };
   const onSearch = () => {
     console.log(results);
-    const listFillter = listAllJobs.filter((data) =>
-      data.title.toLowerCase().includes(seachTerm.toLowerCase())
+    const listFillter = listAllJobs.filter((data) =>{
+      if(seachTerm =="" && location==""){
+        return data
+    }else if(data.address.toLowerCase().includes(location.toLowerCase().trim())&&data.title.toLowerCase().trim().includes(seachTerm.toLowerCase().trim())){
+         return data
+    }}
+      //data.title.toLowerCase().includes(seachTerm.toLowerCase())
     );
     setResult(listFillter);
     console.log(listFillter);
+    console.log(seachTerm,location.trim())
   };
   const [pageNumber, setPageNumber] = useState(0);
 
-  const usersPerPage = 8;
+  const usersPerPage = 10;
   const pagesVisited = pageNumber * usersPerPage;
 
   const displayUsers = results
@@ -141,7 +159,7 @@ export default function Seach() {
               <MenuItem value="">
                 <em>None</em>
               </MenuItem>
-              <MenuItem value={"TP.HCM"}>TP.Hồ Chí Minh</MenuItem>
+              <MenuItem value={"TP. Hồ Chí Minh"}>TP.Hồ Chí Minh</MenuItem>
               <MenuItem value={"TP.Đà Nẵng"}>TP.Đà Nẵng</MenuItem>
               <MenuItem value={"Hà Nội"}>Hà Nội</MenuItem>
             </Select>
@@ -164,6 +182,8 @@ export default function Seach() {
               <MenuItem value={"AngularJS"}>AngularJS</MenuItem>
               <MenuItem value={"PHP"}>PHP</MenuItem>
               <MenuItem value={"VueJs"}>VueJS</MenuItem>
+              <MenuItem value={"Javascript"}>Javascript</MenuItem>
+              <MenuItem value={"Python"}>Python</MenuItem>
             </Select>
           </FormControl>
           <FormControl sx={{ m: 1, width: 300 }} variant="standard">
@@ -232,22 +252,69 @@ export default function Seach() {
     const timeAgo = calculateTimeAgo(props.item.createDate);
 
     return (
-      <Card variant="outlined" className="container_card_all_job">
-        {/* <CardMedia component = "img" image={logo} height = "140" width = "380"/> */}
-        <img src={logo} className="card_image" />
-        <CardContent style={{ width: "100%" }}>
-          <div className="card_title">{props.item.title}</div>
-          <div className="">${props.item.salary}</div>
-          <div className="card_date_to">
-            <span>To: {dateEnd}</span>
-          </div>
-          <div className="card_date_to">{timeAgo}</div>
-        </CardContent>
-        <CardActions>
-          <Link to={`job/${props.item._id}`} style={{ textDecoration: "none" }}>
-            <div className="btnInfo">
-              <button>View More</button>
+      // <Card variant="outlined" className="container_card_all_job">
+      //   <CardMedia component = "img" image={logo} height = "140" width = "380"/>
+      //   <img src={logo} className="card_image" />
+      //   <CardContent style={{ width: "100%" }}>
+      //     <div className="card_title">{props.item.title}</div>
+      //     <div className="">${props.item.salary}</div>
+      //     <div className="card_date_to">
+      //       <span>To: {dateEnd}</span>
+      //     </div>
+      //     <div className="card_date_to">{timeAgo}</div>
+      //   </CardContent>
+      //   <CardActions>
+      //     <Link to={`job/${props.item._id}`} style={{ textDecoration: "none" }}>
+      //       <div className="btnInfo">
+      //         <button>View More</button>
+      //       </div>
+      //     </Link>
+      //   </CardActions>
+      // </Card>
+      <Card
+        sx={{ maxWidth: 345 }}
+        className="container_card_all_job"
+        variant="outlined"
+      >
+        <CardHeader
+          sx={{ minWidth: 340 }}
+          avatar={
+            <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+              R
+            </Avatar>
+          }
+          action={
+            <IconButton aria-label="add to favorites">
+              <FavoriteIcon />
+            </IconButton>
+          }
+          title={props.item.createBy}
+          subheader={timeAgo}
+        />
+        <CardMedia
+          sx={{ maxHeight: 150 }}
+          component="img"
+          height="194"
+          image={props.item.img || logo}
+          alt="Paella dish"
+        />
+        <CardContent sx={{ minWidth: 340, minHeight: 150 }}>
+          <Typography variant="body2" color="text.secondary">
+            <div className="card_title">{props.item.title}</div>
+            <div className="">${props.item.salary}</div>
+            <div className="card_date_to">
+              <span>To: {dateEnd}</span>
             </div>
+            <div>
+              {props.item.language.map((item, i) => {
+                return <Chip label={item} sx={{marginRight: 1}}/>;
+              })}
+            </div>
+          </Typography>
+        </CardContent>
+        <CardActions disableSpacing>
+          <Link to={`job/${props.item._id}`} style={{ textDecoration: "none" }}>
+            <Button size="small">Learn More</Button>
           </Link>
         </CardActions>
       </Card>
