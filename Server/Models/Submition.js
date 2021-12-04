@@ -6,6 +6,10 @@ const Submition = new mongose.Schema(
             type: String,
             required: true,
         },
+        problemId:{
+            type: String,
+            required: true,
+        },
         code: {
             type: String,
             required: true,
@@ -19,6 +23,9 @@ const Submition = new mongose.Schema(
         },
         runTime: {
             type: String,
+        },
+        submitDate:{
+            type: Date,
         },
         isDeleted: {
             type: Boolean,

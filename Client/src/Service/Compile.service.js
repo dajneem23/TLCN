@@ -1,7 +1,9 @@
 import axios from './axios'
 const compilePath = '/complier'
+const submitPath = '/submit'
 const getAllProblems = '/problem/getAllProblems'
 const getProblemsById = "/problem/getProblemById"
+const getSubmitByUserId ="/problem/submit"
 export const Compile = {
     CompileCode: async (lang, code, problemId, userId) => {
         try {
@@ -33,6 +35,19 @@ export const Compile = {
                 }
             })
             return result.data.problem;
+        } catch (error) {
+            console.log(error);
+        }
+    },
+    GetSubmitByUserId: async (userId, problemId) => {
+        try{
+            const result = await axios.get(`${getSubmitByUserId}`,{
+                params : {
+                    userId: userId,
+                    problemId : problemId
+                }
+            })
+            return result.data;
         } catch (error) {
             console.log(error);
         }
