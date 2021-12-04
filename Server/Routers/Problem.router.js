@@ -90,7 +90,7 @@ ProblemRouter.get("/submit", async (req, res) => {
           .status(404)
           .json({ message: "Can not find this Submiittion", msgError: true });
       }
-      return res.status(200).json({ message: "Success", ...result });
+      return res.status(200).json({ message: "Success",result: [...result] });
     }
   );
 });
