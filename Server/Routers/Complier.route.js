@@ -35,6 +35,7 @@ ComplierRouter.post("/", async (req, res) => {
       language: language,
       result: Results,
       runTime:runtime,
+      problemId: problem._id
     })
     var resultSubmit = await SubmitCode(submition)
     console.log(resultSubmit);

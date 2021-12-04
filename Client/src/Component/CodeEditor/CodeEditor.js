@@ -40,7 +40,7 @@ export default function Exercise() {
   const [lang, setLang] = useState(PY);
   // const [mode, setMode] = useState("C++");
   const [value, setValue] = useState(0);
-
+  
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };

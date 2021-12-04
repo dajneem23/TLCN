@@ -6,6 +6,10 @@ const Submition = new mongose.Schema(
             type: String,
             required: true,
         },
+        problemId:{
+            type: String,
+            required: true,
+        },
         code: {
             type: String,
             required: true,
