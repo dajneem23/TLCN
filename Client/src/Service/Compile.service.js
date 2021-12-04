@@ -43,8 +43,8 @@ export const Compile = {
         try{
             const result = await axios.get(`${getSubmitByUserId}`,{
                 params : {
-                    problemId : problemId,
-                    userId: userId
+                    userId: userId,
+                    problemId : problemId
                 }
             })
             return result.data;
