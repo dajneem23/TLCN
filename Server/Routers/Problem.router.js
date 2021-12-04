@@ -79,7 +79,7 @@ ProblemRouter.get("/getProblemById", async (req, res) => {
 ProblemRouter.get("/submit", async (req, res) => {
   const userId = req.query.userId;
   const problemId = req.query.problemId;
-  const listSubmit = await Submition.findOne(
+  const listSubmit = await Submition.find(
     { userId: userId, problemId: problemId },
     (error, result) => {
       if (error) {
