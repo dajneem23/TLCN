@@ -18,7 +18,7 @@ const Submition = new mongose.Schema(
             type: Object,
         },
         runTime: {
-            type: Date,
+            type: String,
         },
         isDeleted: {
             type: Boolean,
