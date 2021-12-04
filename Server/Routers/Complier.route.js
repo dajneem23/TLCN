@@ -1,5 +1,6 @@
 const express = require("express");
 const { CreateProcess } = require("../Complie/createProcess");
+const Submittion = require("../Models/Submition");
 const Problem = require("../Models/Problem");
 ComplierRouter = express.Router();
 const LANGUAE = ["cpp", "py", "java", "cs", "c"];
@@ -27,8 +28,16 @@ ComplierRouter.post("/", async (req, res) => {
     var Results = await testCode(language,code,problem)
     console.log(Results);
     const after = Date.now();
-    var runtime = after - before
-    
+    var runtime = after - before;
+    var submittion= new Submittion({
+      userId: userId,
+      code: code,
+      language: language,
+      result: Results,
+      runTime:runtime,
+    })
+    var resultSubmit = await SubmitCode(submittion)
+    console.log(resultSubmit);
     return res.status(200).json({
       code: code,
       language: language,
@@ -60,6 +69,17 @@ const testCode=async (language,code,problem)=> {
   }
 
   return {results:Results,match:`${count}/${numTestcase}`};
+}
+const SubmitCode = async(Submition)=>{
+  return await Submition.save((error, result)=>{
+    if(error){
+      console.log(error);
+    }
+    else{
+      return result;
+    }
+  })
+
 }
 
 module.exports = ComplierRouter;
