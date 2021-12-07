@@ -13,6 +13,9 @@ import { IoIosLogIn } from "react-icons/io";
 import { FcContacts } from "react-icons/fc";
 import { AuthContext } from "../../Service/Auth.context";
 import "./style.css";
+const ROLE_ADMIN = 0;
+const ROLE_COOP = 1;
+const ROLE_INTER = 2;
 
 export default function Header() {
   const { user, setUser, isAuthenticated, setisAuthenticated, info, setinfo } =
@@ -54,18 +57,18 @@ export default function Header() {
               <FcNews /> Exercise{" "}
             </a>
           </li>
-          <li className="nav-item">
-            <a className="nav-link" href="/about">
+          {user.role == ROLE_ADMIN && <li className="nav-item">
+            <a className="nav-link" href="/usersmanager">
               {" "}
-              <FcAbout /> About{" "}
+              <FcAbout /> User Manager{" "}
             </a>
-          </li>
-          <li className="nav-item">
-            <a className="nav-link" href="/contacts">
+          </li>}
+          {(user.role == ROLE_ADMIN || user.role == ROLE_COOP) && <li className="nav-item">
+            <a className="nav-link" href="/jobsmanager">
               {" "}
-              <FcContacts /> Contacts{" "}
+              <FcContacts /> Job Manager{" "}
             </a>
-          </li>
+          </li>}
         </ul>
         {!isAuthenticated ? <NoAuth /> : <Auth />}
       </div>

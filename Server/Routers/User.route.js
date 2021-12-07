@@ -12,11 +12,13 @@ UserRoute.get('/authenticated',passport.authenticate('jwt',{session : false}),(r
     res.status(200).json({isAuthenticated : true, user : {username,_id}});
 });
 
-const signToken=(userID,role)=>{
+const signToken=(userID,role,userName,fullname)=>{
     return JWT.sign({
         iss:"TLCN",
         sub:userID,
-        role:role
+        role:role,
+        userName: userName,
+        fullname:fullname
     },process.env.secretKey,{expiresIn:"1h"});
 }
 
@@ -56,12 +58,12 @@ UserRoute.post('/signin',(req, res,next)=>{
     passport.authenticate('local',{session:false},(err,user)=>{
         if(err) throw err;
         if(user){
-            const{_id,userName,role}=user;
-            const token=signToken(_id,role);
+            const{_id,userName,role,fullname}=user;
+            const token=signToken(_id,role,userName,fullname);
             res.cookie('access_token',token,{httpOnly:true})
             res.status(200).json({
                 isAuthenticated:true,
-                user:{userName,_id}
+                user:{_id,userName,role,fullname}
             })
         }
         else{
@@ -94,10 +96,10 @@ UserRoute.post('/update',async (req,res)=>{
 
 });
 UserRoute.get('/info',passport.authenticate('jwt',{session : false}),(req,res)=>{
-    const {username,_id,role} = req.user;
-   return res.status(200).json({isAuthenticated : true, user : {username,_id,role}});
+    const {username,_id,role,fullname} = req.user;
+   return res.status(200).json({isAuthenticated : true, user : {username,_id,role,fullname}});
 });
-userRouter.get('/logout',passport.authenticate('jwt',{session : false}),(req,res)=>{
+UserRoute.get('/logout',passport.authenticate('jwt',{session : false}),(req,res)=>{
     res.clearCookie('access_token');
     const{_id,username,role,fullname}=req.user;
     res.json({
@@ -107,11 +109,8 @@ userRouter.get('/logout',passport.authenticate('jwt',{session : false}),(req,res
 });
 UserRoute.get('/details',passport.authenticate('jwt',{session : false}), async (req,res)=>{
     const {username,_id,role} = req.user;
-
     const currentUser = await User.findById(_id).lean();
-
     delete currentUser.password;
-
     return res.status(200).json({
         message:{
             msgBody:"Get succesfully",
@@ -123,22 +122,17 @@ UserRoute.get('/details',passport.authenticate('jwt',{session : false}), async (
 UserRoute.post('/addWishList', passport.authenticate('jwt',{session : false}), async (req, res) => {
     const {username,_id,role} = req.user;
     const {jobId} = req.body;
-
     const currentUser = await User.findById(_id);
-
     if (currentUser == null || currentUser == undefined) {
         return res.status(403).json({ 'message': 'Can not find user', msgError: true });
     }
-
     if (currentUser.wishList.some(element => element == jobId)) {
         let newList = currentUser.wishList.filter(element => element != jobId);
         currentUser.wishList = newList;
     } else {
         currentUser.wishList.push(jobId);
     }
-
-    console.log(currentUser.wishList);
-
+    // console.log(currentUser.wishList);
     currentUser.save(err => {
         if(err){
             console.log(err)

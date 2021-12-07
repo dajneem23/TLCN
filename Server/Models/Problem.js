@@ -48,7 +48,7 @@ const Problem = new mongose.Schema({
         type: String,
     },
     listSubmits: {
-        type: [Submition],
+        type: Array,
     },
     testCase: {
         type: [TestCase],

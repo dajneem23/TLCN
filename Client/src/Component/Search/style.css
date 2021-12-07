@@ -43,3 +43,7 @@
     color: #Babbbd;
     background-color: #Babbbd;
   }
+  .card_actions{
+    display: flex;
+    justify-content: between;
+  }

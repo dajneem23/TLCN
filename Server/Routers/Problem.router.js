@@ -6,6 +6,7 @@ const dotenv = require("dotenv");
 const Job = require("../Models/Job");
 const User = require("../Models/User");
 const Problem = require("../Models/Problem");
+const Submition = require("../Models/Submition");
 dotenv.config();
 
 const ProblemRouter = express.Router();
@@ -74,6 +75,24 @@ ProblemRouter.get("/getProblemById", async (req, res) => {
     problem: problem,
     msgError: false,
   });
+});
+ProblemRouter.get("/submit", async (req, res) => {
+  const userId = req.query.userId;
+  const problemId = req.query.problemId;
+  const listSubmit = await Submition.find(
+    { userId: userId, problemId: problemId },
+    (error, result) => {
+      if (error) {
+        console.log(error);
+      }
+      if (!result) {
+        return res
+          .status(404)
+          .json({ message: "Can not find this Submiittion", msgError: true });
+      }
+      return res.status(200).json({ message: "Success",result: [...result] });
+    }
+  );
 });
 
 module.exports = ProblemRouter;

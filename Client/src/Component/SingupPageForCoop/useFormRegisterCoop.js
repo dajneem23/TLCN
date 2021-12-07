@@ -12,7 +12,6 @@ const useFormRegister = (callback, validate) => {
     userName: "",
     password: "",
     password2: "",
-    role: 2,
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);

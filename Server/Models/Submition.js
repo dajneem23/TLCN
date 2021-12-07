@@ -2,7 +2,11 @@ const mongose = require('mongoose');
 
 const Submition = new mongose.Schema(
     {
-        submitter: {
+        userId: {
+            type: String,
+            required: true,
+        },
+        problemId:{
             type: String,
             required: true,
         },
@@ -15,9 +19,12 @@ const Submition = new mongose.Schema(
             required: true,
         },
         result: {
-            type: String
+            type: Object,
         },
-        submitTime: {
+        runTime: {
+            type: String,
+        },
+        submitDate:{
             type: Date,
         },
         isDeleted: {
@@ -27,4 +34,4 @@ const Submition = new mongose.Schema(
     }
 )
 
-module.exports = Submition;
+module.exports = mongose.model('Submition', Submition)
