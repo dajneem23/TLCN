@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, } from "react";
+import { useHistory} from "react-router-dom"
 import logo from "../../IMG/copy_60612516.png";
 import { FaUserAlt, FaSignOutAlt, FaExpeditedssl } from "react-icons/fa";
 import { GrLogin, GrContactInfo } from "react-icons/gr";
@@ -13,6 +14,7 @@ import { IoIosLogIn } from "react-icons/io";
 import { FcContacts } from "react-icons/fc";
 import { AuthContext } from "../../Service/Auth.context";
 import "./style.css";
+import { User } from "../../Service/User.service";
 const ROLE_ADMIN = 0;
 const ROLE_COOP = 1;
 const ROLE_INTER = 2;
@@ -40,7 +42,7 @@ export default function Header() {
         </button>
         <ul className="navbar-nav ml-auto">
           <li className="nav-item active">
-            <a className="nav-link" href="/">
+            <a className="nav-link" href="/home">
               {" "}
               <FcHome /> Home <span className="sr-only"></span>
             </a>
@@ -98,6 +100,16 @@ function Auth() {
   const { user, setUser, isAuthenticated, setisAuthenticated, info, setinfo } =
     useContext(AuthContext);
   console.log("isAuth", user.userName);
+  
+  let history = useHistory
+
+  const onLogout = async () => {
+    User.Logout().then((data) => {
+      setUser({});
+      setisAuthenticated(false);
+      setinfo({});
+    });
+  }
   return (
     <div className="collapse navbar-collapse" id="navbarSupportedContent">
       <ul className="navbar-nav ml-auto">
@@ -109,11 +121,11 @@ function Auth() {
         <li className="nav-item">
           <a className="nav-link" href="/profile">
             {" "}
-            {user._id}
+            {user.fullname}
           </a>
         </li>
         <li className="nav-item">
-          <a className="btn-sign-up nav-link" href="/signin">
+          <a className="btn-sign-up nav-link" onClick = {() => onLogout()}>
             Log out <IoIosLogIn />{" "}
           </a>
         </li>

@@ -21,4 +21,19 @@ export const User = {
   Info: async () => {
     return await axios.get(`${userPath}/info`);
   },
+  Logout: async () => {
+    return await axios.get(`${userPath}/logout`);
+  },
+  AddWishList: async (id) => {
+    try {
+      return await axios.post(`${userPath}/addWishList`, {
+        jobId: id
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  },
+  GetDetails: async () => {
+    return await axios.get(`${userPath}/details`);
+  }
 };

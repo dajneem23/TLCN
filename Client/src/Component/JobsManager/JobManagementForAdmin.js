@@ -17,7 +17,7 @@ import { getDateWithFormat } from "../../Utls/DateTimeUtls";
 import { Job } from "../../Service/Job.service";
 const columns = [
   { id: "title", label: "Title", minWidth: 300 },
-  { id: "description", label: "Description", minWidth: 300 },
+  { id: "tinyDes", label: "Tiny Description", minWidth: 300 },
   { id: "address", label: "Address", minWidth: 300 },
   { id: "createDate", label: "Create", minWidth: 100, align: "center" },
   { id: "startDate", label: "From", minWidth: 100, align: "center" },
@@ -114,7 +114,7 @@ export default function JobsManagement() {
                           const value = row[column.id];
                           let display = value;
                           let style = {};
-                          if (column.id != "title" && column.id != "description" && column.id != "address") {
+                          if (column.id != "title" && column.id != "tinyDes" && column.id != "address") {
                             display = getDateWithFormat(value);
                           } else {
                             style = { ...titleStyle };

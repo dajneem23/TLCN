@@ -67,7 +67,7 @@ export default function CreateCV() {
     }
 
     return (
-        <div className="page_container" >
+        <div className="page_cv_container" >
             <Container maxWidth="lg" className="container" >
                 <div className="title_page">Create your CV</div>
                 <div className="cv_container">
@@ -118,11 +118,11 @@ export default function CreateCV() {
                                         <text>Address:</text>
                                     </div>
                                     <div className='cv_info_details_des' >
-                                        <input type='text' className='cv_input_normal' placeholder='Ex: 10 Sep 1990' />
-                                        <input type='text' className='cv_input_normal' placeholder='Male or Female' />
-                                        <input type='text' className='cv_input_normal' placeholder='Your phone number' />
-                                        <input type='text' className='cv_input_normal' placeholder='Your email' />
-                                        <input type='text' className='cv_input_normal' placeholder='Your address' />
+                                        <input autoComplete="nope" type='text' className='cv_input_normal' placeholder='Ex: 10 Sep 1990' />
+                                        <input autoComplete="nope" type='text' className='cv_input_normal' placeholder='Male or Female' />
+                                        <input autoComplete="nope" type='text' className='cv_input_normal' placeholder='Your phone number' />
+                                        <input autoComplete="nope" type='text' className='cv_input_normal' placeholder='Your email' />
+                                        <input autoComplete="nope" type='text' className='cv_input_normal' placeholder='Your address' />
                                     </div>
                                 </div>
                             </div>

@@ -53,7 +53,8 @@ const useFormLogin = (callback, validate) => {
         setisAuthenticated(res.data.isAuthenticated);
         setinfo(res.data.info);
         console.log(info);
-        history.push("/home");
+        // history.push(history.location);
+        history.goBack();
         setTimeout(function () {
           return 0;
         }, 3000);

@@ -3,7 +3,7 @@
     font-size: 30px;
 }
 
-.page_container {
+.page_cv_container {
     padding-top: 30px;
     padding-bottom: 30px;
     min-height: 700px;
@@ -77,6 +77,8 @@
 .cv_info_details_title {
     display: flex;
     flex-direction: column;
+    font-size: 18px;
+    font-weight: 500;
 }
 
 .cv_info_details_des {

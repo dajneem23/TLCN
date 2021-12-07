@@ -8,6 +8,9 @@ const Job = new mongose.Schema(
         position: {
             type: Array
         },
+        tinyDes: {
+            type: String, required: true
+        },
         description: {
             type: String, required: true
         },

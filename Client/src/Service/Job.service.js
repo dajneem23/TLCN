@@ -40,6 +40,18 @@ export const Job = {
             console.log(error);
         }
     },
+    GetSuggestJobs: async (id) => {
+        try {
+            const result = await axios.get(`${jobPath}/getSuggestJobsByJobId`, {
+                params : {
+                    id : id
+                }
+            });
+            return result.data.listJobs;
+        } catch (error) {
+            console.log(error);
+        }
+    },
     CreateNewJob: async (newJob) => {
         try {
             const result = await axios.post(`${jobPath}/createNewJob`, newJob)
