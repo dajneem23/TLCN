@@ -8,8 +8,8 @@ const User= require('../Models/User');
 const Job = require('../Models/Job');
 dotenv.config();
 UserRoute.get('/authenticated',passport.authenticate('jwt',{session : false}),(req,res)=>{
-    const {username,_id} = req.user;
-    res.status(200).json({isAuthenticated : true, user : {username,_id}});
+    const {useNname,_id} = req.user;
+    res.status(200).json({isAuthenticated : true, user : {useNname,_id}});
 });
 
 const signToken=(userID,role,userName,fullname)=>{
@@ -96,15 +96,17 @@ UserRoute.post('/update',async (req,res)=>{
 
 });
 UserRoute.get('/info',passport.authenticate('jwt',{session : false}),(req,res)=>{
-    const {username,_id,role,fullname} = req.user;
-   return res.status(200).json({isAuthenticated : true, user : {username,_id,role,fullname}});
+    const {userName,_id,role,fullname} = req.user;
+    const token=signToken(_id,role,userName,fullname);
+    res.cookie('access_token',token,{httpOnly:true})
+   return res.status(200).json({isAuthenticated : true, user : {userName,_id,role,fullname}});
 });
 UserRoute.get('/logout',passport.authenticate('jwt',{session : false}),(req,res)=>{
     res.clearCookie('access_token');
-    const{_id,username,role,fullname}=req.user;
+    const{_id,userName,role,fullname}=req.user;
     res.json({
         message:"you are logout",
-        user:{ username,_id,role,fullname},
+        user:{ userName,_id,role,fullname},
         success : true});
 });
 UserRoute.get('/details',passport.authenticate('jwt',{session : false}), async (req,res)=>{
