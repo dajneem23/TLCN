@@ -109,7 +109,7 @@ export default function Home() {
                         <Grid className="card_create_cv">
                             <div className="card_create_cv_title">Create new CV</div>
                             <div>You don't have CV, create here!</div>
-                            <a href="/">
+                            <a href="/createcv">
                                 <div className="create_cv_button">
                                     <img src={createIcon} className='create_icon' /> Create CV
                                 </div>
@@ -134,12 +134,12 @@ function CardHotJob(props) {
     const createDate = getDateWithFormat(props.item.createDate);
 
     return (
-        <a href="/">
+        <a href={`/job/${props.item._id}`}>
             <Card variant="outlined" sx={{ minHeight: 300, maxHeight: 400, height: 300 }}>
                 <div className="card_hot_job">
                     <img
                         style={{ width: '50%', height: 'fit' }}
-                        src={logo}
+                        src={props.item.img ? props.item.img : logo}
                         alt={props.item.title}
                         loading="lazy"
                     />
@@ -151,7 +151,9 @@ function CardHotJob(props) {
                             {props.item.title}
                         </Typography>
                         <Typography sx={{ fontSize: 18 }} gutterBottom>
-                            {props.item.description}
+                            <p className="no-margin-bottom">
+                                <div dangerouslySetInnerHTML={{ __html: props.item.tinyDes }} />
+                            </p>
                         </Typography>
                         <Typography sx={{ fontSize: 18 }} gutterBottom>
                             {props.item.address}
@@ -160,7 +162,7 @@ function CardHotJob(props) {
                             {props.item.language.map((item, key) => <span className="language_card">{item}</span>)}
                         </Typography>
                         <Typography sx={{ fontSize: 18, marginTop: 5, color: 'Highlight' }} gutterBottom>
-                            {props.item.numberApply} jobs
+                            Apply: {props.item.listApply.length}
                         </Typography>
                         <div className="card_hot_create_date">
                             <p style={{ fontStyle: 'italic' }}>{createDate}</p>
@@ -174,16 +176,17 @@ function CardHotJob(props) {
 
 function CardNewJob(props) {
     const jobDetailsUrl = `/job/${props.item._id}`;
+    const timeAgo = calculateTimeAgo(props.item.createDate);
     return (
         <a href={jobDetailsUrl} >
             <Card variant="outlined" className="container_card_new_job">
                 <div>
                     <p style={{ fontSize: 12, color: 'gray', fontWeight: 'bold', marginBottom: 5 }}>{props.item.coopName}</p>
                     <p style={{ fontSize: 17, color: 'black', fontWeight: 'bold', marginBottom: 5 }} className="card_title">{props.item.title}</p>
-                    <p style={{ fontSize: 17, color: 'yellow', fontWeight: 'bold', marginBottom: 5 }}>$ {props.item.salary}</p>
+                    <p style={{ fontSize: 17, color: 'red', fontWeight: 'bold', marginBottom: 5 }}>$ {props.item.salary}</p>
                 </div>
                 <div>
-                    <p>sadxzc</p>
+                    <p className="card_date_to">{timeAgo}</p>
                 </div>
             </Card>
         </a>
@@ -206,10 +209,10 @@ function CardJob(props) {
     const timeAgo = calculateTimeAgo(props.item.createDate);
 
     return (
-        <a href="/" >
+        <a href={`/job/${props.item._id}`} >
             <Card variant="outlined" className="container_card_all_job">
                 {/* <CardMedia component = "img" image={logo} height = "140" width = "380"/> */}
-                <img src={logo} className="card_image" />
+                <img  src={props.item.img ? props.item.img : logo} className="card_image" />
                 <CardContent style={{ width: '100%' }}>
                     <div className="card_title">{props.item.title}</div>
                     <div className="">$ {props.item.salary}</div>

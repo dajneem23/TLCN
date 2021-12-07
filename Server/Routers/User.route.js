@@ -114,10 +114,8 @@ UserRoute.get('/details',passport.authenticate('jwt',{session : false}), async (
     const currentUser = await User.findById(_id).lean();
     delete currentUser.password;
     return res.status(200).json({
-        message:{
-            msgBody:"Get succesfully",
-            user: currentUser,
-        },
+        message: "Get succesfully",
+        user: currentUser,
         msgError:false });
 });
 

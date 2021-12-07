@@ -23,22 +23,16 @@ export default function Detail() {
     window.addEventListener("resize", () => {
       setScreenWidth(window.innerWidth);
     });
-    Job.GetHostestJobs().then((result) => {
+    Job.GetSuggestJobs(id).then((result) => {
       if (result != undefined) {
         setListHotestJobs(result.splice(0, 4));
       } else {
         setListHotestJobs([]);
       }
     });
-    Job.GetAllJobs().then(function (data) {
-      setdata(data);
-      const details = Object.values(data).filter((data, index) => {
-        return data._id == id;
-      });
-      setJob(details[0]);
-      console.log("data", data);
-      console.log(details);
-    });
+    Job.GetJobByID(id).then((data) => {
+      setJob(data);
+    })
   }, []);
 
   return (
@@ -67,7 +61,9 @@ export default function Detail() {
                   <h4 className="font-size38 sm-font-size32 xs-font-size30">
                     {job.title}
                   </h4>
-                  <p className="no-margin-bottom">{job.description}</p>
+                  <p className="no-margin-bottom">
+                  <div dangerouslySetInnerHTML={{ __html: job.description }} />
+                </p>
                   <div className="contact-info-section margin-40px-tb">
                     <ul className="list-style9 no-margin">
                       <li>

@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/alt-text */
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { BaseListJob, NewListJob, TopCoop } from "../Home/BaseListJob";
 import Carousel from "react-material-ui-carousel";
 import Box from "@mui/material/Box";
@@ -29,6 +29,9 @@ import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import { red } from "@mui/material/colors";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import { useHistory } from "react-router-dom";
+import { AuthContext } from "../../Service/Auth.context";
+import { User } from "../../Service/User.service";
 
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
   "label + &": {
@@ -72,6 +75,7 @@ export default function Seach() {
   const [results, setResult] = React.useState([]);
   const [sWidth, setScreenWidth] = useState(window.innerWidth);
   const [listAllJobs, setListAllJobs] = useState([]);
+  const [wishList, setWishList] = useState([]);
   useEffect(() => {
     window.addEventListener("resize", () => {
       setScreenWidth(window.innerWidth);
@@ -80,7 +84,12 @@ export default function Seach() {
       setListAllJobs(result);
       setResult(result);
     });
-    return()=>{
+    User.GetDetails().then(result => {
+      if (result.status == 200) {
+        setWishList(result.data.user.wishList);
+      }
+    })
+    return () => {
       setLocation("");
       setSearchTerm("");
     }
@@ -96,17 +105,18 @@ export default function Seach() {
   };
   const onSearch = () => {
     console.log(results);
-    const listFillter = listAllJobs.filter((data) =>{
-      if(seachTerm =="" && location==""){
+    const listFillter = listAllJobs.filter((data) => {
+      if (seachTerm == "" && location == "") {
         return data
-    }else if(data.address.toLowerCase().includes(location.toLowerCase().trim())&&data.title.toLowerCase().trim().includes(seachTerm.toLowerCase().trim())){
-         return data
-    }}
+      } else if (data.address.toLowerCase().includes(location.toLowerCase().trim()) && data.title.toLowerCase().trim().includes(seachTerm.toLowerCase().trim())) {
+        return data
+      }
+    }
       //data.title.toLowerCase().includes(seachTerm.toLowerCase())
     );
     setResult(listFillter);
     console.log(listFillter);
-    console.log(seachTerm,location.trim())
+    console.log(seachTerm, location.trim())
   };
   const [pageNumber, setPageNumber] = useState(0);
 
@@ -115,12 +125,12 @@ export default function Seach() {
 
   const displayUsers = results
     .slice(pagesVisited, pagesVisited + usersPerPage)
-    .map((a, i) => {
+    .map((item, index) => {
       return (
         <div>
           <Grid container className="container_all_jobs">
             <Grid className="container_grid_hover">
-              <CardJob key={i} item={a} />
+              <CardJob key={index} item={item} isLike={wishList.some((e) => e == item._id)} />
             </Grid>
           </Grid>
         </div>
@@ -251,26 +261,25 @@ export default function Seach() {
     const dateEnd = getDateWithFormat(props.item.endDate);
     const timeAgo = calculateTimeAgo(props.item.createDate);
 
+    const history = useHistory();
+
+    const [isLike, setLike] = useState(Boolean(props.isLike))
+
+    console.log(props.isLike);
+
+    const { user, setUser, isAuthenticated, setisAuthenticated, info, setinfo } = useContext(AuthContext);
+
+    const onLikeJob = () => {
+      if (isAuthenticated) {
+        User.AddWishList(props.item._id).then(() => {
+        }).catch(error => console.log(error));
+        setLike(!isLike);
+      } else {
+        history.push("/signin");
+      }
+    }
+
     return (
-      // <Card variant="outlined" className="container_card_all_job">
-      //   <CardMedia component = "img" image={logo} height = "140" width = "380"/>
-      //   <img src={logo} className="card_image" />
-      //   <CardContent style={{ width: "100%" }}>
-      //     <div className="card_title">{props.item.title}</div>
-      //     <div className="">${props.item.salary}</div>
-      //     <div className="card_date_to">
-      //       <span>To: {dateEnd}</span>
-      //     </div>
-      //     <div className="card_date_to">{timeAgo}</div>
-      //   </CardContent>
-      //   <CardActions>
-      //     <Link to={`job/${props.item._id}`} style={{ textDecoration: "none" }}>
-      //       <div className="btnInfo">
-      //         <button>View More</button>
-      //       </div>
-      //     </Link>
-      //   </CardActions>
-      // </Card>
       <Card
         sx={{ maxWidth: 345 }}
         className="container_card_all_job"
@@ -284,8 +293,8 @@ export default function Seach() {
             </Avatar>
           }
           action={
-            <IconButton aria-label="add to favorites">
-              <FavoriteIcon />
+            <IconButton aria-label="add to favorites" onClick={() => onLikeJob()}>
+              <FavoriteIcon sx={isLike ? { color: red[500] } : { color: 'gray'}}/>
             </IconButton>
           }
           title={props.item.createBy}
@@ -307,7 +316,7 @@ export default function Seach() {
             </div>
             <div>
               {props.item.language.map((item, i) => {
-                return <Chip label={item} sx={{marginRight: 1}}/>;
+                return <Chip label={item} sx={{ marginRight: 1 }} />;
               })}
             </div>
           </Typography>

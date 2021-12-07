@@ -16,6 +16,7 @@ export default function PostNewJob() {
   const flag = false;
   const [values, setValues] = useState({
     title: "",
+    tinyDes: "",
     description: "",
     salary: "",
     workTime: "",
@@ -101,9 +102,22 @@ export default function PostNewJob() {
                 />
               </div>
             </div>
+            <div className="row mt-2">
+              <div className="col-md-12">
+                <label className="labels">Tiny Description</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="tinyDes"
+                  id="tinyDes"
+                  value={values.tinyDes}
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
             <div className="row mt-3">
               <div className="col-md-12">
-                <label className="labels">Description</label>
+                <label className="labels">Full Description</label>
                 <Editor
                   toolbarClassName="toolbarClassName"
                   wrapperClassName="wrapperClassName"
