@@ -120,7 +120,7 @@ export default function Exercise() {
       language,
       code,
       id,
-      user._id || "619a0ed806d1fa5372cab99f"
+      user._id
     )
       .then((result) => {
         setIsSubmit(true);
@@ -165,30 +165,7 @@ export default function Exercise() {
               </Tabs>
             </Box>
             <TabPanel value={value} index={0}>
-              {problem.description}
-              {/* {problem.testCase && 
-                            <div>
-                                <div>Input</div>
-                                <div>{problem.testCase.pop().input.join(" ")}</div>
-                                <div>Output</div>
-                                <div>{problem.testCase.pop().output.join(" ")}</div>
-                            </div>} */}
-              {problem.testCase && problem.testCase.length > 0 && (
-                <div>
-                  <div>Input</div>
-                  <div>
-                    {problem.testCase[problem.testCase.length - 1].input.join(
-                      " "
-                    )}
-                  </div>
-                  <div>Output</div>
-                  <div>
-                    {problem.testCase[problem.testCase.length - 1].output.join(
-                      " "
-                    )}
-                  </div>
-                </div>
-              )}
+              <div dangerouslySetInnerHTML={{ __html: problem.description }} />
             </TabPanel>
             <TabPanel value={value} index={1}>
               {listSubmited ? (

@@ -7,6 +7,7 @@ import "./style.css";
 import { Job } from "../../Service/Job.service";
 import Chip from "@mui/material/Chip";
 import { Editor } from "react-draft-wysiwyg";
+import htmlToDraft from 'html-to-draftjs';
 import {
   EditorState,
   convertToRaw,
@@ -16,6 +17,7 @@ import {
 import draftToHtml from "draftjs-to-html";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { AuthContext } from "../../Service/Auth.context";
+import { getDateWithFormat, getDateWithString } from "../../Utls/DateTimeUtls";
 const ROLE_ADMIN = 0;
 const ROLE_COOP = 1;
 
@@ -26,6 +28,7 @@ export default function UpdateJob() {
   const [data, setdata] = useState({});
   const [tags, setTags] = useState([]);
   const [flag, setFlag] = useState(false);
+  const [isLoading, setLoading] = useState(false);
   const [values, setValues] = useState({
     title: "",
     description: "",
@@ -47,18 +50,23 @@ export default function UpdateJob() {
     let mounted = true;
     Job.GetJobByID(id).then(function (data) {
       if (mounted) {
+        data.endDate = getDateWithFormat(data.endDate);
+        data.startDate = getDateWithFormat(data.startDate);
         setdata(data);
         setValues(data);
         setTags(values.language);
         setFlag(true);
+        const blocksFromHTML = convertFromHTML(data.description);
+        const state = ContentState.createFromBlockArray(
+          blocksFromHTML.contentBlocks,
+          blocksFromHTML.entityMap,
+        );
+        setEditorState(EditorState.createWithContent(state));
       }
-    });
-    console.log(values);
-    console.log("Log 2");
+    }, []);
     return () => (mounted = false);
   }, []);
 
-  console.log("Values-1", values);
   const onEditorStateChange = (editorState) => {
     setEditorState(editorState);
   };
@@ -69,9 +77,22 @@ export default function UpdateJob() {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
+    setLoading(true);
     values.language = tags;
-    console.log(values);
-    console.log("aaaa");
+    values.description = draftToHtml(convertToRaw(editorState.getCurrentContent()));
+    const startDate = new Date(values.startDate).getTime();
+    const endDate = new Date(values.endDate).getTime();
+    Job.UpdateJob({...values, startDate, endDate}).then((result) => {
+      if (result && result.status == 200) {
+        alert("Update successfully!");
+      } else {
+        alert("Update faild, please try later!");
+      }
+      setLoading(false);
+    }).catch((error) =>  {
+      alert(error)
+      setLoading(false);
+    });
   };
   function handleSelecetedTags(items) {
     setTags(items);
@@ -113,6 +134,18 @@ export default function UpdateJob() {
                     name="title"
                     id="title"
                     value={values.title}
+                  />
+                </div>
+              </div>
+              <div className="row mt-2">
+                <div className="col-md-12">
+                  <label className="labels">Tiny Description</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="tinyDes"
+                    id="tinyDes"
+                    value={values.tinyDes}
                   />
                 </div>
               </div>
@@ -207,7 +240,7 @@ export default function UpdateJob() {
                 </div>
               </div>
               <div className="mt-5 text-center">
-                <button className="btn btn-primary delete-button">
+                <button className="delete-button btn btn-danger">
                   Delete Job
                 </button>
               </div>
@@ -262,6 +295,19 @@ export default function UpdateJob() {
                     name="title"
                     id="title"
                     value={values.title || ""}
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+              <div className="row mt-2">
+                <div className="col-md-12">
+                  <label className="labels">Tiny Description</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="tinyDes"
+                    id="tinyDes"
+                    value={values.tinyDes || ""}
                     onChange={handleChange}
                   />
                 </div>
@@ -377,10 +423,11 @@ export default function UpdateJob() {
                   className="btn btn-primary profile-button mr-2"
                   type="button"
                   onClick={handleSubmit}
+                  disabled = {isLoading}
                 >
                   Update Job
                 </button>
-                <button className="btn btn-primary profile-button">
+                <button className="btn btn-danger" disabled = {isLoading}>
                   Delete
                 </button>
               </div>

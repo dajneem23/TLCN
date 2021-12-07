@@ -31,8 +31,8 @@ export const Job = {
     GetJobByID: async (id) => {
         try {
             const result = await axios.get(`${jobPath}/getJobById`, {
-                params : {
-                    id : id
+                params: {
+                    id: id
                 }
             });
             return result.data.job;
@@ -43,8 +43,8 @@ export const Job = {
     GetSuggestJobs: async (id) => {
         try {
             const result = await axios.get(`${jobPath}/getSuggestJobsByJobId`, {
-                params : {
-                    id : id
+                params: {
+                    id: id
                 }
             });
             return result.data.listJobs;
@@ -59,7 +59,13 @@ export const Job = {
         } catch (error) {
             console.log(error)
         }
+    },
+    UpdateJob: async (body) => {
+        try {
+            const result = await axios.post(`${jobPath}/update`, body);
+            return result;
+        } catch (error) {
+            console.log(error)
+        }
     }
-
-
 }
