@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-
+import { useHistory } from "react-router-dom"
 import "./style.css";
 import "ace-builds/src-noconflict/mode-javascript";
 import "ace-builds/src-noconflict/mode-java";
@@ -32,6 +32,7 @@ const JV = "java";
 
 export default function Exercise() {
   const { id } = useParams();
+  const history = useHistory();
   const { user, setUser, isAuthenticated, setisAuthenticated, info, setinfo } =
     useContext(AuthContext);
   const [problem, setProblem] = useState({});
@@ -45,7 +46,7 @@ export default function Exercise() {
   const [value, setValue] = useState(0);
   const [listSubmited, setListSubmited] = useState([]);
   useEffect(() => {
-    Compile.GetSubmitByUserId(user._id || "619a0ed806d1fa5372cab99f", id).then(
+    Compile.GetSubmitByUserId(user._id, id).then(
       (result) => {
         // delete result.message;
         result.result.map((item, i) => {
@@ -141,6 +142,9 @@ export default function Exercise() {
       setProblem(result);
       setCode(result.codeDefault["py"]);
       setLang("py");
+    }).catch(() => {
+      history.replace("/notfound");
+      window.location.reload();
     });
   }, []);
 
@@ -157,7 +161,7 @@ export default function Exercise() {
                 aria-label="basic tabs example"
               >
                 <Tab label="Problem" {...a11yProps(0)} />
-                <Tab label="Discussions" {...a11yProps(1)} />
+                <Tab label="Your submition" {...a11yProps(1)} />
               </Tabs>
             </Box>
             <TabPanel value={value} index={0}>

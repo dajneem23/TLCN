@@ -22,6 +22,7 @@ import { AuthContext } from "./Service/Auth.context";
 import ChatBox from "./Component/Chatbox/ChatBox";
 
 import UpdateJob from "./Component/JobsManager/UpdateJob"
+import CreateExercise from "./Component/CodeEditor/CreateExercise";
 const ROLE_ADMIN = 0;
 const ROLE_COOP = 1;
 const ROLE_INTER = 2;
@@ -46,6 +47,7 @@ function App() {
         <Route path="/job/update/:id" component={UpdateJob} />
         <Route path="/job/:id" component={JobDetail} />
         <Route path="/job" component={Search} />
+        <Route path="/createexercise" component={isAuthenticated ? CreateExercise : Login} />
         <Route path="/exercise" component={Exercise} />
         <Route path="/code/:id" component={isAuthenticated ? CodeEditor : Login} />
         <Route path="/createcv" component={isAuthenticated ? CreateCV : Login} />
@@ -53,6 +55,7 @@ function App() {
         <Route path="/home" component={Home} />
         <Route path="/jobsmanager" component={(user && user.role == ROLE_ADMIN || user && user.role == ROLE_COOP) ? JobsManagement : NotFound404} />
         <Route path="/usersmanager" component={UserManagement} />
+        <Route path="/notfound" component={NotFound404} />
         <Route component={NotFound404} />
       </Switch>
       <Footer />

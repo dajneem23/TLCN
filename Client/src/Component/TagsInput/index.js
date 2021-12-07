@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function TagsInput({ ...props }) {
   const classes = useStyles();
-  const { selectedTags, placeholder, tags, ...other } = props;
+  const { selectedTags, placeholder, allowDuplicated, tags, ...other } = props;
   const [inputValue, setInputValue] = React.useState("");
   const [selectedItem, setSelectedItem] = React.useState([]);
   useEffect(() => {
@@ -30,10 +30,13 @@ export default function TagsInput({ ...props }) {
         event.target.value.trim()
       );
 
-      if (duplicatedValues !== -1) {
-        setInputValue("");
-        return;
+      if (!allowDuplicated) {
+        if (duplicatedValues !== -1) {
+          setInputValue("");
+          return;
+        }
       }
+
       if (!event.target.value.replace(/\s/g, "").length) return;
 
       newSelectedItem.push(event.target.value.trim());

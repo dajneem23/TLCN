@@ -57,3 +57,12 @@
     height: 600px;
 }
 
+.create_exercise_container {
+    width: 100%;
+    margin: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
