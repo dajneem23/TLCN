@@ -171,5 +171,25 @@ JobRouter.get('/getSuggestJobsByJobId', async (req, res) => {
 
 })
 
+/**
+ * Update job
+ */
+JobRouter.post('/update',async (req,res)=>{
+    const {...content} = req.body
+    if(!content._id){
+        return res.status(500).json({"message":"missing required value"})
+    }
+    try{
+        Job.findOneAndUpdate({_id: content._id},{...content,'_id':content._id},{new: true},(err, job)=>{
+            if(err) return res.status(500).send(err.message )
+            if(!job)  return res.status(404).json({'message':"_id not found"})
+            return res.status(200).json(job)
+        })
+    }
+    catch(e){
+        return res.status(500).json({'message' :e.message});
+    }
+
+})
 
 module.exports = JobRouter;

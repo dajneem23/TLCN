@@ -30,7 +30,7 @@ const listDone = ["1", "4", "6", "7", "8", "12"];
 
 const columns = [
     { id: 'title', label: 'Title', minWidth: 300 },
-    { id: 'status', label: 'Status', minWidth: 100, align: 'center', },
+    { id: 'category', label: 'Category', minWidth: 100, align: 'center', },
     { id: 'type', label: 'Difficulty', minWidth: 100 },
     { id: 'author', label: 'Author', minWidth: 100 },
 ];
@@ -62,9 +62,10 @@ const authorStyle = {
     fontSize: 13,
 }
 
-const statusStyle = {
-    fontSize: 13,
-    color: "#336600"
+const categoryStyle = {
+    fontSize: 15,
+    color: "#3618F3",
+    fontWeight: "550"
 }
 
 export default function Exercise() {
@@ -150,7 +151,7 @@ export default function Exercise() {
                                                             style = authorStyle;
                                                             break;
                                                         default:
-                                                            style = statusStyle;
+                                                            style = categoryStyle;
                                                             break;
                                                     }
                                                     switch (value) {

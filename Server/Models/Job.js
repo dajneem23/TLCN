@@ -23,6 +23,9 @@ const Job = new mongose.Schema(
         address: {
             type: String
         },
+        workTime: {
+            type: String
+        },
         language: {
             type: Array
         },
