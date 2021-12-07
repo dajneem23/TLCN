@@ -103,7 +103,6 @@ JobRouter.post('/createNewJob', passport.authenticate('jwt', { session: false })
         let user = await User.findById(_id);
         user.listJobDetails.push(ok._id);
         user.save();
-
         return res.status(200).json({
             message: { msgBody: "Create new job successfully", newJob: newJob },
             msgError: false

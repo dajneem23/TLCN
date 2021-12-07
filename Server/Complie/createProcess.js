@@ -4,12 +4,8 @@ require("format-unicorn");
 const { generateFile } = require("./generateFile");
 const Config = require("./config");
 const path = require("path");
-const testCase = [0, 1, 3, 4];
-// docker exec -t py /bin/sh
-
 const outputPath = path.join(__dirname, "outputs");
 const codePath = path.join(__dirname, "codes");
-
 if (!fs.existsSync(outputPath)) {
   fs.mkdirSync(outputPath, { recursive: true });
 }
@@ -60,7 +56,7 @@ const CreateProcess = async (language, code, testcase, typeInput) => {
 
   try {
     var process = spawnSync(
-      "docker",
+      "docker", 
       [
         "exec",
         "-t",

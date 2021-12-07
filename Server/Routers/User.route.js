@@ -97,7 +97,14 @@ UserRoute.get('/info',passport.authenticate('jwt',{session : false}),(req,res)=>
     const {username,_id,role} = req.user;
    return res.status(200).json({isAuthenticated : true, user : {username,_id,role}});
 });
-
+userRouter.get('/logout',passport.authenticate('jwt',{session : false}),(req,res)=>{
+    res.clearCookie('access_token');
+    const{_id,username,role,fullname}=req.user;
+    res.json({
+        message:"you are logout",
+        user:{ username,_id,role,fullname},
+        success : true});
+});
 UserRoute.get('/details',passport.authenticate('jwt',{session : false}), async (req,res)=>{
     const {username,_id,role} = req.user;
 

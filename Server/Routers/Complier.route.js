@@ -25,10 +25,8 @@ ComplierRouter.post("/", async (req, res) => {
   try {
     const before = Date.now();
     var Results = await testCode(language,code,problem)
-    console.log(Results);
     const after = Date.now();
     var runtime = after - before
-    
     return res.status(200).json({
       code: code,
       language: language,
