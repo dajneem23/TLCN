@@ -79,20 +79,19 @@ ProblemRouter.get("/getProblemById", async (req, res) => {
 ProblemRouter.get("/submit", async (req, res) => {
   const userId = req.query.userId;
   const problemId = req.query.problemId;
-  const listSubmit = await Submition.find(
-    { userId: userId, problemId: problemId },
-    (error, result) => {
-      if (error) {
-        console.log(error);
-      }
-      if (!result) {
-        return res
-          .status(404)
-          .json({ message: "Can not find this Submiittion", msgError: true });
-      }
-      return res.status(200).json({ message: "Success",result: [...result] });
-    }
-  );
+  const listSubmit = await Submition.find({
+    $and: [
+      { 'userId': userId },
+      { 'problemId': problemId }
+    ]
+  })
+
+  return res.status(200).json({
+    message: "Get successfully",
+    result: listSubmit,
+    msgError: false
+  })
+
 });
 
 module.exports = ProblemRouter;

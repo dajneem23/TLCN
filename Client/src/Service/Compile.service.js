@@ -4,6 +4,7 @@ const submitPath = '/submit'
 const getAllProblems = '/problem/getAllProblems'
 const getProblemsById = "/problem/getProblemById"
 const getSubmitByUserId ="/problem/submit"
+const createExercisePath = '/problem/createNewProblem'
 export const Compile = {
     CompileCode: async (lang, code, problemId, userId) => {
         try {
@@ -48,6 +49,15 @@ export const Compile = {
                 }
             })
             return result.data;
+        } catch (error) {
+            console.log(error);
+        }
+    },
+    CreateExercise: async (body) => {
+        try {
+            const result = await axios.post(createExercisePath, body)
+
+            return result;
         } catch (error) {
             console.log(error);
         }
