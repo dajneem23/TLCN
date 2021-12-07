@@ -281,8 +281,8 @@ export default function CreateExercise() {
                                 selectedTags={handleSelecetedInput}
                                 fullWidth
                                 variant="outlined"
-                                id="language"
-                                name="language"
+                                id="input"
+                                name="input"
                                 allowDuplicated = {true}
                                 value={input}
                             />
@@ -293,8 +293,8 @@ export default function CreateExercise() {
                                 selectedTags={handleSelecetedOutput}
                                 fullWidth
                                 variant="outlined"
-                                id="language"
-                                name="language"
+                                id="output"
+                                name="output"
                                 allowDuplicated = {true}
                                 value={output}
                             />

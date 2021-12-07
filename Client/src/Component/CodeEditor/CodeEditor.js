@@ -329,7 +329,7 @@ export default function Exercise() {
                       {Object.values(item).map((field) => {
                         // changed here
                         console.log("field: ", field);
-                        return <td>{field.join(" ")}</td>;
+                        return <td>{field ? field.join(" ") : ""}</td>;
                       })}
                     </tr>
                   );
