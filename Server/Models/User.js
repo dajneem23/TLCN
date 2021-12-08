@@ -38,6 +38,12 @@ const User = new mongose.Schema(
         avatar:{
             type:String
         },
+        phoneNumber:{
+            type:String
+        },
+        experience:{
+            type: Number,
+        },
         exp:{
             type:String,
             required:[()=>{

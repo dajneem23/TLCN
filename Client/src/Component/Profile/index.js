@@ -1,20 +1,33 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
 import FileBase64 from "react-file-base64";
+import { AuthContext } from "../../Service/Auth.context";
+import { User } from "../../Service/User.service"; 
+import { getDateWithFormat, getDateWithString } from "../../Utls/DateTimeUtls";
 import "./style.css";
 
 export default function Profile() {
-  const [data, setData] = React.useState({
-    image: "",
+  const [values, setValues] = useState({
+    fullname: "",
+    avatar: "",
+    email: "",
+    phoneNumber: "",
+    sex: "",
+    dob: "",
+    experience: "",
+    address: "",
   });
+  useEffect(()=>{
+    User.GetDetails().then((result) => {
+      
+      console.log(result.data.user.dob);
+      console.log(result.data.user);
+      setValues(result.data.user);
+    });
+  },[])
+  console.log(values);
   const defaultImg =
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog";
-  const onSubmit = React.useCallback(
-    (e) => {
-      e.preventDefault();
-      console.log({ data });
-    },
-    [data]
-  );
+
 
   return (
     <div className="container emp-profile">
@@ -23,29 +36,17 @@ export default function Profile() {
           <div className="col-md-4">
             <div className="profile-img">
               <img
-                src={!data.image ? defaultImg : data.image} alt=""
+                src={!values.avatar ? defaultImg : values.avatar} alt=""
                 alt=""
+                style={{maxHeight: 170}}
               />
-              <div className="file btn btn-lg btn-primary">
-                  Change image
-                <FileBase64
-                  accept="image/*"
-                  multiple={false}
-                  type="file"
-                  value={data.image}
-                  onDone={({ base64 }) => setData({ ...data, image: base64 })}
-                />
-              </div>
+              
             </div>
-            <button className="btn btn-save-img" onClick={onSubmit}>Save image</button>
           </div>
           <div className="col-md-6">
             <div className="profile-head">
-              <h5>Kshiti Ghelani</h5>
+              <h5>{values.fullname}</h5>
               <h6>Web Developer and Designer</h6>
-              <p className="proile-rating">
-                RANKINGS : <span>8/10</span>
-              </p>
               <ul className="nav nav-tabs" id="myTab" role="tablist">
                 <li className="nav-item">
                   <a
@@ -96,10 +97,10 @@ export default function Profile() {
               >
                 <div className="row">
                   <div className="col-md-6">
-                    <label>Name</label>
+                    <label>User Name</label>
                   </div>
                   <div className="col-md-6">
-                    <p>Kshiti Ghelani</p>
+                    <p>{values.userName}</p>
                   </div>
                 </div>
                 <div className="row">
@@ -107,7 +108,7 @@ export default function Profile() {
                     <label>Email</label>
                   </div>
                   <div className="col-md-6">
-                    <p>kshitighelani@gmail.com</p>
+                    <p>{values.email}</p>
                   </div>
                 </div>
                 <div className="row">
@@ -115,7 +116,7 @@ export default function Profile() {
                     <label>Sex</label>
                   </div>
                   <div className="col-md-6">
-                    <p>Female</p>
+                    <p>{values.sex}</p>
                   </div>
                 </div>
                 <div className="row">
@@ -123,7 +124,7 @@ export default function Profile() {
                     <label>DoB</label>
                   </div>
                   <div className="col-md-6">
-                    <p>19/09/1996</p>
+                    <p>{values.dob}</p>
                   </div>
                 </div>
                 <div className="row">
@@ -131,7 +132,7 @@ export default function Profile() {
                     <label>Phone</label>
                   </div>
                   <div className="col-md-6">
-                    <p>123 456 7890</p>
+                    <p>{values.phoneNumber}</p>
                   </div>
                 </div>
                 <div className="row">
@@ -139,15 +140,7 @@ export default function Profile() {
                     <label>Experience</label>
                   </div>
                   <div className="col-md-6">
-                    <p>2 year</p>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-md-6">
-                    <label>Major</label>
-                  </div>
-                  <div className="col-md-6">
-                    <p>Frontend developer</p>
+                    <p>{values.experience} years</p>
                   </div>
                 </div>
                 <div className="row">
@@ -155,7 +148,7 @@ export default function Profile() {
                     <label>Address</label>
                   </div>
                   <div className="col-md-6">
-                    <p>1110A7, Phạm Văn Đồng</p>
+                    <p>{values.address}</p>
                   </div>
                 </div>
               </div>

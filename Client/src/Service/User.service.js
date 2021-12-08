@@ -35,5 +35,13 @@ export const User = {
   },
   GetDetails: async () => {
     return await axios.get(`${userPath}/details`);
-  }
+  },
+  UpdateUser: async (body) => {
+    try {
+        const result = await axios.post(`${userPath}/update`, body);
+        return result;
+    } catch (error) {
+        console.log(error)
+    }
+}
 };
