@@ -68,4 +68,12 @@
     padding-top:30px;
     min-height: 860px;
 }
-
+/*********************************************************/
+.manager_ex_container{
+    margin: 50px;
+    min-height: 860px;
+}
+.btn_del_ex{
+    display: flex;
+    justify-content: center;
+}
