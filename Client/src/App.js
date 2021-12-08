@@ -13,7 +13,8 @@ import Search from "./Component/Search/index";
 import CodeEditor from "./Component/CodeEditor/CodeEditor";
 import Exercise from "./Component/CodeEditor/ExercisePage";
 import JobsManagement from "./Component/JobsManager/JobManagementForAdmin";
-import UserManagement from "./Component/UserManager/index"
+import UserManagement from "./Component/UserManager/index";
+import ExerciseManager from "./Component/CodeEditor/ExerciseManager"
 import PostNewJob from "./Component/PostNewJob/index";
 import JobDetail from "./Component/JobDetail/index";
 import CreateCV from "./Component/CV/CreateCV";
@@ -48,8 +49,9 @@ function App() {
         <Route path="/job/:id" component={JobDetail} />
         <Route path="/job" component={Search} />
         <Route path="/createexercise" component={isAuthenticated ? CreateExercise : Login} />
-        <Route path="/exercise" component={Exercise} />
         <Route path="/code/:id" component={isAuthenticated ? CodeEditor : Login} />
+        <Route path="/exercise" component={Exercise} />
+        <Route path="/exercisemanager" component={ExerciseManager} />
         <Route path="/createcv" component={isAuthenticated ? CreateCV : Login} />
         <Route path="/chatbox/:id" component={isAuthenticated ? ChatBox : Login} />
         <Route path="/home" component={Home} />

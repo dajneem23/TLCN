@@ -70,7 +70,7 @@ const categoryStyle = {
 
 export default function Exercise() {
     const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [rowsPerPage, setRowsPerPage] = React.useState(1);
     const [isAsc, setFilter] = React.useState(true);
     const [listProblems, setListProblems] = React.useState([]);
     const [rows, setRows] = React.useState([]);
