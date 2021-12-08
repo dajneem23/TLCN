@@ -19,7 +19,8 @@ app.use(function(req, res, next) {
    res.header("Access-Control-Allow-Origin", "http://52.7.3.87:3000");// update to match the domain you will make the request from
    res.header('Access-Control-Allow-Credentials', true);
    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-   res.header("Access-Control-Allow-Methods", "GET, POST, PUT");
+   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+
   next();
 });
 dotenv.config();
@@ -53,6 +54,7 @@ app.get('/test',(req, res)=>{
       ok:'true'
   })
 })
+ 
 const port=process.env.PORT
 app.listen(port,'0.0.0.0',
   ()=>{console.log("server is running!! " +port)});
