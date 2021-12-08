@@ -8,7 +8,7 @@ Huỳnh Xuân Phụng<br/>
   18110199-Trần Nhật Thành<br/>
   18110201-Lê Đức Thắng<br/>
 **Danh sách yêu cầu của đề tài:**<br/>
-###Yêu cầu môi trường:
+### Yêu cầu môi trường:
 -nodejs:^13.
 - docker + docker-compose
 ###Cách thực thi và build project
