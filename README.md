@@ -9,7 +9,7 @@ Huỳnh Xuân Phụng<br/>
   18110201-Lê Đức Thắng<br/>
 **Danh sách yêu cầu của đề tài:**<br/>
 ### Yêu cầu môi trường:
--nodejs:^13.
+- nodejs:^13.
 - docker + docker-compose
 ###Cách thực thi và build project
 1. Clone project và cd vào thư mục chính
