@@ -11,14 +11,9 @@ dotenv.config();
 
 const ProblemRouter = express.Router();
 
-ProblemRouter.post(
-  "/createNewProblem",
-  passport.authenticate("jwt", { session: false }),
-  async (req, res) => {
+ProblemRouter.post("/createNewProblem",passport.authenticate("jwt", { session: false }),async (req, res) => {
     const body = req.body;
-
     //Todo: required authentication
-
     if (body == null || body == undefined) {
       return res
         .status(500)
@@ -41,12 +36,10 @@ ProblemRouter.post(
         msgError: false,
       });
     });
-  }
-);
+});
 
 ProblemRouter.get("/getAllProblems", async (req, res) => {
-  const allProblem = await Problem.find({ isDelete: false });
-
+  const allProblem = await Problem.find({ isDeleted: false });
   return res.status(200).json({
     message: "Get successfully",
     listAllProblems: allProblem,
@@ -58,7 +51,7 @@ ProblemRouter.get("/getProblemById", async (req, res) => {
   const id = req.query.id;
   const problem = await Problem.findById(id);
 
-  if (problem == null || problem == undefined) {
+  if (problem == null || problem == undefined || !problem.isDeleted) {
     return res
       .status(404)
       .json({ message: "Can not find this problem", msgError: true });
@@ -93,5 +86,16 @@ ProblemRouter.get("/submit", async (req, res) => {
   })
 
 });
+ProblemRouter.delete("/:id", async (req, res) => {
+  const problemId = req.params.id;
+  Problem.findOneAndUpdate({_id: problemId},{isDeleted: true},(err, problem)=>{
+    if(err) return res.status(500).json({'message': err.message});
+    if(!problem)  return res.status(404).json({'message':"_id not found"})
+    
+    return res.status(200).json({message: "delete successfully", msgError: false})
+})
 
+   
+
+});
 module.exports = ProblemRouter;
