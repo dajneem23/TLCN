@@ -70,7 +70,7 @@ const categoryStyle = {
 
 export default function Exercise() {
     const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(1);
+    const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const [isAsc, setFilter] = React.useState(true);
     const [listProblems, setListProblems] = React.useState([]);
     const [rows, setRows] = React.useState([]);
@@ -84,9 +84,9 @@ export default function Exercise() {
             setListProblems(result);
             setRows(result);
         })
-    },[])
+    }, [])
 
-    
+
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -98,7 +98,7 @@ export default function Exercise() {
     };
 
     const sort = (order) => {
-        const newRows = rows.sort((a,b) => {
+        const newRows = rows.sort((a, b) => {
             let sort = 1;
             if (isAsc) {
                 sort = a[order] > b[order] ? 1 : -1;
@@ -127,9 +127,9 @@ export default function Exercise() {
                                             style={{ minWidth: column.minWidth }}
                                         >
                                             {column.label}
-                                            <img src={sortIcon} className = "sort_icon" onClick = {() => {
+                                            <img src={sortIcon} className="sort_icon" onClick={() => {
                                                 sort(column.id)
-                                            }}/>
+                                            }} />
                                         </TableCell>
                                     ))}
                                 </TableRow>
@@ -191,6 +191,15 @@ export default function Exercise() {
                         onRowsPerPageChange={handleChangeRowsPerPage}
                     />
                 </Paper>
+            </Container>
+            <Container maxWidth="lg">
+                <div className="editor_header_container">
+                    <button className="btn btn-primary">
+                        <a href="/createexercise">
+                            Create Exercise
+                        </a>
+                    </button>
+                </div>
             </Container>
         </div>
     );

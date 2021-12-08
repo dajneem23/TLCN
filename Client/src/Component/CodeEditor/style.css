@@ -72,6 +72,9 @@
 .manager_ex_container{
     margin: 50px;
     min-height: 860px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 .btn_del_ex{
     display: flex;

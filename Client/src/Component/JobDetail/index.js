@@ -11,6 +11,7 @@ import { calculateTimeAgo, getDateWithFormat } from "../../Utls/DateTimeUtls";
 import { BaseListJob } from "../Home/BaseListJob";
 import logo from "../../IMG/woekday.jpg";
 import { Job } from "../../Service/Job.service";
+import { useHistory } from "react-router-dom";
 
 export default function Detail() {
   const { id } = useParams();
@@ -18,6 +19,8 @@ export default function Detail() {
   const [data, setdata] = useState([]);
   const [job, setJob] = useState("");
   const [listHotestJobs, setListHotestJobs] = useState([]);
+
+  const history = useHistory();
 
   useEffect(() => {
     window.addEventListener("resize", () => {
@@ -32,6 +35,9 @@ export default function Detail() {
     });
     Job.GetJobByID(id).then((data) => {
       setJob(data);
+    }).catch(error => {
+        history.replace("/notfound");
+        window.location.reload();
     })
   }, []);
 
@@ -62,8 +68,8 @@ export default function Detail() {
                     {job.title}
                   </h4>
                   <p className="no-margin-bottom">
-                  <div dangerouslySetInnerHTML={{ __html: job.description }} />
-                </p>
+                    <div dangerouslySetInnerHTML={{ __html: job.description }} />
+                  </p>
                   <div className="contact-info-section margin-40px-tb">
                     <ul className="list-style9 no-margin">
                       <li>
@@ -136,22 +142,22 @@ export default function Detail() {
                     </ul>
                   </div>
                 </div>
-        <h5 className="font-size24 sm-font-size22 xs-font-size20">
-        Best for you
-      </h5>
-      <div className="sm-no-margin">
-        <Box>
-          <Grid container className="container_all_jobsdetail">
-            {listHotestJobs.map((item, i) => {
-              return (
-                <Grid className="container_grid_hover">
-                  <CardJob key={i} item={item} />
-                </Grid>
-              );
-            })}
-          </Grid>
-        </Box>
-      </div>
+                <h5 className="font-size24 sm-font-size22 xs-font-size20">
+                  Best for you
+                </h5>
+                <div className="sm-no-margin">
+                  <Box>
+                    <Grid container className="container_all_jobsdetail">
+                      {listHotestJobs.map((item, i) => {
+                        return (
+                          <Grid className="container_grid_hover">
+                            <CardJob key={i} item={item} />
+                          </Grid>
+                        );
+                      })}
+                    </Grid>
+                  </Box>
+                </div>
               </div>
 
               <div className="col-md-12"></div>
@@ -159,7 +165,7 @@ export default function Detail() {
           </div>
         </div>
       </div>
-     
+
     </div>
   );
 }
@@ -168,17 +174,17 @@ function CardJob(props) {
   const timeAgo = calculateTimeAgo(props.item.createDate);
 
   return (
-      <a href="/" >
-          <Card variant="outlined" className="container_card_all_jobdetail">
-              {/* <CardMedia component = "img" image={logo} height = "140" width = "380"/> */}
-              <img src={logo} className="card_image" />
-              <CardContent style={{ width: '100%' }}>
-                  <div className="card_title_detail">{props.item.title}</div>
-                  <div className="">$ {props.item.salary}</div>
-                  <div className="card_date_to"><span>To: {dateEnd}</span></div>
-                  <div className="card_date_to">{timeAgo}</div>
-              </CardContent>
-          </Card>
-      </a>
+    <a href="/" >
+      <Card variant="outlined" className="container_card_all_jobdetail">
+        {/* <CardMedia component = "img" image={logo} height = "140" width = "380"/> */}
+        <img src={logo} className="card_image" />
+        <CardContent style={{ width: '100%' }}>
+          <div className="card_title_detail">{props.item.title}</div>
+          <div className="">$ {props.item.salary}</div>
+          <div className="card_date_to"><span>To: {dateEnd}</span></div>
+          <div className="card_date_to">{timeAgo}</div>
+        </CardContent>
+      </Card>
+    </a>
   )
 }

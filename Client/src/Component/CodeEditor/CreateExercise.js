@@ -33,11 +33,11 @@ export default function CreateExercise() {
     const [title, setTitle] = useState("");
     const [category, setCategory] = useState("");
 
-    const [javaCode, setJavaCode] = useState("");
-    const [pythonCode, setPythonCode] = useState("");
-    const [cCode, setCCode] = useState("");
-    const [cppCode, setCppCode] = useState("");
-    const [csCode, setCsCode] = useState("");
+    const [javaCode, setJavaCode] = useState(codeDefault.codeJava);
+    const [pythonCode, setPythonCode] = useState(codeDefault.codePy);
+    const [cCode, setCCode] = useState(codeDefault.codeC);
+    const [cppCode, setCppCode] = useState(codeDefault.codeCpp);
+    const [csCode, setCsCode] = useState(codeDefault.codeCs);
 
     const onSubmit = async () => {
         const description = draftToHtml(convertToRaw(editorState.getCurrentContent()));
@@ -342,4 +342,12 @@ function a11yProps(index) {
         id: `simple-tab-${index}`,
         "aria-controls": `simple-tabpanel-${index}`,
     };
+}
+
+const codeDefault = {
+    codeC: '#include<stdio.h>\nn\nint main(int argc, char *argv[])\n{\n return 0;\n}',
+    codeCpp: '#include<iostream>\nint main(int argc, char *argv[])\n{\n return 0;\n \n}',
+    codeCs: 'using System;\nusing System.Collections.Generic;\nusing System.Linq;\nusing System.Text;\nusing System.Threading.Tasks;\npublic class NewExercise\n{\n         \n    public static void Main(string[] args){\n         \n }\n}',
+    codeJava: 'public class SubTwoNumber{\n\n  public static void main(String []args){\n   \n    \n    \n  }\n\n}',
+    codePy: 'import math\nimport os\nimport random\nimport re\nimport sys\n'
 }

@@ -51,12 +51,12 @@ function App() {
         <Route path="/createexercise" component={isAuthenticated ? CreateExercise : Login} />
         <Route path="/code/:id" component={isAuthenticated ? CodeEditor : Login} />
         <Route path="/exercise" component={Exercise} />
-        <Route path="/exercisemanager" component={ExerciseManager} />
+        <Route path="/exercisemanager" component={isAuthenticated && user.role == ROLE_ADMIN ? ExerciseManager : NotFound404} />
         <Route path="/createcv" component={isAuthenticated ? CreateCV : Login} />
         <Route path="/chatbox/:id" component={isAuthenticated ? ChatBox : Login} />
         <Route path="/home" component={Home} />
         <Route path="/jobsmanager" component={(user && user.role == ROLE_ADMIN || user && user.role == ROLE_COOP) ? JobsManagement : NotFound404} />
-        <Route path="/usersmanager" component={UserManagement} />
+        <Route path="/usersmanager" component={(user && user.role == ROLE_ADMIN || user && user.role == ROLE_COOP) ? UserManagement : NotFound404} />
         <Route path="/notfound" component={NotFound404} />
         <Route component={NotFound404} />
       </Switch>
