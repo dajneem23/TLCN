@@ -1,5 +1,4 @@
 .page_code_container {
-    padding-top: 30px;
     padding-bottom: 30px;
     min-height: 700px;
     height: 100%;
@@ -64,5 +63,9 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
+}
+.page_code_container{
+    padding-top:30px;
+    min-height: 860px;
 }
 

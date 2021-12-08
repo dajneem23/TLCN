@@ -59,9 +59,12 @@ const formSignUp = ({ submitForm }) => {
   //   }
 
   // };
-
+  const fullHeight = {
+    minHeight : '860px'
+  };
   return (
     <ThemeProvider theme={theme}>
+      <div style={fullHeight}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -168,17 +171,24 @@ const formSignUp = ({ submitForm }) => {
             >
               Sign Up
             </Button>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link href="#" variant="body2">
-                  Already have an account? Sign in
-                </Link>
+            <Grid container>
+                <Grid item xs>
+                  <Link href="/signupcoop" variant="body2">
+                    Sign up for CO-OP
+                  </Link>
+                </Grid>
+                <Grid item>
+                  <Link href="signup" variant="body2">
+                    {"Already have an account? Sign in"}
+                  </Link>
+                </Grid>
               </Grid>
-            </Grid>
+          
           </Box>
         </Box>
         {/* <Copyright sx={{ mt: 5 }} /> */}
       </Container>
+      </div>
     </ThemeProvider>
   );
 };

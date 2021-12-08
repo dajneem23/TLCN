@@ -59,126 +59,134 @@ const formSignUp = ({ submitForm }) => {
   //   }
 
   // };
-
+  const fullHeight = {
+    minHeight: "860px",
+  };
   return (
     <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 10,
-            paddingBottom: 5,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign up for Co-op
-          </Typography>
+      <div style={fullHeight}>
+        <Container component="main" maxWidth="xs">
+          <CssBaseline />
           <Box
-            component="form"
-            noValidate
-            onSubmit={handleSubmit}
-            sx={{ mt: 3 }}
+            sx={{
+              marginTop: 10,
+              paddingBottom: 5,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
           >
-             <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  id="fullname"
-                  label="Co-op Name"
-                  name="fullname"
-                  autoComplete="fullname"
-                  variant="standard"
-                  value={values.fullname}
-                  onChange={handleChange}
-                />             
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  id=""
-                  label="UserName"
-                  name="userName"
-                  autoComplete="userName"
-                  variant="standard"
-                  value={values.userName}
-                  onChange={handleChange}
-                />
-                {errors.userName && <p className="error">{errors.userName}</p>}
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  autoComplete="email"
-                  name="email"
-                  fullWidth
-                  id="email"
-                  label=" Email"
-                  variant="standard"
-                  value={values.email}
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
-                  variant="standard"
-                  value={values.password}
-                  onChange={handleChange}
-                />
-                {errors.password && <p className="error">{errors.password}</p>}
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  name="password2"
-                  label="Confirm Password"
-                  type="password"
-                  id="password2"
-                  autoComplete="new-password"
-                  variant="standard"
-                  value={values.password2}
-                  onChange={handleChange}
-                />
-                {errors.password2 && (
-                  <p className="error">{errors.password2}</p>
-                )}
-              </Grid>
-              {/* <Grid item xs={12}>
+            <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
+              <LockOutlinedIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
+              Sign up for Co-op
+            </Typography>
+            <Box
+              component="form"
+              noValidate
+              onSubmit={handleSubmit}
+              sx={{ mt: 3 }}
+            >
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    id="fullname"
+                    label="Co-op Name"
+                    name="fullname"
+                    autoComplete="fullname"
+                    variant="standard"
+                    value={values.fullname}
+                    onChange={handleChange}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    id=""
+                    label="UserName"
+                    name="userName"
+                    autoComplete="userName"
+                    variant="standard"
+                    value={values.userName}
+                    onChange={handleChange}
+                  />
+                  {errors.userName && (
+                    <p className="error">{errors.userName}</p>
+                  )}
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    autoComplete="email"
+                    name="email"
+                    fullWidth
+                    id="email"
+                    label=" Email"
+                    variant="standard"
+                    value={values.email}
+                    onChange={handleChange}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    name="password"
+                    label="Password"
+                    type="password"
+                    id="password"
+                    autoComplete="new-password"
+                    variant="standard"
+                    value={values.password}
+                    onChange={handleChange}
+                  />
+                  {errors.password && (
+                    <p className="error">{errors.password}</p>
+                  )}
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    name="password2"
+                    label="Confirm Password"
+                    type="password"
+                    id="password2"
+                    autoComplete="new-password"
+                    variant="standard"
+                    value={values.password2}
+                    onChange={handleChange}
+                  />
+                  {errors.password2 && (
+                    <p className="error">{errors.password2}</p>
+                  )}
+                </Grid>
+                {/* <Grid item xs={12}>
                 <FormControlLabel
                   control={<Checkbox value="allowExtraEmails" color="primary" />}
                   label="I want to receive inspiration, marketing promotions and updates via email."
                 />
               </Grid> */}
-            </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Sign Up
-            </Button>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link href="#" variant="body2">
-                  Already have an account? Sign in
-                </Link>
               </Grid>
-            </Grid>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Sign Up
+              </Button>
+              <Grid container justifyContent="flex-end">
+                <Grid item>
+                  <Link href="#" variant="body2">
+                    Already have an account? Sign in
+                  </Link>
+                </Grid>
+              </Grid>
+            </Box>
           </Box>
-        </Box>
-        {/* <Copyright sx={{ mt: 5 }} /> */}
-      </Container>
+          {/* <Copyright sx={{ mt: 5 }} /> */}
+        </Container>
+      </div>
     </ThemeProvider>
   );
 };

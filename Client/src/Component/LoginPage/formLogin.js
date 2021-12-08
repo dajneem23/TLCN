@@ -38,7 +38,9 @@ function Copyright(props) {
     </Typography>
   );
 }
-
+const fullHeight = {
+  minHeight : '860px'
+};
 const theme = createTheme();
 
 export default function SignIn({ submitFormLogin }) {
@@ -56,9 +58,8 @@ export default function SignIn({ submitFormLogin }) {
   //     password: data.get('password'),
   //   });
   // };
-
   return (
-    <div className="">
+    <div style={fullHeight}>
       <ThemeProvider theme={theme}>
         <Container component="main" maxWidth="xs">
           <CssBaseline />

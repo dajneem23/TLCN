@@ -1,4 +1,4 @@
-.page_container {
+.page_manager_container {
     padding-top: 30px;
     padding-bottom: 30px;
     min-height: 700px;
@@ -6,6 +6,7 @@
     padding-left: 50px;
     padding-right: 50px;
     background-color: #EEEEEE;
+    min-height: 860px;
 }
 
 .page_title {
@@ -64,6 +65,14 @@
 .code_editor {
     width: 100%;
     height: 600px;
+}
+.container-create{
+    display: flex;
+    justify-content: flex-end;
+}
+.btn-create-job{
+    margin-top: 5px;
+    border-radius:10px;
 }
 /*----------------------------Update Job---------------------------------------*/
 .container-detail{

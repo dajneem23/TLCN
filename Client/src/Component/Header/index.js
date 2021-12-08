@@ -11,8 +11,10 @@ import { FcHome } from "react-icons/fc";
 import { FcNews } from "react-icons/fc";
 import { ImNewspaper } from "react-icons/im";
 import { IoIosLogIn } from "react-icons/io";
+import ChatIcon from '@mui/icons-material/Chat';
 import { FcContacts } from "react-icons/fc";
 import { AuthContext } from "../../Service/Auth.context";
+import CodeIcon from '@mui/icons-material/Code';
 import "./style.css";
 import { User } from "../../Service/User.service";
 const ROLE_ADMIN = 0;
@@ -56,7 +58,7 @@ export default function Header() {
           <li className="nav-item">
             <a className="nav-link" href="/exercise">
               {" "}
-              <FcNews /> Exercise{" "}
+              <CodeIcon /> Exercise{" "}
             </a>
           </li>
           {user.role == ROLE_ADMIN && <li className="nav-item">
@@ -115,7 +117,7 @@ function Auth() {
       <ul className="navbar-nav ml-auto">
       <li className="nav-item">
           <a className="nav-link" href="/chatbox">
-            chatbox
+            <ChatIcon/>Chatbox
           </a>
         </li>
         <li className="nav-item">

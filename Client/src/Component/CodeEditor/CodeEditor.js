@@ -6,7 +6,17 @@ import PropTypes from "prop-types";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { useHistory } from "react-router-dom"
+import { useHistory } from "react-router-dom";
+import Paper from "@mui/material/Paper";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TablePagination from "@mui/material/TablePagination";
+import TableRow from "@mui/material/TableRow";
+import { getDateWithFormat } from "../../Utls/DateTimeUtls";
+import sortIcon from "../../IMG//icon/sort.png";
 import "./style.css";
 import "ace-builds/src-noconflict/mode-javascript";
 import "ace-builds/src-noconflict/mode-java";
@@ -17,6 +27,8 @@ import "ace-builds/src-noconflict/theme-github";
 import "ace-builds/src-noconflict/ext-language_tools";
 import "ace-builds/src-noconflict/ext-beautify";
 import { Box } from "@mui/system";
+import ArrowRightSharpIcon from '@mui/icons-material/ArrowRightSharp';
+import SendIcon from '@mui/icons-material/Send';
 import { Compile } from "../../Service/Compile.service";
 import { useParams } from "react-router";
 import { AuthContext } from "../../Service/Auth.context";
@@ -30,6 +42,24 @@ const CP = "c++";
 const CS = "c#";
 const JV = "java";
 
+const columns = [
+  { id: "language", label: "Language", minWidth: 300 },
+  { id: "runTime", label: "Runtime", minWidth: 300 },
+  { id: "result", label: "Testcase Done", minWidth: 300 },
+  { id: "submitDate", label: "Date", minWidth: 100, align: "center" },
+];
+const titleStyle = {
+  fontSize: 15,
+  fontWeight: "550",
+  maxLines: 1,
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+};
+const easyStyle = {
+  fontSize: 13,
+  color: "#80FF00",
+  fontWeight: "550",
+};
 export default function Exercise() {
   const { id } = useParams();
   const history = useHistory();
@@ -45,27 +75,31 @@ export default function Exercise() {
   // const [mode, setMode] = useState("C++");
   const [value, setValue] = useState(0);
   const [listSubmited, setListSubmited] = useState([]);
+
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(3);
+  const [isAsc, setFilter] = React.useState(true);
+  const [rows, setRows] = React.useState([]);
+
   useEffect(() => {
-    Compile.GetSubmitByUserId(user._id, id).then(
-      (result) => {
-        // delete result.message;
-        result.result.map((item, i) => {
-          delete item._id;
-          delete item.isDeleted;
-          delete item.__v;
-          delete item.userId;
-          delete item.problemId;
-          item.submitDate = new Date(item.submitDate).toLocaleString();
-          item.result = item.result.match;
-          //item.results= item.resluts.match;
-          console.log("item1", item);
-        });
-        setListSubmited(result.result);
-        console.log(result.result);
-      }
-    );
+    Compile.GetSubmitByUserId(user._id, id).then((result) => {
+      // delete result.message;
+      result.result.map((item, i) => {
+        delete item._id;
+        delete item.isDeleted;
+        delete item.__v;
+        delete item.userId;
+        delete item.problemId;
+        item.submitDate = new Date(item.submitDate).toLocaleString();
+        item.result = item.result.match;
+        //item.results= item.resluts.match;
+      });
+      setListSubmited(result.result);
+      setRows(result.result);
+      // console.log("result",result.result);
+    });
   }, []);
-  console.log("Sub", listSubmited);
+  console.log("row", rows);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -116,12 +150,7 @@ export default function Exercise() {
     console.log(code);
     console.log(language);
     setButton({ enable: true, color: "error" });
-    Compile.CompileCode(
-      language,
-      code,
-      id,
-      user._id
-    )
+    Compile.CompileCode(language, code, id, user._id)
       .then((result) => {
         setIsSubmit(true);
         setButton({ enable: false, color: "success" });
@@ -138,16 +167,39 @@ export default function Exercise() {
   };
 
   useEffect(() => {
-    Compile.GetProblemsById(id).then((result) => {
-      setProblem(result);
-      setCode(result.codeDefault["py"]);
-      setLang("py");
-    }).catch(() => {
-      history.replace("/notfound");
-      window.location.reload();
-    });
+    Compile.GetProblemsById(id)
+      .then((result) => {
+        setProblem(result);
+        setCode(result.codeDefault["py"]);
+        setLang("py");
+      })
+      .catch(() => {
+        history.replace("/notfound");
+        window.location.reload();
+      });
   }, []);
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
 
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
+
+  const sort = (order) => {
+    const newRows = rows.sort((a, b) => {
+      let sort = 1;
+      if (isAsc) {
+        sort = a[order] > b[order] ? 1 : -1;
+      } else {
+        sort = a[order] < b[order] ? 1 : -1;
+      }
+      return sort;
+    });
+    setRows(newRows);
+    setFilter(!isAsc);
+  };
   return (
     <div className="page_code_container">
       <ProblemTitle title={problem.title} />
@@ -169,32 +221,83 @@ export default function Exercise() {
             </TabPanel>
             <TabPanel value={value} index={1}>
               {listSubmited ? (
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Code</th>
-                      <th>Language</th>
-                      <th>Testcase done</th>
-                      <th>Runtime</th>
-                      <th>Date Submit</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {listSubmited.map((item) => {
-                      // changed here
-                      console.log("item: ", item);
-                      return (
-                        <tr>
-                          {Object.values(item).map((field) => {
-                            // changed here
-                            console.log("field: ", field);
-                            return <td>{field}</td>;
+                <Paper sx={{ width: "100%", overflow: "hidden" }}>
+                  <TableContainer>
+                    <Table stickyHeader aria-label="sticky table">
+                      <TableHead>
+                        <TableRow>
+                          {columns.map((column) => (
+                            <TableCell
+                              key={column.id}
+                              align={column.align}
+                              style={{ minWidth: column.minWidth }}
+                            >
+                              {column.label}
+                              <img
+                                src={sortIcon}
+                                className="sort_icon"
+                                onClick={() => {
+                                  sort(column.id);
+                                }}
+                              />
+                            </TableCell>
+                          ))}
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {rows
+                          .slice(
+                            page * rowsPerPage,
+                            page * rowsPerPage + rowsPerPage
+                          )
+                          .map((row) => {
+                            return (
+                              <TableRow
+                                hover
+                                role="checkbox"
+                                tabIndex={-1}
+                                key={row._id}
+                              >
+                                {columns.map((column) => {
+                                  const value = row[column.id];
+                                  let display = value;
+                                  let style = {};
+                                  if (
+                                    column.id != "result" &&
+                                    column.id != "runTime" &&
+                                    column.id != "language"
+                                  ) {
+                                    display = getDateWithFormat(value);
+                                  } else {
+                                    style = { ...titleStyle };
+                                  }
+
+                                  return (
+                                    <TableCell
+                                      key={column.id}
+                                      align={column.align}
+                                      style={style}
+                                    >
+                                      {display}
+                                    </TableCell>
+                                  );
+                                })}
+                              </TableRow>
+                            );
                           })}
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                  <TablePagination
+                    rowsPerPageOptions={[]}
+                    component="div"
+                    count={rows.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                  />
+                </Paper>
               ) : (
                 ""
               )}
@@ -280,7 +383,7 @@ export default function Exercise() {
               onSubmit(code, lang);
             }}
           >
-            Submit
+            Submit<SendIcon/>
           </Button>
         </div>
       </Container>

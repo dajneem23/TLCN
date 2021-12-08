@@ -113,7 +113,7 @@ export default function Exercise() {
     }
 
     return (
-        <div className="page_container">
+        <div className="page_code_container">
             <Container maxWidth='lg' className="problem_container">
                 <Paper sx={{ width: '100%', overflow: 'hidden' }}>
                     <TableContainer >

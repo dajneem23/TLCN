@@ -13,6 +13,7 @@ import "./style.css";
 import { Link } from "react-router-dom";
 import { BaseListJob } from "../Home/BaseListJob";
 import sortIcon from "../../IMG//icon/sort.png";
+import AddIcon from "@mui/icons-material/Add";
 import { getDateWithFormat } from "../../Utls/DateTimeUtls";
 import { Job } from "../../Service/Job.service";
 const columns = [
@@ -71,7 +72,7 @@ export default function JobsManagement() {
   };
 
   return (
-    <div className="page_container">
+    <div className="page_manager_container">
       <Container maxWidth="fixed" className="problem_container">
         <div className="page_title">LIST JOBS</div>
         <Paper sx={{ width: "100%", overflow: "hidden" }}>
@@ -114,7 +115,11 @@ export default function JobsManagement() {
                           const value = row[column.id];
                           let display = value;
                           let style = {};
-                          if (column.id != "title" && column.id != "tinyDes" && column.id != "address") {
+                          if (
+                            column.id != "title" &&
+                            column.id != "tinyDes" &&
+                            column.id != "address"
+                          ) {
                             display = getDateWithFormat(value);
                           } else {
                             style = { ...titleStyle };
@@ -147,6 +152,11 @@ export default function JobsManagement() {
           />
         </Paper>
       </Container>
+      <div className="container-create">
+        <button className="btn btn-success">
+          <a href="/createjob">Create Job</a> <AddIcon />
+        </button>
+      </div>
     </div>
   );
 }
