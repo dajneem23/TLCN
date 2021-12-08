@@ -73,6 +73,12 @@ export default function Header() {
               <FcContacts /> Job Manager{" "}
             </a>
           </li>}
+          {(user.role == ROLE_ADMIN || user.role == ROLE_COOP) && <li className="nav-item">
+            <a className="nav-link" href="/exercisemanager">
+              {" "}
+              <FcContacts /> Exercise Manager{" "}
+            </a>
+          </li>}
         </ul>
         {!isAuthenticated ? <NoAuth /> : <Auth />}
       </div>
