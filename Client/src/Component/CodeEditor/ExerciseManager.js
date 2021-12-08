@@ -113,6 +113,7 @@ export default function Exercise() {
 
   return (
     <div className="manager_ex_container">
+        <h4>List Exercise</h4>
       <table class="table">
         <thead>
           <tr>
