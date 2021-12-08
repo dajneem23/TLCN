@@ -11,7 +11,7 @@ Huỳnh Xuân Phụng<br/>
 ### Yêu cầu môi trường:
 - nodejs:^13.
 - docker + docker-compose
-###Cách thực thi và build project
+### Cách thực thi và build project
 1. Clone project và cd vào thư mục chính
 2.build docker   `sudo docker-compose -f docker-compose.yml up -d --build` 
  sau khi hoàn thành sẽ có container:server, py, java, gcc, mono, nginx
