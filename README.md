@@ -8,10 +8,10 @@ Huỳnh Xuân Phụng<br/>
   18110199-Trần Nhật Thành<br/>
   18110201-Lê Đức Thắng<br/>
 **Danh sách yêu cầu của đề tài:**<br/>
-**Yêu cầu môi trường:*<br/>
+###Yêu cầu môi trường:
 -nodejs:^13.
 - docker + docker-compose
-**Cách thực thi và build project**
+###Cách thực thi và build project
 1. Clone project và cd vào thư mục chính
 2.build docker   `sudo docker-compose -f docker-compose.yml up -d --build` 
  sau khi hoàn thành sẽ có container:server, py, java, gcc, mono, nginx
