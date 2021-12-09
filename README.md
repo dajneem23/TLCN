@@ -1,6 +1,6 @@
 ***Đồ án môn học Diện toán đám mây***
 ---
-**Tên đề tài:** <br/>
+**Tên đề tài:** Xây dựng trang web viết code online dựa trên Mearn stack docker EC2<br/>
 **Giáo viên hướng dẫn đề tài:** <br/>
 Huỳnh Xuân Phụng<br/>
 **Nhóm thực hiện:**<br/>
