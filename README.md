@@ -11,12 +11,13 @@ Huỳnh Xuân Phụng<br/>
 ### Yêu cầu môi trường:
 - nodejs:^13.
 - docker + docker-compose
+- nên dùng EC2 ubuntu
 ### Cách thực thi và build project
 1. Clone project và cd vào thư mục chính
 2. build docker   `sudo docker-compose -f docker-compose.yml up -d --build` 
  sau khi hoàn thành sẽ có container:server, py, java, gcc, mono, nginx
 3. kiểm tra quá trình build sử dụng lệnh `docker logs <tên container>` để kiểm tra quá trình có hoàn thành hay không
-4 nếu hoàn thành khi vào port 80 sẽ nhận được render html từ react
+4. nếu hoàn thành khi vào port 3000 sẽ vào đuọc trang chính react và port 0.0.0.0:4000/test sẽ vào dược kết quả ok
 
 ### Một số lỗi thường gặp
 - build thiếu module express: cách xử lý  `docker exec -it server /bin/sh ` và chạy lệnh `npm install`
