@@ -20,4 +20,4 @@ Huỳnh Xuân Phụng<br/>
 
 ### Một số lỗi thường gặp
 - build thiếu module express: cách xử lý  `docker exec -it server /bin/sh ` và chạy lệnh `npm install`
--port 80 đã được dùng: stop service port 80 và tiến hành build lại
+- port 80 đã được dùng: stop service port 80 và tiến hành build lại
