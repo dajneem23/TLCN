@@ -109,7 +109,7 @@ function Auth() {
     useContext(AuthContext);
   console.log("isAuth", user.userName);
   
-  let history = useHistory
+  let history = useHistory()
 
   const onLogout = async () => {
     User.Logout().then((data) => {
