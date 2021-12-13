@@ -131,6 +131,7 @@ export default function Seach() {
   const displayUsers = results
     .slice(pagesVisited, pagesVisited + usersPerPage)
     .map((item, index) => {
+      console.log(wishList);
       return (
         <div>
           <Grid container className="container_all_jobs">
@@ -273,6 +274,13 @@ export default function Seach() {
         User.AddWishList(props.item._id)
           .then(() => {})
           .catch((error) => console.log(error));
+          
+        let newWishList = wishList;
+        if (!isLike) {
+         newWishList.push(props.item._id);   
+        } else {
+          newWishList.slice(newWishList.indexOf(props._id), 1);
+        }
         setLike(!isLike);
       } else {
         history.push("/signin");
