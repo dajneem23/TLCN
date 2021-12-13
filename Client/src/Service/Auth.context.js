@@ -18,7 +18,7 @@ export default ({children})=>{
     useEffect(()=>{
         setIsloaded(true);
         User.Info().then(data=>{
-           if(!data.data) return;
+//            if(!data.data) return;
             setUser(data.data.user);
             setisAuthenticated(data.data.isAuthenticated);
         })
