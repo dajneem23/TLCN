@@ -19,9 +19,9 @@ export const User = {
     }
   },
   Info: async () => {
-    try
+    try{
     return  await axios.get(`${userPath}/info`)//.then(res=>res).catch(error=> error);
-    catch(e) {
+    } catch(e) {
       console.log(e);
     }
   },
