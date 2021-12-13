@@ -57,6 +57,7 @@ export default function PostNewJob() {
       endDate: new Date(endDate).getTime()
     });
     console.log(result);
+    alert("Create success!");
   };
   function handleSelecetedTags(items) {
     setTags(items);
