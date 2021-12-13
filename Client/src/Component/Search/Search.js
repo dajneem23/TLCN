@@ -110,7 +110,7 @@ export default function Seach() {
         if (seachTerm == "" && location == ""&& type=="") {
           return data;
         } else if (
-          data.language.some(item => type.toLowerCase()===item.toLowerCase()) &&
+          data.language.some(item => type == "" || type.toLowerCase()===item.toLowerCase()) &&
           data.address.toLowerCase().replace(/ /g, '').includes(location.toLowerCase().replace(/ /g, '')) &&
           data.title.toLowerCase().includes(seachTerm.toLowerCase())
         ) {

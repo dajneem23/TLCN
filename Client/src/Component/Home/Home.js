@@ -29,7 +29,7 @@ export default function Home() {
         Job.GetAllJobs().then((result) => {
             // console.log(result.splice(0, 10));
             if (result != undefined) {
-                setListAllJobs(result.splice(0, 10));
+                setListAllJobs(result.splice(0, 12));
             } else {
                 setListAllJobs([])
             }
@@ -101,9 +101,10 @@ export default function Home() {
                             )
                         })}
                     </Grid>
+                    <Grid container className="container_all_jobs">
+                        <a style={{color: 'blue', fontSize: 18, margin: 20}} href='/job'>See all jobs</a>
+                    </Grid>
                 </Box>
-            </Container>
-            <Container>
                 <Box>
                     <Grid container className="container_create_cv">
                         <Grid className="card_create_cv">
