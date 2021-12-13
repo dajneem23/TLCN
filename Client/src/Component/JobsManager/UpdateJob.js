@@ -1,13 +1,14 @@
 /* eslint-disable jsx-a11y/alt-text */
 import React, { useState, useEffect, useContext, useRef } from "react";
 import { useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import FileBase64 from "react-file-base64";
 import TagInput from "../TagsInput/TagInput";
 import "./style.css";
 import { Job } from "../../Service/Job.service";
 import Chip from "@mui/material/Chip";
 import { Editor } from "react-draft-wysiwyg";
-import htmlToDraft from 'html-to-draftjs';
+import htmlToDraft from "html-to-draftjs";
 import {
   EditorState,
   convertToRaw,
@@ -25,6 +26,7 @@ export default function UpdateJob() {
   const { user, setUser, isAuthenticated, setisAuthenticated, info, setinfo } =
     useContext(AuthContext);
   const { id } = useParams();
+  let history = useHistory();
   const [data, setdata] = useState({});
   const [tags, setTags] = useState([]);
   const [flag, setFlag] = useState(false);
@@ -59,7 +61,7 @@ export default function UpdateJob() {
         const blocksFromHTML = convertFromHTML(data.description);
         const state = ContentState.createFromBlockArray(
           blocksFromHTML.contentBlocks,
-          blocksFromHTML.entityMap,
+          blocksFromHTML.entityMap
         );
         setEditorState(EditorState.createWithContent(state));
       }
@@ -79,24 +81,42 @@ export default function UpdateJob() {
     e.preventDefault();
     setLoading(true);
     values.language = tags;
-    values.description = draftToHtml(convertToRaw(editorState.getCurrentContent()));
+    values.description = draftToHtml(
+      convertToRaw(editorState.getCurrentContent())
+    );
     const startDate = new Date(values.startDate).getTime();
     const endDate = new Date(values.endDate).getTime();
-    Job.UpdateJob({...values, startDate, endDate}).then((result) => {
-      if (result && result.status == 200) {
-        alert("Update successfully!");
-      } else {
-        alert("Update faild, please try later!");
-      }
-      setLoading(false);
-    }).catch((error) =>  {
-      alert(error)
-      setLoading(false);
-    });
+    Job.UpdateJob({ ...values, startDate, endDate })
+      .then((result) => {
+        if (result && result.status == 200) {
+          alert("Update successfully!");
+        } else {
+          alert("Update faild, please try later!");
+        }
+        setLoading(false);
+      })
+      .catch((error) => {
+        alert(error);
+        setLoading(false);
+      });
   };
   function handleSelecetedTags(items) {
     setTags(items);
   }
+  const handleDelete = () => {
+    Job.DeleteJobById(id)
+      .then((result) => {
+        if (result.status == 200) {
+          alert("Delete exercise successfully!");
+          history.push("/jobsmanager")
+        } else {
+          alert("Delete failed, please try later!");
+        }
+      })
+      .catch((error) => {
+        alert("Delete failed, please try later!");
+      });
+  };
   const AdminManager = () => {
     return (
       <div className="container rounded bg-white mt-5 mb-5">
@@ -423,11 +443,16 @@ export default function UpdateJob() {
                   className="btn btn-primary profile-button mr-2"
                   type="button"
                   onClick={handleSubmit}
-                  disabled = {isLoading}
+                  disabled={isLoading}
                 >
                   Update Job
                 </button>
-                <button className="btn btn-danger" disabled = {isLoading}>
+                <button
+                type= "button"
+                  className="btn btn-danger"
+                  onClick={handleDelete}
+                  disabled={isLoading}
+                >
                   Delete
                 </button>
               </div>

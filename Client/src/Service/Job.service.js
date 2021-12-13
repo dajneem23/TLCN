@@ -1,5 +1,6 @@
 import axios from './axios'
 const jobPath = '/job'
+const deleteJob = '/job/'
 export const Job = {
     GetAllJobs: async () => {
         try {
@@ -66,6 +67,14 @@ export const Job = {
             return result;
         } catch (error) {
             console.log(error)
+        }
+    },
+    DeleteJobById: async (id) => {
+        try {
+            const result = await axios.delete(deleteJob + id)
+            return result
+        } catch (error) {
+            console.log(error);
         }
     }
 }
