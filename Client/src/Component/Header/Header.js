@@ -116,7 +116,7 @@ function Auth() {
       setUser({});
       setisAuthenticated(false);
       setinfo({});
-      history.push("/login")
+//       history.push("/login")
     });
   }
   return (
