@@ -20,7 +20,7 @@ export const User = {
   },
   Info: async () => {
     try{
-    return  await axios.get(`${userPath}/info`)//.then(res=>res).catch(error=> error);
+    return  await axios.get(`${userPath}/info`).catch(error=> error);
     } catch(e) {
       console.log(e);
     }
