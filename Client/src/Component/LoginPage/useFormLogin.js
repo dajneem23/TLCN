@@ -56,7 +56,7 @@ const useFormLogin = (callback, validate) => {
         console.log(info);
         // history.push(history.location);
         
-        history.goBack();
+        history.push("/home");
         
         setTimeout(function () {
           return 0;
