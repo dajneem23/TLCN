@@ -107,11 +107,12 @@ export default function Seach() {
     console.log(results);
     const listFillter = listAllJobs.filter(
       (data) => {
-        if (seachTerm == "" && location == "") {
+        if (seachTerm == "" && location == ""&& type=="") {
           return data;
         } else if (
-          data.address.toLowerCase().includes(location.toLowerCase().trim()) &&
-          data.title.toLowerCase().trim().includes(seachTerm.toLowerCase().trim())
+          data.language.some(item => type.toLowerCase()===item.toLowerCase()) &&
+          data.address.toLowerCase().replace(/ /g, '').includes(location.toLowerCase().replace(/ /g, '')) &&
+          data.title.toLowerCase().includes(seachTerm.toLowerCase())
         ) {
           return data;
         }
@@ -120,7 +121,7 @@ export default function Seach() {
     );
     setResult(listFillter);
     console.log(listFillter);
-    console.log(seachTerm, location.trim(),type);
+    console.log(seachTerm, location.replace(/ /g, ''),type);
   };
   const [pageNumber, setPageNumber] = useState(0);
 
@@ -177,12 +178,17 @@ export default function Seach() {
               <MenuItem value="">
                 <em>None</em>
               </MenuItem>
-              <MenuItem value={"TP. Hồ Chí Minh"}>TP.Hồ Chí Minh</MenuItem>
+              <MenuItem value={"TP.Hồ Chí Minh"}>TP.Hồ Chí Minh</MenuItem>
               <MenuItem value={"TP.Đà Nẵng"}>TP.Đà Nẵng</MenuItem>
               <MenuItem value={"Hà Nội"}>Hà Nội</MenuItem>
+              <MenuItem value={"Tây Ninh"}>Tây Ninh</MenuItem>
+              <MenuItem value={"Nha Trang"}>Nha Trang</MenuItem>
+              <MenuItem value={"Tiền Giang"}>Tiền Giang</MenuItem>
+              <MenuItem value={"Huế"}>Huế</MenuItem>
+              <MenuItem value={"Vinh"}>Vinh</MenuItem>
             </Select>
           </FormControl>
-          {/* <FormControl sx={{ m: 1, width: 300 }} variant="standard">
+          <FormControl sx={{ m: 1, width: 300 }} variant="standard">
             <InputLabel id="demo-customized-select-label">
               Type of Job
             </InputLabel>
@@ -202,8 +208,14 @@ export default function Seach() {
               <MenuItem value={"VueJs"}>VueJS</MenuItem>
               <MenuItem value={"Javascript"}>Javascript</MenuItem>
               <MenuItem value={"Python"}>Python</MenuItem>
+              <MenuItem value={"Java"}>Java</MenuItem>
+              <MenuItem value={"C"}>C</MenuItem>
+              <MenuItem value={"C#"}>C#</MenuItem>
+              <MenuItem value={"C++"}>C++</MenuItem>
+              <MenuItem value={"NodeJs"}>NodeJs</MenuItem>
+              <MenuItem value={"Express"}>Express</MenuItem>
             </Select>
-          </FormControl> */}
+          </FormControl>
           <FormControl>
             <Button
               variant="contained"
@@ -245,13 +257,8 @@ export default function Seach() {
   function CardJob(props) {
     const dateEnd = getDateWithFormat(props.item.endDate);
     const timeAgo = calculateTimeAgo(props.item.createDate);
-
     const history = useHistory();
-
     const [isLike, setLike] = useState(Boolean(props.isLike));
-
-    console.log(props.isLike);
-
     const {
       user,
       setUser,
