@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 import { useParams } from "react-router-dom";
 import FileBase64 from "react-file-base64";
-import TagInput from "../TagsInput/index";
+import TagInput from "../TagsInput/TagInput";
 import "./style.css";
 import { Job } from "../../Service/Job.service";
 import Chip from "@mui/material/Chip";

@@ -3,7 +3,7 @@
  
 import React ,{createContext,useState,useEffect,useRef} from 'react' ;
 import {User} from '../Service/User.service';
-import Loading from '../Component/LoadingPage/index'
+import Loading from '../Component/LoadingPage/LoadingPage'
 
 
 

@@ -84,15 +84,15 @@ export default function Seach() {
       setListAllJobs(result);
       setResult(result);
     });
-    User.GetDetails().then(result => {
+    User.GetDetails().then((result) => {
       if (result.status == 200) {
         setWishList(result.data.user.wishList);
       }
-    })
+    });
     return () => {
       setLocation("");
       setSearchTerm("");
-    }
+    };
   }, []);
   const handleChangeLocation = (event) => {
     setLocation(event.target.value);
@@ -105,18 +105,22 @@ export default function Seach() {
   };
   const onSearch = () => {
     console.log(results);
-    const listFillter = listAllJobs.filter((data) => {
-      if (seachTerm == "" && location == "") {
-        return data
-      } else if (data.address.toLowerCase().includes(location.toLowerCase().trim()) && data.title.toLowerCase().trim().includes(seachTerm.toLowerCase().trim())) {
-        return data
+    const listFillter = listAllJobs.filter(
+      (data) => {
+        if (seachTerm == "" && location == "") {
+          return data;
+        } else if (
+          data.address.toLowerCase().includes(location.toLowerCase().trim()) &&
+          data.title.toLowerCase().trim().includes(seachTerm.toLowerCase().trim())
+        ) {
+          return data;
+        }
       }
-    }
       //data.title.toLowerCase().includes(seachTerm.toLowerCase())
     );
     setResult(listFillter);
     console.log(listFillter);
-    console.log(seachTerm, location.trim())
+    console.log(seachTerm, location.trim(),type);
   };
   const [pageNumber, setPageNumber] = useState(0);
 
@@ -130,7 +134,11 @@ export default function Seach() {
         <div>
           <Grid container className="container_all_jobs">
             <Grid className="container_grid_hover">
-              <CardJob key={index} item={item} isLike={wishList.some((e) => e == item._id)} />
+              <CardJob
+                key={index}
+                item={item}
+                isLike={wishList.some((e) => e == item._id)}
+              />
             </Grid>
           </Grid>
         </div>
@@ -174,7 +182,7 @@ export default function Seach() {
               <MenuItem value={"Hà Nội"}>Hà Nội</MenuItem>
             </Select>
           </FormControl>
-          <FormControl sx={{ m: 1, width: 300 }} variant="standard">
+          {/* <FormControl sx={{ m: 1, width: 300 }} variant="standard">
             <InputLabel id="demo-customized-select-label">
               Type of Job
             </InputLabel>
@@ -195,30 +203,7 @@ export default function Seach() {
               <MenuItem value={"Javascript"}>Javascript</MenuItem>
               <MenuItem value={"Python"}>Python</MenuItem>
             </Select>
-          </FormControl>
-          <FormControl sx={{ m: 1, width: 300 }} variant="standard">
-            <InputLabel id="demo-customized-select-label">
-              Experience
-            </InputLabel>
-            <Select
-              labelId="demo-customized-select-label"
-              id="demo-customized-select"
-              value={experience}
-              onChange={handleChangeEX}
-              input={<BootstrapInput />}
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              <MenuItem value={0}>Dưới 1 năm</MenuItem>
-              <MenuItem value={1}>1 năm</MenuItem>
-              <MenuItem value={2}>2 năm</MenuItem>
-              <MenuItem value={3}>3 năm</MenuItem>
-              <MenuItem value={4}>5 năm</MenuItem>
-              <MenuItem value={5}>5 năm</MenuItem>
-              <MenuItem value={6}>Trên 5 năm</MenuItem>
-            </Select>
-          </FormControl>
+          </FormControl> */}
           <FormControl>
             <Button
               variant="contained"
@@ -263,21 +248,29 @@ export default function Seach() {
 
     const history = useHistory();
 
-    const [isLike, setLike] = useState(Boolean(props.isLike))
+    const [isLike, setLike] = useState(Boolean(props.isLike));
 
     console.log(props.isLike);
 
-    const { user, setUser, isAuthenticated, setisAuthenticated, info, setinfo } = useContext(AuthContext);
+    const {
+      user,
+      setUser,
+      isAuthenticated,
+      setisAuthenticated,
+      info,
+      setinfo,
+    } = useContext(AuthContext);
 
     const onLikeJob = () => {
       if (isAuthenticated) {
-        User.AddWishList(props.item._id).then(() => {
-        }).catch(error => console.log(error));
+        User.AddWishList(props.item._id)
+          .then(() => {})
+          .catch((error) => console.log(error));
         setLike(!isLike);
       } else {
         history.push("/signin");
       }
-    }
+    };
 
     return (
       <Card
@@ -289,12 +282,17 @@ export default function Seach() {
           sx={{ minWidth: 340 }}
           avatar={
             <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-              R
+              {props.item.createBy[0]}
             </Avatar>
           }
           action={
-            <IconButton aria-label="add to favorites" onClick={() => onLikeJob()}>
-              <FavoriteIcon sx={isLike ? { color: red[500] } : { color: 'gray'}}/>
+            <IconButton
+              aria-label="add to favorites"
+              onClick={() => onLikeJob()}
+            >
+              <FavoriteIcon
+                sx={isLike ? { color: red[500] } : { color: "gray" }}
+              />
             </IconButton>
           }
           title={props.item.createBy}

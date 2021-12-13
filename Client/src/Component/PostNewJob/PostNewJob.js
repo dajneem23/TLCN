@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/alt-text */
 import React, { useState } from "react";
 import FileBase64 from "react-file-base64";
-import TagInput from "../TagsInput/index";
+import TagInput from "../TagsInput/TagInput";
 import { Editor } from "react-draft-wysiwyg";
 import { EditorState, convertToRaw } from "draft-js";
 import draftToHtml from 'draftjs-to-html';

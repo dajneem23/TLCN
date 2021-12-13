@@ -1,27 +1,27 @@
+import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import "./index.css";
-import Header from "./Component/Header/index";
-import Footer from "./Component/Footer/index";
+import Header from "./Component/Header/Header";
+import Footer from "./Component/Footer/Footer";
 import Login from "./Component/LoginPage/Login";
 import SignUp from "./Component/SignupPage/SignUp";
 import SignUpCoop from "./Component/SingupPageForCoop/SignUpCoop"
 import NotFound404 from "./Component/404NotFound/index";
-import Profile from "./Component/Profile/index";
-import EditProFile from "./Component/Profile/EditProfile/index";
+import Profile from "./Component/Profile/Profile";
+import EditProFile from "./Component/Profile/EditProfile/EditProfile";
 import Home from "./Component/Home/Home";
-import Search from "./Component/Search/index";
+import Search from "./Component/Search/Search";
 import CodeEditor from "./Component/CodeEditor/CodeEditor";
 import Exercise from "./Component/CodeEditor/ExercisePage";
 import JobsManagement from "./Component/JobsManager/JobManagementForAdmin";
-import UserManagement from "./Component/UserManager/index";
+import UserManagement from "./Component/UserManager/UserManager";
 import ExerciseManager from "./Component/CodeEditor/ExerciseManager"
-import PostNewJob from "./Component/PostNewJob/index";
-import JobDetail from "./Component/JobDetail/index";
+import PostNewJob from "./Component/PostNewJob/PostNewJob";
+import JobDetail from "./Component/JobDetail/JobDetail";
 import CreateCV from "./Component/CV/CreateCV";
 import { useContext, useEffect } from "react";
 import { AuthContext } from "./Service/Auth.context";
 import ChatBox from "./Component/Chatbox/ChatBox";
-
+import "./index.css";
 import UpdateJob from "./Component/JobsManager/UpdateJob"
 import CreateExercise from "./Component/CodeEditor/CreateExercise";
 const ROLE_ADMIN = 0;
@@ -29,7 +29,7 @@ const ROLE_COOP = 1;
 const ROLE_INTER = 2;
 
 
-function App() {
+const App=()=> {
 
   const { user, setUser, isAuthenticated, setisAuthenticated, info, setinfo } = useContext(AuthContext);
 
@@ -58,6 +58,7 @@ function App() {
         <Route path="/jobsmanager" component={(user && user.role == ROLE_ADMIN || user && user.role == ROLE_COOP) ? JobsManagement : NotFound404} />
         <Route path="/usersmanager" component={(user && user.role == ROLE_ADMIN || user && user.role == ROLE_COOP) ? UserManagement : NotFound404} />
         <Route path="/notfound" component={NotFound404} />
+        {/* <Route path="/"  component={Home} /> */}
         <Route component={NotFound404} />
       </Switch>
       <Footer />
