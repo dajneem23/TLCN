@@ -19,8 +19,8 @@ export default ({children})=>{
         setIsloaded(true);
         User.Info().then(data=>{
 //            if(!data.data) return;
-            setUser(data.data.user);
-            setisAuthenticated(data.data.isAuthenticated);
+            setUser(data.data.user || false);
+            setisAuthenticated(data.data.isAuthenticated || false);
         })
         const timer = setTimeout(() => {
             setIsloaded(false);
