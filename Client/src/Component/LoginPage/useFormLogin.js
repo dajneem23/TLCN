@@ -58,9 +58,9 @@ const useFormLogin = (callback, validate) => {
         
         history.push("/home");
         
-        setTimeout(function () {
-          return 0;
-        }, 3000);
+//         setTimeout(function () {
+//           return 0;
+//         }, 3000);
       })
       .catch((err) => {
         toast.configure();
