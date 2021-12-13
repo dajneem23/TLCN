@@ -19,7 +19,7 @@ export const User = {
     }
   },
   Info: async () => {
-    return await axios.get(`${userPath}/info`).catch(error=> error);
+    return await axios.get(`${userPath}/info`)//.catch(error=> error);
   },
   Logout: async () => {
     return await axios.get(`${userPath}/logout`).catch(error=> error);
