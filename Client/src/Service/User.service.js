@@ -19,10 +19,10 @@ export const User = {
     }
   },
   Info: async () => {
-    return await axios.get(`${userPath}/info`);
+    return await axios.get(`${userPath}/info`).catch(error=> error);
   },
   Logout: async () => {
-    return await axios.get(`${userPath}/logout`);
+    return await axios.get(`${userPath}/logout`).catch(error=> error);
   },
   AddWishList: async (id) => {
     try {
@@ -34,7 +34,7 @@ export const User = {
     }
   },
   GetDetails: async () => {
-    return await axios.get(`${userPath}/details`);
+    return await axios.get(`${userPath}/details`).catch(error=> error);
   },
   UpdateUser: async (body) => {
     try {
