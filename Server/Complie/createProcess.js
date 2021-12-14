@@ -76,7 +76,7 @@ const CreateProcess = async (language, code, testcase, typeInput) => {
         /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g,
         ""
       ).split("\r\n") : "",
-      process.stder ? process.stder.toString() : "",
+      process.stderr ? process.stderr.toString() : "",
     ];
   } catch (e) {
     throw new Error(e);
