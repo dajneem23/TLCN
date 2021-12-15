@@ -17,6 +17,7 @@ import { BasicListExercise } from './BasicListExercise';
 import sortIcon from "../../IMG//icon/sort.png"
 import { useEffect } from 'react';
 import { Compile } from '../../Service/Compile.service';
+import { AuthContext } from "../../Service/Auth.context";
 
 const HARD = "Hard";
 const MEDIUM = "Medium";
@@ -74,6 +75,7 @@ export default function Exercise() {
     const [isAsc, setFilter] = React.useState(true);
     const [listProblems, setListProblems] = React.useState([]);
     const [rows, setRows] = React.useState([]);
+    const { isAuthenticated } = React.useContext(AuthContext);
 
     BasicListExercise.forEach(item => {
         item.status = listDone.includes(item._id) ? "Done" : "-";
@@ -192,15 +194,18 @@ export default function Exercise() {
                     />
                 </Paper>
             </Container>
-            <Container maxWidth="lg">
-                <div className="editor_header_container">
-                    <button className="btn btn-primary">
-                        <a href="/createexercise">
-                            Create Exercise
-                        </a>
-                    </button>
-                </div>
-            </Container>
+            {
+                isAuthenticated &&
+                <Container maxWidth="lg">
+                    <div className="editor_header_container">
+                        <button className="btn btn-primary">
+                            <a href="/createexercise">
+                                Create Exercise
+                            </a>
+                        </button>
+                    </div>
+                </Container>
+            }
         </div>
     );
 }
