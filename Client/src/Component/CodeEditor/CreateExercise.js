@@ -68,13 +68,7 @@ export default function CreateExercise() {
 
     const [input, setInput] = useState([]);
     function handleSelecetedInput(items) {
-        
-        if (isRefreshInput) {
-            setInput([]);
-            setRefreshInput(false);
-        } else {
             setInput(items);
-        }
     }
 
     const [output, setOutput] = useState([]);
@@ -96,8 +90,9 @@ export default function CreateExercise() {
             output: output,
             type: {}
         })
-
         setTestCase(newTestCase);
+        setInput([]);
+        setOutput([]);
     }
 
     const refreshTestCase = () => {
