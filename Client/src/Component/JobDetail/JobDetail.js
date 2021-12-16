@@ -180,7 +180,7 @@ function CardJob(props) {
     <a href={`/job/`+props.item._id}>
       <Card variant="outlined" className="container_card_all_jobdetail">
         {/* <CardMedia component = "img" image={logo} height = "140" width = "380"/> */}
-        <img src={props.item.img ?img:logo} className="card_image" />
+        <img src={props.item.img ?props.item.img:logo} className="card_image" />
         <CardContent style={{ width: "100%" }}>
           <div className="card_title_detail">{props.item.title}</div>
           <div className="">$ {props.item.salary}</div>
