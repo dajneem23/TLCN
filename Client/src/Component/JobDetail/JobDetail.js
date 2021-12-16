@@ -177,7 +177,7 @@ function CardJob(props) {
   const timeAgo = calculateTimeAgo(props.item.createDate);
   console.log('cardjob',props)
   return (
-    <a href={`/`+props.item._id}>
+    <a href={`/job/`+props.item._id}>
       <Card variant="outlined" className="container_card_all_jobdetail">
         {/* <CardMedia component = "img" image={logo} height = "140" width = "380"/> */}
         <img src={logo} className="card_image" />
