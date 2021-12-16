@@ -19,8 +19,7 @@ export default function Profile() {
   useEffect(()=>{
     User.GetDetails().then((result) => {
       
-      console.log(result.data.user.dob);
-      console.log(result.data.user);
+      console.log("profile",result)
       setValues(result.data.user);
     });
   },[])

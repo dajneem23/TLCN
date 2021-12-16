@@ -84,15 +84,15 @@ export default function Seach() {
       setListAllJobs(result);
       setResult(result);
     });
-    User.GetDetails().then(result => {
+    User.GetDetails().then((result) => {
       if (result.status == 200) {
         setWishList(result.data.user.wishList);
       }
-    })
+    });
     return () => {
       setLocation("");
       setSearchTerm("");
-    }
+    };
   }, []);
   const handleChangeLocation = (event) => {
     setLocation(event.target.value);
@@ -105,18 +105,23 @@ export default function Seach() {
   };
   const onSearch = () => {
     console.log(results);
-    const listFillter = listAllJobs.filter((data) => {
-      if (seachTerm == "" && location == "") {
-        return data
-      } else if (data.address.toLowerCase().includes(location.toLowerCase().trim()) && data.title.toLowerCase().trim().includes(seachTerm.toLowerCase().trim())) {
-        return data
+    const listFillter = listAllJobs.filter(
+      (data) => {
+        if (seachTerm == "" && location == ""&& type=="") {
+          return data;
+        } else if (
+          data.language.some(item => type == "" || type.toLowerCase()===item.toLowerCase()) &&
+          data.address.toLowerCase().replace(/ /g, '').includes(location.toLowerCase().replace(/ /g, '')) &&
+          data.title.toLowerCase().includes(seachTerm.toLowerCase())
+        ) {
+          return data;
+        }
       }
-    }
       //data.title.toLowerCase().includes(seachTerm.toLowerCase())
     );
     setResult(listFillter);
     console.log(listFillter);
-    console.log(seachTerm, location.trim())
+    console.log(seachTerm, location.replace(/ /g, ''),type);
   };
   const [pageNumber, setPageNumber] = useState(0);
 
@@ -126,11 +131,16 @@ export default function Seach() {
   const displayUsers = results
     .slice(pagesVisited, pagesVisited + usersPerPage)
     .map((item, index) => {
+      console.log(wishList);
       return (
         <div>
           <Grid container className="container_all_jobs">
             <Grid className="container_grid_hover">
-              <CardJob key={index} item={item} isLike={wishList.some((e) => e == item._id)} />
+              <CardJob
+                key={index}
+                item={item}
+                isLike={wishList.some((e) => e == item._id)}
+              />
             </Grid>
           </Grid>
         </div>
@@ -169,9 +179,14 @@ export default function Seach() {
               <MenuItem value="">
                 <em>None</em>
               </MenuItem>
-              <MenuItem value={"TP. Hồ Chí Minh"}>TP.Hồ Chí Minh</MenuItem>
+              <MenuItem value={"TP.Hồ Chí Minh"}>TP.Hồ Chí Minh</MenuItem>
               <MenuItem value={"TP.Đà Nẵng"}>TP.Đà Nẵng</MenuItem>
               <MenuItem value={"Hà Nội"}>Hà Nội</MenuItem>
+              <MenuItem value={"Tây Ninh"}>Tây Ninh</MenuItem>
+              <MenuItem value={"Nha Trang"}>Nha Trang</MenuItem>
+              <MenuItem value={"Tiền Giang"}>Tiền Giang</MenuItem>
+              <MenuItem value={"Huế"}>Huế</MenuItem>
+              <MenuItem value={"Vinh"}>Vinh</MenuItem>
             </Select>
           </FormControl>
           <FormControl sx={{ m: 1, width: 300 }} variant="standard">
@@ -194,29 +209,12 @@ export default function Seach() {
               <MenuItem value={"VueJs"}>VueJS</MenuItem>
               <MenuItem value={"Javascript"}>Javascript</MenuItem>
               <MenuItem value={"Python"}>Python</MenuItem>
-            </Select>
-          </FormControl>
-          <FormControl sx={{ m: 1, width: 300 }} variant="standard">
-            <InputLabel id="demo-customized-select-label">
-              Experience
-            </InputLabel>
-            <Select
-              labelId="demo-customized-select-label"
-              id="demo-customized-select"
-              value={experience}
-              onChange={handleChangeEX}
-              input={<BootstrapInput />}
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              <MenuItem value={0}>Dưới 1 năm</MenuItem>
-              <MenuItem value={1}>1 năm</MenuItem>
-              <MenuItem value={2}>2 năm</MenuItem>
-              <MenuItem value={3}>3 năm</MenuItem>
-              <MenuItem value={4}>5 năm</MenuItem>
-              <MenuItem value={5}>5 năm</MenuItem>
-              <MenuItem value={6}>Trên 5 năm</MenuItem>
+              <MenuItem value={"Java"}>Java</MenuItem>
+              <MenuItem value={"C"}>C</MenuItem>
+              <MenuItem value={"C#"}>C#</MenuItem>
+              <MenuItem value={"C++"}>C++</MenuItem>
+              <MenuItem value={"NodeJs"}>NodeJs</MenuItem>
+              <MenuItem value={"Express"}>Express</MenuItem>
             </Select>
           </FormControl>
           <FormControl>
@@ -260,24 +258,34 @@ export default function Seach() {
   function CardJob(props) {
     const dateEnd = getDateWithFormat(props.item.endDate);
     const timeAgo = calculateTimeAgo(props.item.createDate);
-
     const history = useHistory();
-
-    const [isLike, setLike] = useState(Boolean(props.isLike))
-
-    console.log(props.isLike);
-
-    const { user, setUser, isAuthenticated, setisAuthenticated, info, setinfo } = useContext(AuthContext);
+    const [isLike, setLike] = useState(Boolean(props.isLike));
+    const {
+      user,
+      setUser,
+      isAuthenticated,
+      setisAuthenticated,
+      info,
+      setinfo,
+    } = useContext(AuthContext);
 
     const onLikeJob = () => {
       if (isAuthenticated) {
-        User.AddWishList(props.item._id).then(() => {
-        }).catch(error => console.log(error));
+        User.AddWishList(props.item._id)
+          .then(() => {})
+          .catch((error) => console.log(error));
+          
+        let newWishList = wishList;
+        if (!isLike) {
+         newWishList.push(props.item._id);   
+        } else {
+          newWishList.slice(newWishList.indexOf(props._id), 1);
+        }
         setLike(!isLike);
       } else {
         history.push("/signin");
       }
-    }
+    };
 
     return (
       <Card
@@ -289,12 +297,17 @@ export default function Seach() {
           sx={{ minWidth: 340 }}
           avatar={
             <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-              R
+              {props.item.createBy[0]}
             </Avatar>
           }
           action={
-            <IconButton aria-label="add to favorites" onClick={() => onLikeJob()}>
-              <FavoriteIcon sx={isLike ? { color: red[500] } : { color: 'gray'}}/>
+            <IconButton
+              aria-label="add to favorites"
+              onClick={() => onLikeJob()}
+            >
+              <FavoriteIcon
+                sx={isLike ? { color: red[500] } : { color: "gray" }}
+              />
             </IconButton>
           }
           title={props.item.createBy}

@@ -14,7 +14,6 @@ app.use(express.json({limit: '50mb'}));
 app.use(express.urlencoded({limit: '50mb', extended: true}))
 app.use(cookieParser());
 app.use(passport.initialize());
-app.use(express.static(path.join(__dirname, '../Client/build')));
 app.use(passport.session());
 // app.use(express.json());
 app.use(function(req, res, next) {
@@ -42,9 +41,6 @@ const  connection =async()=>{
     console.log("mongoose connect");
 } 
 connection()
-app.get('/', function (req, res) {
-  res.sendFile(path.join(__dirname, '../Client/build', 'index.html'));
-});
 const ComplierRouter=require('./Routers/Complier.route')
 app.use('/complier',ComplierRouter )
 const UserRoute=require('./Routers/User.route')

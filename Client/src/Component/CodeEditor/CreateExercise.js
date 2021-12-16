@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/alt-text */
 import React, { useContext, useState } from "react";
-import TagInput from "../TagsInput/index";
+import TagInput from "../TagsInput/TagInput";
 import { Editor } from "react-draft-wysiwyg";
 import { EditorState, convertToRaw } from "draft-js";
 import draftToHtml from 'draftjs-to-html';
@@ -32,12 +32,12 @@ export default function CreateExercise() {
 
     const [title, setTitle] = useState("");
     const [category, setCategory] = useState("");
-
-    const [javaCode, setJavaCode] = useState("");
-    const [pythonCode, setPythonCode] = useState("");
-    const [cCode, setCCode] = useState("");
-    const [cppCode, setCppCode] = useState("");
-    const [csCode, setCsCode] = useState("");
+    const [testCase, setTestCase] = useState([]);
+    const [javaCode, setJavaCode] = useState(codeDefault.codeJava);
+    const [pythonCode, setPythonCode] = useState(codeDefault.codePy);
+    const [cCode, setCCode] = useState(codeDefault.codeC);
+    const [cppCode, setCppCode] = useState(codeDefault.codeCpp);
+    const [csCode, setCsCode] = useState(codeDefault.codeCs);
 
     const onSubmit = async () => {
         const description = draftToHtml(convertToRaw(editorState.getCurrentContent()));
@@ -53,13 +53,7 @@ export default function CreateExercise() {
                 py: pythonCode,
                 java: javaCode
             },
-            testCase: [
-                {
-                    input: input,
-                    output: output,
-                    type: {}
-                }
-            ],
+            testCase: testCase,
             author: user.userName,
         }
         Compile.CreateExercise(body).then((result) => {
@@ -74,12 +68,35 @@ export default function CreateExercise() {
 
     const [input, setInput] = useState([]);
     function handleSelecetedInput(items) {
-        setInput(items);
+            setInput(items);
     }
 
     const [output, setOutput] = useState([]);
     function handleSelecetedOutput(items) {
         setOutput(items);
+    }
+
+
+    const addTestCase = () => {
+
+        if (input.length == 0 || output.length == 0) {
+            alert("Please fill input and output");
+            return;
+        }
+
+        let newTestCase = testCase;
+        newTestCase.push({
+            input: input,
+            output: output,
+            type: {}
+        })
+        setTestCase(newTestCase);
+        setInput([]);
+        setOutput([]);
+    }
+
+    const refreshTestCase = () => {
+        setTestCase([]);
     }
 
     return (
@@ -276,6 +293,22 @@ export default function CreateExercise() {
                             </TabPanel>
                         </div>
                         <div className="col-md-12">
+                            <h5>Test case</h5>
+                            {
+                                testCase.map((value, index) => {
+                                    return (
+                                        <div>
+                                            <label className="labels">Input</label>
+                                            <div className="input_container">{value.input.join(', ')}</div>
+                                            <label className="labels">Output</label>
+                                            <div className="input_container">{value.output.join(', ')}</div>
+                                            <div className="divider" />
+                                        </div>
+                                    )
+                                })
+                            }
+                        </div>
+                        <div className="col-md-12">
                             <label className="labels">Input</label>
                             <TagInput
                                 selectedTags={handleSelecetedInput}
@@ -299,8 +332,12 @@ export default function CreateExercise() {
                                 value={output}
                             />
                         </div>
+                        <div className="mt-1 text-center">
+                            <button className='btn btn-outline-primary' type="button" onClick={() => addTestCase()}>Add Testcase</button>
+                            <button className='btn btn-secondary ml-5' type="button" onClick={() => refreshTestCase()}>Refresh</button>
+                        </div>
                         <div className="mt-5 text-center">
-                            <button className="btn btn-primary profile-button" type="button" onClick={() => onSubmit()}>
+                            <button className="btn btn-success" type="button" onClick={() => onSubmit()}>
                                 CREATE
                             </button>
                         </div>
@@ -342,4 +379,12 @@ function a11yProps(index) {
         id: `simple-tab-${index}`,
         "aria-controls": `simple-tabpanel-${index}`,
     };
+}
+
+const codeDefault = {
+    codeC: '#include<stdio.h>\nn\nint main(int argc, char *argv[])\n{\n return 0;\n}',
+    codeCpp: '#include<iostream>\nint main(int argc, char *argv[])\n{\n return 0;\n \n}',
+    codeCs: 'using System;\nusing System.Collections.Generic;\nusing System.Linq;\nusing System.Text;\nusing System.Threading.Tasks;\npublic class NewExercise\n{\n         \n    public static void Main(string[] args){\n         \n }\n}',
+    codeJava: 'public class SubTwoNumber{\n\n  public static void main(String []args){\n   \n    \n    \n  }\n\n}',
+    codePy: 'import math\nimport os\nimport random\nimport re\nimport sys\n'
 }

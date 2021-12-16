@@ -13,6 +13,7 @@ const useFormLogin = (callback, validate) => {
     password: "",
   });
   let history = useHistory();
+  console.log(history)
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   //   const authContext   = useContext(AuthContext);
@@ -54,10 +55,12 @@ const useFormLogin = (callback, validate) => {
         setinfo(res.data.info);
         console.log(info);
         // history.push(history.location);
-        history.goBack();
-        setTimeout(function () {
-          return 0;
-        }, 3000);
+        
+        history.push("/home");
+        
+//         setTimeout(function () {
+//           return 0;
+//         }, 3000);
       })
       .catch((err) => {
         toast.configure();

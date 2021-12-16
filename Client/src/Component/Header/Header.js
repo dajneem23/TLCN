@@ -73,7 +73,7 @@ export default function Header() {
               <FcContacts /> Job Manager{" "}
             </a>
           </li>}
-          {(user.role == ROLE_ADMIN || user.role == ROLE_COOP) && <li className="nav-item">
+          {(user.role == ROLE_ADMIN) && <li className="nav-item">
             <a className="nav-link" href="/exercisemanager">
               {" "}
               <FcContacts /> Exercise Manager{" "}
@@ -109,13 +109,14 @@ function Auth() {
     useContext(AuthContext);
   console.log("isAuth", user.userName);
   
-  let history = useHistory
+  let history = useHistory()
 
   const onLogout = async () => {
     User.Logout().then((data) => {
       setUser({});
       setisAuthenticated(false);
       setinfo({});
+//       history.push("/login")
     });
   }
   return (

@@ -159,6 +159,22 @@ export default function Exercise() {
         );
         console.log(result.data.results);
         setOutput(result.data.results);
+      Compile.GetSubmitByUserId(user._id, id).then((result) => {
+      // delete result.message;
+      result.result.map((item, i) => {
+        delete item._id;
+        delete item.isDeleted;
+        delete item.__v;
+        delete item.userId;
+        delete item.problemId;
+        item.submitDate = new Date(item.submitDate).toLocaleString();
+        item.result = item.result.match;
+        //item.results= item.resluts.match;
+      });
+      setListSubmited(result.result);
+      setRows(result.result);
+      // console.log("result",result.result);
+    });
       })
       .catch((error) => {
         setIsSubmit(true);

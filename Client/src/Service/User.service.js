@@ -19,10 +19,14 @@ export const User = {
     }
   },
   Info: async () => {
-    return await axios.get(`${userPath}/info`).catch(error=> error);
+    try{
+    return  await axios.get(`${userPath}/info`).catch(error=> error);
+    } catch(e) {
+      console.log(e);
+    }
   },
   Logout: async () => {
-    return await axios.get(`${userPath}/logout`).catch(error=> error);;
+    return await axios.get(`${userPath}/logout`).catch(error=> error);
   },
   AddWishList: async (id) => {
     try {
@@ -34,7 +38,7 @@ export const User = {
     }
   },
   GetDetails: async () => {
-    return await axios.get(`${userPath}/details`).catch(error=> error);;
+    return await axios.get(`${userPath}/details`).catch(error=> error);
   },
   UpdateUser: async (body) => {
     try {

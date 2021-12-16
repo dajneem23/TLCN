@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/alt-text */
 import React, { useState } from "react";
 import FileBase64 from "react-file-base64";
-import TagInput from "../TagsInput/index";
+import TagInput from "../TagsInput/TagInput";
 import { Editor } from "react-draft-wysiwyg";
 import { EditorState, convertToRaw } from "draft-js";
 import draftToHtml from 'draftjs-to-html';
@@ -57,6 +57,7 @@ export default function PostNewJob() {
       endDate: new Date(endDate).getTime()
     });
     console.log(result);
+    alert("Create success!");
   };
   function handleSelecetedTags(items) {
     setTags(items);
@@ -87,7 +88,7 @@ export default function PostNewJob() {
         <form className="col-md-8 border-right">
           <div className="p-3 py-5">
             <div className="d-flex justify-content-between align-items-center mb-3">
-              <h4 className="text-right">Create new job</h4>
+              <h4 className="text-right">CREATE NEW JOB</h4>
             </div>
             <div className="row mt-2">
               <div className="col-md-12">

@@ -51,13 +51,7 @@ ProblemRouter.get("/getProblemById", async (req, res) => {
   const id = req.query.id;
   const problem = await Problem.findById(id);
 
-  if (problem == null || problem == undefined || !problem.isDeleted) {
-    return res
-      .status(404)
-      .json({ message: "Can not find this problem", msgError: true });
-  }
-
-  if (problem.isDelete) {
+  if (problem == null || problem == undefined || problem.isDeleted) {
     return res
       .status(404)
       .json({ message: "Can not find this problem", msgError: true });

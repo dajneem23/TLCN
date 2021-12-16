@@ -3,7 +3,7 @@
  
 import React ,{createContext,useState,useEffect,useRef} from 'react' ;
 import {User} from '../Service/User.service';
-import Loading from '../Component/LoadingPage/index'
+import Loading from '../Component/LoadingPage/LoadingPage'
 
 
 
@@ -18,9 +18,9 @@ export default ({children})=>{
     useEffect(()=>{
         setIsloaded(true);
         User.Info().then(data=>{
-            console.log(data.data)
-            setUser(data.data.user);
-            setisAuthenticated(data.data.isAuthenticated);
+//            if(!data.data) return;
+            setUser(data.data?data.data.user:false || false);
+            setisAuthenticated(data.data?data.data.isAuthenticated :false || false);
         })
         const timer = setTimeout(() => {
             setIsloaded(false);

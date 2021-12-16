@@ -19,69 +19,18 @@ import { useEffect } from "react";
 import { Compile } from "../../Service/Compile.service";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
-const HARD = "Hard";
-const MEDIUM = "Medium";
-const EASY = "Easy";
-const TITLE = "title";
-const STATUS = "status";
-const TYPE = "type";
-const AUTHOR = "author";
-
-const listDone = ["1", "4", "6", "7", "8", "12"];
-
-const columns = [
-  { id: "title", label: "Title", minWidth: 300 },
-  { id: "category", label: "Category", minWidth: 100, align: "center" },
-  { id: "type", label: "Difficulty", minWidth: 100 },
-  { id: "author", label: "Author", minWidth: 100 },
-  { id: "action", label: "Action", minWidth: 100 },
-];
-
-const titleStyle = {
-  fontSize: 15,
-  fontWeight: "550",
-};
-
-const easyStyle = {
-  fontSize: 13,
-  color: "#80FF00",
-  fontWeight: "550",
-};
-
-const mediumStyle = {
-  fontSize: 13,
-  color: "#FF9933",
-  fontWeight: "550",
-};
-
-const hardStyle = {
-  fontSize: 13,
-  color: "red",
-  fontWeight: "550",
-};
-
-const authorStyle = {
-  fontSize: 13,
-};
-
-const categoryStyle = {
-  fontSize: 15,
-  color: "#3618F3",
-  fontWeight: "550",
-};
-
 export default function Exercise() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [isAsc, setFilter] = React.useState(true);
   const [listProblems, setListProblems] = React.useState([]);
   const [rows, setRows] = React.useState([]);
+  const [isDeleting, setDeleting] = React.useState(false);
 
   useEffect(() => {
     Compile.GetAllProblems().then((result) => {
       setListProblems(result);
       setRows(result);
-      console.log("ssss", rows);
     });
   }, []);
   const handleChangePage = (event, newPage) => {
@@ -92,9 +41,27 @@ export default function Exercise() {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-  const handleClick=(row)=>{
-      
+  const handleClick = (row) => {
+    const confirm = window.confirm("Do you want to delete this exercise?");
+    if (confirm) {
+      setDeleting(true);
       console.log(row._id);
+      Compile.DeleteExerciseById(row._id).then(result => {
+        if (result.status == 200) {
+          alert("Delete exercise successfully!");
+          Compile.GetAllProblems().then((result) => {
+            setListProblems(result);
+            setRows(result);
+          });
+        } else {
+          alert("Delete failed, please try later!");
+        }
+        setDeleting(false)
+      }).catch(error => {
+        alert("Delete failed, please try later!");
+        setDeleting(false);
+      })
+    }
   }
   const sort = (order) => {
     const newRows = rows.sort((a, b) => {
@@ -113,15 +80,15 @@ export default function Exercise() {
 
   return (
     <div className="manager_ex_container">
-        <h4>List Exercise</h4>
-      <table class="table">
+      <div style={{ margin: 40, textAlign: 'center' }}>
+        <h3>EXERCISE MANAGEMENT</h3>
+      </div>
+      <table class="table" style={{ borderTopWidth: 2, borderTopColor: 'black', width: '80%' }}>
         <thead>
           <tr>
-            <th scope="col">Title</th>
-            <th scope="col">Category</th>
-            <th scope="col">Diffculty</th>
-            <th scope="col">Author</th>
-            <th scope="col">Action</th>
+            <th scope="col" style={{ textAlign: 'center' }}>Title</th>
+            <th scope="col" style={{ textAlign: 'center', width: 100 }}>Author</th>
+            <th scope="col" style={{ textAlign: 'center', width: 50 }}>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -130,16 +97,14 @@ export default function Exercise() {
             .map((row) => {
               return (
                 <tr>
-                  <td>{row.title}</td>
-                  <td>{row.category}</td>
-                  <td>{row.type}</td>
-                  <td>{row.author}</td>
-                  <td className="btn_del_ex"><button className="btn btn-danger " onClick={()=>handleClick(row)}>Delete<DeleteForeverIcon/></button></td>
+                  <td><a style={{ color: 'black', fontSize: 18, fontWeight: "550", }} href={`/code/${row._id}`}>{row.title}</a></td>
+                  <td style={{ color: 'black', fontSize: 18, fontWeight: "550", }}>{row.author}</td>
+                  <td style={{ textAlign: 'center' }}><button disabled={isDeleting} className="btn btn-danger " onClick={() => handleClick(row)}><DeleteForeverIcon /></button></td>
                 </tr>
               );
             })}
         </tbody>
-      </table>
-    </div>
+      </table >
+    </div >
   );
 }
