@@ -9,6 +9,26 @@ import { Job } from "../../Service/Job.service";
 import Chip from "@mui/material/Chip";
 import { Editor } from "react-draft-wysiwyg";
 import htmlToDraft from "html-to-draftjs";
+import Paper from "@mui/material/Paper";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TablePagination from "@mui/material/TablePagination";
+import TableRow from "@mui/material/TableRow";
+import sortIcon from "../../IMG//icon/sort.png";
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
+import { Document, Page } from "react-pdf";
+import { Viewer } from "@react-pdf-viewer/core"; // install this library
+// Plugins
+import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout"; // install this library
+// Import the styles
+import "@react-pdf-viewer/core/lib/styles/index.css";
+import "@react-pdf-viewer/default-layout/lib/styles/index.css";
+// Worker
+import { Worker } from "@react-pdf-viewer/core"; // install this library
 import {
   EditorState,
   convertToRaw,
@@ -22,6 +42,35 @@ import { getDateWithFormat, getDateWithString } from "../../Utls/DateTimeUtls";
 const ROLE_ADMIN = 0;
 const ROLE_COOP = 1;
 
+const styleModal = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  pt: 2,
+  px: 4,
+  pb: 3,
+};
+
+const columns = [
+  { id: "fullname", label: "FullName", minWidth: 300 },
+  { id: "email", label: "Email", minWidth: 300 },
+  { id: "phoneNumber", label: "Phone", minWidth: 300 },
+  { id: "cv", label: "CV", minWidth: 300 },
+];
+
+const titleStyle = {
+  fontSize: 15,
+  fontWeight: "550",
+  maxLines: 1,
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+};
+
 export default function UpdateJob() {
   const { user, setUser, isAuthenticated, setisAuthenticated, info, setinfo } =
     useContext(AuthContext);
@@ -31,6 +80,7 @@ export default function UpdateJob() {
   const [tags, setTags] = useState([]);
   const [flag, setFlag] = useState(false);
   const [isLoading, setLoading] = useState(false);
+  const defaultLayoutPluginInstance = defaultLayoutPlugin();
   const [values, setValues] = useState({
     title: "",
     description: "",
@@ -44,7 +94,13 @@ export default function UpdateJob() {
     endDate: 0,
     img: "",
   });
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [isAsc, setFilter] = React.useState(true);
+  const [rows, setRows] = React.useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [cv, setCV] = useState("");
+  const [viewPdf, setViewPdf] = useState(null);
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const defaultImg =
     "https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg";
@@ -58,6 +114,8 @@ export default function UpdateJob() {
         setValues(data);
         setTags(values.language);
         setFlag(true);
+        setRows(data.listApprove);
+        console.log(data.listApprove);
         const blocksFromHTML = convertFromHTML(data.description);
         const state = ContentState.createFromBlockArray(
           blocksFromHTML.contentBlocks,
@@ -68,7 +126,14 @@ export default function UpdateJob() {
     }, []);
     return () => (mounted = false);
   }, []);
-
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = (value) => {
+    setOpen(true);
+    setCV(value);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
   const onEditorStateChange = (editorState) => {
     setEditorState(editorState);
   };
@@ -108,7 +173,7 @@ export default function UpdateJob() {
       .then((result) => {
         if (result.status == 200) {
           alert("Delete exercise successfully!");
-          history.push("/jobsmanager")
+          history.push("/jobsmanager");
         } else {
           alert("Delete failed, please try later!");
         }
@@ -117,6 +182,34 @@ export default function UpdateJob() {
         alert("Delete failed, please try later!");
       });
   };
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
+
+  const sort = (order) => {
+    const newRows = rows.sort((a, b) => {
+      let sort = 1;
+      if (isAsc) {
+        sort = a[order] > b[order] ? 1 : -1;
+      } else {
+        sort = a[order] < b[order] ? 1 : -1;
+      }
+      return sort;
+    });
+    setRows(newRows);
+    setFilter(!isAsc);
+  };
+  const [numPages, setNumPages] = useState(null);
+  const [pageNumber, setPageNumber] = useState(1);
+
+  function onDocumentLoadSuccess({ numPages }) {
+    setNumPages(numPages);
+  }
   const AdminManager = () => {
     return (
       <div className="container rounded bg-white mt-5 mb-5">
@@ -143,7 +236,7 @@ export default function UpdateJob() {
           <form className="col-md-8 border-right">
             <div className="p-3 py-5">
               <div className="d-flex justify-content-between align-items-center mb-3">
-                <h4 className="text-right">Update your job</h4>
+                <h4 className="text-right title_list_approve">Job Manager</h4>
               </div>
               <div className="row mt-2">
                 <div className="col-md-12">
@@ -278,9 +371,29 @@ export default function UpdateJob() {
         [name]: value,
       });
     };
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = (value) => {
+      setOpen(true);
+      setCV(value);
+    };
+    const handleClose = () => {
+      setOpen(false);
+    };
     // const { editorState } = values.description;
     return (
       <div className="container rounded bg-white mt-5 mb-5">
+        <Modal
+          hideBackdrop
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="child-modal-title"
+          aria-describedby="child-modal-description"
+        >
+          <Box sx={{ ...styleModal }}>
+            <h2 id="child-modal-title">Text in a child modal</h2>
+            <p id="child-modal-description"></p>
+          </Box>
+        </Modal>
         <div className="row">
           <div className="col-md-3 border-right">
             <div className="d-flex flex-column align-items-center text-center p-3 py-5">
@@ -301,10 +414,12 @@ export default function UpdateJob() {
               </div>
             </div>
           </div>
-          <form className="col-md-8 border-right" onKeyPress={handleKeyPress}>
+          <form className="col-md-9 border-right" onKeyPress={handleKeyPress}>
             <div className="p-3 py-5">
               <div className="d-flex justify-content-between align-items-center mb-3">
-                <h4 className="text-right">Create new job</h4>
+                <h4 className="text-right title_list_approve">
+                  Job Manager
+                </h4>
               </div>
               <div className="row mt-2">
                 <div className="col-md-12">
@@ -448,7 +563,7 @@ export default function UpdateJob() {
                   Update Job
                 </button>
                 <button
-                type= "button"
+                  type="button"
                   className="btn btn-danger"
                   onClick={handleDelete}
                   disabled={isLoading}
@@ -459,6 +574,108 @@ export default function UpdateJob() {
             </div>
           </form>
         </div>
+        <div className="col-md-12">
+          <label className="labels title_list_approve">List Approve</label>
+          <Paper sx={{ width: "100%", overflow: "hidden" }}>
+            <TableContainer>
+              <Table stickyHeader aria-label="sticky table">
+                <TableHead>
+                  <TableRow>
+                    {columns.map((column) => (
+                      <TableCell
+                        key={column.id}
+                        align={column.align}
+                        style={{ minWidth: column.minWidth }}
+                      >
+                        {column.label}
+                        {column.id!="cv" &&<img
+                          src={sortIcon}
+                          className="sort_icon"
+                          onClick={() => {
+                            sort(column.id);
+                          }}
+                        />}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {rows
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((row) => {
+                      return (
+                        <TableRow
+                          hover
+                          role="checkbox"
+                          tabIndex={-1}
+                          key={row._id}
+                        >
+                          {columns.map((column) => {
+                            const value = row[column.id];
+                            let display = value;
+                            let style = {};
+                            if (column.id == "cv") {
+                              display = (
+                                <div>
+                                  <button className="btn btn-outline-primary" onClick={() => handleOpen(value)}>
+                                    Preview
+                                  </button>
+                                </div>
+                              );
+                            }
+                            return (
+                              <TableCell
+                                key={column.id}
+                                align={column.align}
+                                style={style}
+                              >
+                                {display}
+                              </TableCell>
+                            );
+                          })}
+                        </TableRow>
+                      );
+                      // eslint-disable-next-line no-unreachable
+                    })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <TablePagination
+              rowsPerPageOptions={[]}
+              component="div"
+              count={rows.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+          </Paper>
+        </div>
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="parent-modal-title"
+          aria-describedby="parent-modal-description"
+        >
+          <Box sx={{ ...styleModal, width: 800,height: "80%"}}>
+            <div clasName="cv_pr_contrainer" >
+              {cv && (
+                <>
+                  <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.6.347/build/pdf.worker.min.js">
+                    <Viewer
+                      sx={{overflow: "scroll"}}
+                      fileUrl={cv}
+                      plugins={[defaultLayoutPluginInstance]}
+                    />
+                  </Worker>
+                </>
+              )}
+
+              {/* if we dont have pdf or viewPdf state is null */}
+              {!cv && <>No pdf file selected</>}
+            </div>
+          </Box>
+        </Modal>
       </div>
     );
   };

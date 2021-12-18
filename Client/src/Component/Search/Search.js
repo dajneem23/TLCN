@@ -131,7 +131,6 @@ export default function Seach() {
   const displayUsers = results
     .slice(pagesVisited, pagesVisited + usersPerPage)
     .map((item, index) => {
-      console.log(wishList);
       return (
         <div>
           <Grid container className="container_all_jobs">

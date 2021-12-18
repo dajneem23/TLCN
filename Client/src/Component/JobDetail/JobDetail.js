@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import "./style.css";
 import Box from "@mui/material/Box";
@@ -11,15 +11,76 @@ import logo from "../../IMG/woekday.jpg";
 import { Job } from "../../Service/Job.service";
 import Chip from "@mui/material/Chip";
 import { useHistory } from "react-router-dom";
+import { AuthContext } from "../../Service/Auth.context";
+import FileBase64 from "react-file-base64";
+import { User } from "../../Service/User.service";
+import Button from "@mui/material/Button";
+import Modal from "@mui/material/Modal";
+const ROLE_ADMIN = 0;
+const ROLE_COOP = 1;
+const ROLE_INTER = 2;
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 900,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  pt: 2,
+  px: 4,
+  pb: 3,
+};
 
+function ChildModal() {
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  return (
+    <React.Fragment>
+      <Button onClick={handleOpen}>Open Child Modal</Button>
+      <Modal
+        hideBackdrop
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="child-modal-title"
+        aria-describedby="child-modal-description"
+      >
+        <Box sx={{ ...style, width: 200 }}>
+          <h2 id="child-modal-title">Text in a child modal</h2>
+          <p id="child-modal-description">
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+          </p>
+          <Button onClick={handleClose}>Close Child Modal</Button>
+        </Box>
+      </Modal>
+    </React.Fragment>
+  );
+}
 export default function Detail() {
   const { id } = useParams();
+  const { user, setUser, isAuthenticated, setisAuthenticated, info, setinfo } =
+    useContext(AuthContext);
+  const [values, setValues] = useState({
+    fullname: "",
+    email: "",
+    phoneNumber: "",
+    cv: "",
+  });
   const [sWidth, setScreenWidth] = useState(window.innerWidth);
   const [data, setdata] = useState([]);
   const [job, setJob] = useState("");
   const [listHotestJobs, setListHotestJobs] = useState([]);
   const [lang, setLang] = useState([]);
-
+  const [isuser,setIsUser] = useState([]);
+  const [isApprove,setApprove]= useState(false);
+  const [isLoading,setLoading]= useState(false);
   const history = useHistory();
 
   useEffect(() => {
@@ -32,6 +93,7 @@ export default function Detail() {
       } else {
         setListHotestJobs([]);
       }
+      isApply();
     });
     Job.GetJobByID(id)
       .then((data) => {
@@ -43,6 +105,62 @@ export default function Detail() {
         window.location.reload();
       });
   }, []);
+  const isApply =()=>{
+    if(isAuthenticated){
+      User.GetDetails().then((result) => {
+        console.log(result.data.user.listApprove);
+        if(result.data.user.listApprove.some(e=>e==id)){
+          setApprove(true)
+        }
+      });
+    }
+  }
+  // const onApplyJob = () => {
+  //   if (isAuthenticated) {
+  //     User.AddApproveList(id,user._id)
+  //       .then(() => {alert("Apply success")})
+  //       .catch((error) => console.log(error));
+
+  //   } else {
+  //     history.push("/signin");
+  //   }
+  // };
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setValues({
+      ...values,
+      [name]: value,
+    });
+  };
+  const onSubmit = () =>{
+    if(!values.fullname||!values.phoneNumber||!values.email||!values.cv){
+      alert("Please fill in your form!")
+    }
+    else{
+      setLoading(true);
+      User.ApproveJob(id,values).then(result =>{
+        if (result.status == 200) {
+          alert("Apply successfully!");
+          setApprove(true);
+          setLoading(false);
+          setOpen(false);
+        } else {
+          alert("Apply failed, please try later!");
+        }
+      })
+      .catch((error) => {
+        setLoading(false);
+        alert("Apply failed, please try later!");
+      });
+    }
+    }
   const defaultImg =
     "https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg";
   return (
@@ -59,6 +177,77 @@ export default function Detail() {
                   <h4 className="margin-10px-bottom font-size24 md-font-size22 sm-font-size20 font-weight-600">
                     {job.createBy}
                   </h4>
+                </div>
+                <div className="btn_apply">
+                  {isAuthenticated && user.role!= ROLE_ADMIN && user.role!=ROLE_COOP && <Button variant="contained" color="success" onClick={handleOpen} disabled = {isApprove}>Apply job</Button>}
+                  {!isAuthenticated && <Button onClick={()=>{history.push("/signin")}}>Apply job</Button>}
+                  <Modal
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="parent-modal-title"
+                    aria-describedby="parent-modal-description"
+                  >
+                    <Box sx={{ ...style, width: 600 }}>
+                      <div className="row mt-2">
+                        <div className="col-md-12">
+                          <label className="labels">Full Name</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            name="fullname"
+                            id="fullname"
+                            value={values.fullname || ""}
+                             onChange={handleChange}
+                          />
+                        </div>
+                      </div>
+                      <div className="row mt-2">
+                        <div className="col-md-12">
+                          <label className="labels">Email</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            name="email"
+                            id="email"
+                            value={values.email || ""}
+                             onChange={handleChange}
+                          />
+                        </div>
+                      </div>
+                      <div className="row mt-2">
+                        <div className="col-md-12">
+                          <label className="labels">Phone Number</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            name="phoneNumber"
+                            id="phoneNumber"
+                            value={values.phoneNumber || ""}
+                             onChange={handleChange}
+                          />
+                        </div>
+                      </div>
+                      <div className="row mt-2">
+                        <div className="col-md-12">
+                        <div className="file btn btn-lg">
+                          <FileBase64
+                            accept="image/*"
+                            multiple={false}
+                            type="file"
+                            value={values.cv||""}
+                             onDone={({ base64 }) =>
+                              setValues({ ...values, cv: base64 })
+                            }
+                          />
+                        </div>
+                        </div>
+                      </div>
+                     
+                      <button className="btn btn-primary" onClick={() => onSubmit()} disabled = {isLoading}>
+                        Submit
+                      </button>
+                    </Box>
+                  </Modal>
                 </div>
               </div>
 
@@ -175,12 +364,14 @@ export default function Detail() {
 function CardJob(props) {
   const dateEnd = getDateWithFormat(props.item.endDate);
   const timeAgo = calculateTimeAgo(props.item.createDate);
-  console.log('cardjob',props)
   return (
-    <a href={`/job/`+props.item._id}>
+    <a href={`/job/` + props.item._id}>
       <Card variant="outlined" className="container_card_all_jobdetail">
         {/* <CardMedia component = "img" image={logo} height = "140" width = "380"/> */}
-        <img src={props.item.img ?props.item.img:logo} className="card_image" />
+        <img
+          src={props.item.img ? props.item.img : logo}
+          className="card_image"
+        />
         <CardContent style={{ width: "100%" }}>
           <div className="card_title_detail">{props.item.title}</div>
           <div className="">$ {props.item.salary}</div>

@@ -171,18 +171,19 @@ UserRoute.post('/approve', passport.authenticate('jwt',{session : false}), async
     }
 
     const approve = {
+        userId: _id,
         fullname,
         phoneNumber,
         email,
         cv
     }
 
-    if (!currentJob.listApprove.some(e => e == _id)) {
+    if (!currentJob.listApprove.some(e => e.userId == _id)) {
         currentJob.listApprove.push(approve);
     }
 
     if (!currentUser.listApprove.some(e => e == jobId)) {
-        currentUser.listApprove.push(_id);
+        currentUser.listApprove.push(jobId);
     }
 
     currentUser.save(err => {

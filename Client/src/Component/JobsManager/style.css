@@ -66,6 +66,14 @@
     width: 100%;
     height: 600px;
 }
+.cv_pr_container{
+    overflow: auto;
+    margin: 0;
+    padding: 0;
+}
+.MuiBox-root{
+  overflow-y: auto;
+}
 .container-create{
     display: flex;
     justify-content: flex-end;
@@ -73,6 +81,11 @@
 .btn-create-job{
     margin-top: 5px;
     border-radius:10px;
+}
+.title_list_approve{
+    font-size:26px;
+    align-items: center;
+    text-transform: uppercase;
 }
 /*----------------------------Update Job---------------------------------------*/
 .container-detail{

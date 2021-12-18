@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/alt-text */
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
+import {useHistory} from "react-router-dom"
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -16,6 +17,7 @@ import sortIcon from "../../IMG//icon/sort.png";
 import AddIcon from "@mui/icons-material/Add";
 import { getDateWithFormat } from "../../Utls/DateTimeUtls";
 import { Job } from "../../Service/Job.service";
+import { AuthContext } from "../../Service/Auth.context";
 const columns = [
   { id: "title", label: "Title", minWidth: 300 },
   { id: "tinyDes", label: "Tiny Description", minWidth: 300 },
@@ -32,21 +34,34 @@ const titleStyle = {
   overflow: "hidden",
   textOverflow: "ellipsis",
 };
-
+const ROLE_ADMIN = 0;
+const ROLE_COOP = 1;
+const ROLE_INTER = 2;
 export default function JobsManagement() {
+  const { user, setUser } = useContext(AuthContext);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [isAsc, setFilter] = React.useState(true);
   const [rows, setRows] = React.useState([]);
+  let history = useHistory();
   useEffect(() => {
-    Job.GetAllJobs().then((result) => {
-      setRows(result);
-      console.log(result);
-    });
+    if(user.role== ROLE_ADMIN){
+
+      Job.GetAllJobs().then((result) => {
+        setRows(result);
+        console.log(result);
+      });
+    }
+    else if(user.role == ROLE_COOP){
+      Job.GetJobsByCoop().then((result)=>{
+        setRows(result);
+      })
+    }
+    else{
+      history.push("/notfound")
+    }
   }, []);
-  // BaseListJob.forEach(item => {
-  //     item.status = listDone.includes(item._id) ? "Done" : "-";
-  // })
+ 
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);

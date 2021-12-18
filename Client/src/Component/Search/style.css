@@ -47,3 +47,10 @@
     display: flex;
     justify-content: between;
   }
+  .card_title{
+    width: 320px;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
+  }
