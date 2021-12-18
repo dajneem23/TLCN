@@ -153,7 +153,7 @@ UserRoute.post('/addWishList', passport.authenticate('jwt',{session : false}), a
 
 UserRoute.post('/approve', passport.authenticate('jwt',{session : false}), async (req, res) => {
     const {username,_id,role} = req.user;
-    const {jobId} = req.body;
+    const {jobId, fullname, phoneNumber, email, cv} = req.body;
 
     const currentUser = await User.findById(_id);
     const currentJob = await Job.findById(jobId);
@@ -166,8 +166,19 @@ UserRoute.post('/approve', passport.authenticate('jwt',{session : false}), async
         return res.status(403).json({ 'message': 'Can not find job', msgError: true });
     }
 
+    if (!fullname || !phoneNumber || !email || !cv) {
+        return res.status(403).json({ 'message': 'Bad request, field required!', msgError: true });
+    }
+
+    const approve = {
+        fullname,
+        phoneNumber,
+        email,
+        cv
+    }
+
     if (!currentJob.listApprove.some(e => e == _id)) {
-        currentJob.listApprove.push(_id);
+        currentJob.listApprove.push(approve);
     }
 
     if (!currentUser.listApprove.some(e => e == jobId)) {
