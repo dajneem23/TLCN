@@ -71,7 +71,7 @@ const categoryStyle = {
 
 export default function Exercise() {
     const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [rowsPerPage, setRowsPerPage] = React.useState(12);
     const [isAsc, setFilter] = React.useState(true);
     const [listProblems, setListProblems] = React.useState([]);
     const [rows, setRows] = React.useState([]);
@@ -93,12 +93,10 @@ export default function Exercise() {
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
-
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(+event.target.value);
         setPage(0);
     };
-
     const sort = (order) => {
         const newRows = rows.sort((a, b) => {
             let sort = 1;
@@ -113,7 +111,6 @@ export default function Exercise() {
         setFilter(!isAsc);
         console.log(newRows);
     }
-
     return (
         <div className="page_code_container">
             <Container maxWidth='lg' className="problem_container">

@@ -61,7 +61,7 @@ JobRouter.get('/getHotestJobs', async (req, res) => {
 
     let listJobs = await Job.find({ 'isDelete': false }).where('endDate').gt(new Date().getTime());
 
-    listJobs.sort((a, b) => a.listApply.length < b.listApply.length ? 1 : -1);
+    listJobs.sort((a, b) => a.listApprove.length < b.listApprove.length ? 1 : -1);
 
     let listHotestJobs = [];
     for (let i = 0; i < (TOP5 > listJobs.length ? listJobs.length : TOP5); i++) {
@@ -139,7 +139,7 @@ JobRouter.get('/getJobsByCoopId', passport.authenticate('jwt', { session: false 
         return res.status(403).json({ 'message': ' Forbidden You dont have permission to access on one page', msgError: true });
     }
 
-    const listJobs = await Job.find({'createBy' : userName});
+    const listJobs = await Job.find({'createBy' : userName, 'isDelete' : false});
     
     return res.status(200).json({
         message: "Get successfully",

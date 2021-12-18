@@ -163,7 +163,7 @@ function CardHotJob(props) {
                             {props.item.language.map((item, key) => <span className="language_card">{item}</span>)}
                         </Typography>
                         <Typography sx={{ fontSize: 18, marginTop: 5, color: 'Highlight' }} gutterBottom>
-                            Apply: {props.item.listApply.length}
+                            Apply: {props.item.listApprove.length}
                         </Typography>
                         <div className="card_hot_create_date">
                             <p style={{ fontStyle: 'italic' }}>{createDate}</p>
