@@ -191,7 +191,7 @@ JobRouter.post('/update',async (req,res)=>{
     }
 
 })
-JobRouter.delete("/:id", async (req, res) => {
+JobRouter.delete("/:id", passport.authenticate('jwt', { session: false }), async (req, res) => {
     const jobId = req.params.id;
      if(!jobId){
         return res.status(500).json({"message":"missing required value"})
