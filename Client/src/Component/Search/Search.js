@@ -82,7 +82,12 @@ export default function Seach() {
     });
     Job.GetAllJobs().then((result) => {
       setListAllJobs(result);
-      setResult(result);
+      if (!result) {
+        alert('Server error!');
+        return;
+      } else {
+        setResult(result);
+      }
     });
     User.GetDetails().then((result) => {
       if (result.status == 200) {
