@@ -182,7 +182,6 @@ function CardNewJob(props) {
         <a href={jobDetailsUrl} >
             <Card variant="outlined" className="container_card_new_job">
                 <div>
-                    <p style={{ fontSize: 12, color: 'gray', fontWeight: 'bold', marginBottom: 5 }}>{props.item.coopName}</p>
                     <p style={{ fontSize: 17, color: 'black', fontWeight: 'bold', marginBottom: 5 }} className="card_title">{props.item.title}</p>
                     <p style={{ fontSize: 17, color: 'red', fontWeight: 'bold', marginBottom: 5 }}>$ {props.item.salary}</p>
                 </div>

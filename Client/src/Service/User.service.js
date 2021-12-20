@@ -37,14 +37,14 @@ export const User = {
       console.log(e);
     }
   },
-  ApproveJob: async (id,values) => {
+  ApproveJob: async (id, values) => {
     try {
       return await axios.post(`${userPath}/approve`, {
         jobId: id,
         fullname: values.fullname,
-        phoneNumber:values.phoneNumber,
-        email:values.email,
-        cv:values.cv,
+        phoneNumber: values.phoneNumber,
+        email: values.email,
+        cv: values.cv,
       });
     } catch (e) {
       console.log(e);
@@ -61,4 +61,24 @@ export const User = {
       console.log(error);
     }
   },
+  GetAllUsers: async () => {
+    try {
+      const result = await axios.get(`${userPath}/getAllUsers`);
+      if (result.status == 200) {
+        return result.data.users
+      } else {
+        return null;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  DeleteUser: async (id) => {
+    try {
+      const result = await axios.delete(`${userPath}/${id}`);
+      return result
+    } catch (error) {
+      console.log(error);
+    }
+  }
 };

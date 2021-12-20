@@ -37,7 +37,8 @@ passport.use(new LocalStrategy( {
     User.findOne({userName},(err,user)=>{
      if(err) return done(err);
      if(!user) return done(null,false, { message: 'Incorrect username.' });
-      user.comparePassword(password,done)
+     if(user.isdelete) return done(null,false, { message: 'Incorrect username.' });
+    user.comparePassword(password,done)
  
  })   
 })
