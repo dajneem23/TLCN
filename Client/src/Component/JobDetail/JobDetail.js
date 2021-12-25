@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import "./style.css";
+import LoadingPage from "../LoadingPage/LoadingPage"
 import Box from "@mui/material/Box";
 import { Grid } from "@mui/material";
 import Card from "@mui/material/Card";
@@ -65,7 +66,7 @@ function ChildModal() {
 }
 export default function Detail() {
   const { id } = useParams();
-  const { user, setUser, isAuthenticated, setisAuthenticated, info, setinfo } =
+  const { user, setUser, isAuthenticated, setisAuthenticated, info, setinfo, isLoaded, setIsLoaded } =
     useContext(AuthContext);
   const [values, setValues] = useState({
     fullname: "",
@@ -75,15 +76,15 @@ export default function Detail() {
   });
   const [sWidth, setScreenWidth] = useState(window.innerWidth);
   const [data, setdata] = useState([]);
-  const [job, setJob] = useState("");
+  const [job, setJob] = useState(false);
   const [listHotestJobs, setListHotestJobs] = useState([]);
   const [lang, setLang] = useState([]);
-  const [isuser,setIsUser] = useState([]);
   const [isApprove,setApprove]= useState(false);
   const [isLoading,setLoading]= useState(false);
   const history = useHistory();
 
   useEffect(() => {
+
     window.addEventListener("resize", () => {
       setScreenWidth(window.innerWidth);
     });
@@ -93,28 +94,23 @@ export default function Detail() {
       } else {
         setListHotestJobs([]);
       }
-      isApply();
     });
     Job.GetJobByID(id)
       .then((data) => {
         setJob(data);
         setLang(data.language);
+        setApprove(data.listApprove.some(e=>e.userId===user._id))
       })
       .catch((error) => {
         history.replace("/notfound");
         window.location.reload();
       });
-  }, []);
-  const isApply =()=>{
-    if(isAuthenticated){
-      User.GetDetails().then((result) => {
-        console.log(result.data.user.listApprove);
-        if(result.data.user.listApprove.some(e=>e==id)){
-          setApprove(true)
+      User.GetDetails().then((result)=>{
+        if(result.status==200){
+          setValues(result.data.user);
         }
-      });
-    }
-  }
+      })
+  }, []);
   // const onApplyJob = () => {
   //   if (isAuthenticated) {
   //     User.AddApproveList(id,user._id)
@@ -163,7 +159,8 @@ export default function Detail() {
     }
   const defaultImg =
     "https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg";
-  return (
+  return !job ? <LoadingPage/>:(
+    
     <div>
       <div className="container-detail">
         <div className="container">
@@ -180,7 +177,7 @@ export default function Detail() {
                 </div>
                 <div className="btn_apply">
                   {isAuthenticated && user.role!= ROLE_ADMIN && user.role!=ROLE_COOP && <Button variant="contained" color="success" onClick={handleOpen} disabled = {isApprove}>Apply job</Button>}
-                  {!isAuthenticated && <Button onClick={()=>{history.push("/signin")}}>Apply job</Button>}
+                  {!isAuthenticated && <Button variant="contained" color="success" onClick={()=>{history.push("/signin")}}>Apply job</Button>}
                   <Modal
                     open={open}
                     onClose={handleClose}

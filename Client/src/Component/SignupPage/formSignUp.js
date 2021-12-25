@@ -99,7 +99,8 @@ const formSignUp = ({ submitForm }) => {
                   variant="standard"
                   value={values.fullname}
                   onChange={handleChange}
-                />             
+                />        
+                {errors.fullname && <p className="error">{errors.fullname}</p>}     
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -125,6 +126,7 @@ const formSignUp = ({ submitForm }) => {
                   value={values.email}
                   onChange={handleChange}
                 />
+              {errors.email && <p className="error">{errors.email}</p>}
               </Grid>
               <Grid item xs={12}>
                 <TextField

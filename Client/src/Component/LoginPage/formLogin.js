@@ -123,10 +123,10 @@ export default function SignIn({ submitFormLogin }) {
                 onChange={handleChange}
               />
               {errors.password && <p className="error">{errors.password}</p>}
-              <FormControlLabel
+              {/* <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
-              />
+              /> */}
               <Button
                 type="submit"
                 fullWidth
@@ -147,8 +147,8 @@ export default function SignIn({ submitFormLogin }) {
               </Button>
               <Grid container>
                 <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Forgot password?
+                  <Link variant="body2">
+                    {/* Forgot password? */}
                   </Link>
                 </Grid>
                 <Grid item>

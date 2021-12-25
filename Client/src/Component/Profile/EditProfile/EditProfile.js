@@ -3,6 +3,8 @@ import React, { useState, useEffect, useContext } from "react";
 import FileBase64 from "react-file-base64";
 import { AuthContext } from "../../../Service/Auth.context";
 import { User } from "../../../Service/User.service";
+import {getDateWithFormat} from "../../../Utls/DateTimeUtls"
+import LoadingPage from "../../LoadingPage/LoadingPage";
 import "./style.css";
 
 export default function EditProFile() {
@@ -11,7 +13,6 @@ export default function EditProFile() {
   const [values, setValues] = useState({
     fullname: "",
     avatar: "",
-    email: "",
     phoneNumber: "",
     sex: "",
     dob: "",
@@ -22,9 +23,11 @@ export default function EditProFile() {
     "https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg";
   useEffect(() => {
     User.GetDetails().then((result) => {
-      console.log(result.data.user);
+      if(!result.data.user){
+        return 
+      }
       setValues(result.data.user);
-    });
+    }).catch((error)=>{console.log(error)});
   }, []);
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -51,7 +54,7 @@ export default function EditProFile() {
       });
   };
 
-  return (
+  return !values._id ? <LoadingPage/>:(
     <div className="container rounded bg-white mt-5 mb-5">
       <div className="row">
         <div className="col-md-3 border-right">
@@ -86,17 +89,6 @@ export default function EditProFile() {
                   onChange={handleChange}
                 />
               </div>
-              <div className="col-md-12">
-                <label className="labels">Email</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="email"
-                  name="email"
-                  value={values.email}
-                  onChange={handleChange}
-                />
-              </div>
             </div>
             <div className="row mt-3">
               <div className="col-md-12">
@@ -125,13 +117,13 @@ export default function EditProFile() {
                 </select>
               </div>
               <div className="col-md-12">
-                <label className="labels">DoB</label>
+                <label className="labels">Date of birth</label>
                 <input
                   type="date"
                   className="form-control"
                   name="dob"
                   id="dob"
-                  value={values.dob}
+                  value={getDateWithFormat(parseInt(values.dob))|| getDateWithFormat(Date.now())}
                   onChange={handleChange}
                 />
               </div>

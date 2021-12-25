@@ -18,6 +18,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { getDateWithFormat } from "../../Utls/DateTimeUtls";
 import { Job } from "../../Service/Job.service";
 import { AuthContext } from "../../Service/Auth.context";
+import LoadingPage from "../LoadingPage/LoadingPage"
 const columns = [
   { id: "title", label: "Title", minWidth: 300 },
   { id: "tinyDes", label: "Tiny Description", minWidth: 300 },
@@ -76,9 +77,9 @@ export default function JobsManagement() {
     const newRows = rows.sort((a, b) => {
       let sort = 1;
       if (isAsc) {
-        sort = a[order] > b[order] ? 1 : -1;
+        sort = a[order].toString().toLowerCase() > b[order].toString().toLowerCase() ? 1 : -1;
       } else {
-        sort = a[order] < b[order] ? 1 : -1;
+        sort = a[order].toString().toLowerCase() < b[order].toString().toLowerCase() ? 1 : -1;
       }
       return sort;
     });
@@ -86,7 +87,7 @@ export default function JobsManagement() {
     setFilter(!isAsc);
   };
 
-  return (
+  return rows.length==0 ? <LoadingPage/> : (
     <div className="page_manager_container">
       <Container maxWidth="fixed" className="problem_container">
         <div className="page_title">LIST JOBS</div>

@@ -24,7 +24,6 @@ const ROLE_INTER = 2;
 export default function Header() {
   const { user, setUser, isAuthenticated, setisAuthenticated, info, setinfo } =
     useContext(AuthContext);
-  console.log("Header", user);
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-blue sticky">
       <div className="container-fluid">
@@ -123,7 +122,7 @@ function Auth() {
     <div className="collapse navbar-collapse" id="navbarSupportedContent">
       <ul className="navbar-nav ml-auto">
       <li className="nav-item">
-          <a className="nav-link" href="/chatbox">
+          <a className="nav-link" onClick={() => alert("Chức năng đăng phát triển, hãy thử lại sau !")}>
             <ChatIcon/>Chatbox
           </a>
         </li>

@@ -32,6 +32,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import { useHistory } from "react-router-dom";
 import { AuthContext } from "../../Service/Auth.context";
 import { User } from "../../Service/User.service";
+import LoadingPage from "../LoadingPage/LoadingPage"
 
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
   "label + &": {
@@ -155,7 +156,7 @@ export default function Seach() {
   const changePage = ({ selected }) => {
     setPageNumber(selected);
   };
-  return (
+  return listAllJobs.length==0 ? <LoadingPage/> : (
     <div>
       <Container maxWidth="xlg" className="container_home">
         <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "center" }}>

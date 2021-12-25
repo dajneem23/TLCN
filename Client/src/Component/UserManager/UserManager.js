@@ -99,9 +99,9 @@ export default function JobsManagement() {
     const newRows = rows.sort((a, b) => {
       let sort = 1;
       if (isAsc) {
-        sort = a[order] > b[order] ? 1 : -1;
+        sort = a[order].toString().toLowerCase() > b[order].toString().toLowerCase() ? 1 : -1;
       } else {
-        sort = a[order] < b[order] ? 1 : -1;
+        sort = a[order].toString().toLowerCase() < b[order].toString().toLowerCase() ? 1 : -1;
       }
       return sort;
     });
@@ -147,7 +147,7 @@ export default function JobsManagement() {
     }
   }
 
-  return (
+  return rows.length==0 ? <LoadingPage/> : (
     <div className="page_container_user_manager">
       {!isLoading && <Container maxWidth="lg" className="problem_container">
         <div className="page_title">LIST USERS</div>

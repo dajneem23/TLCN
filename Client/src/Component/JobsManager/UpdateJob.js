@@ -39,6 +39,7 @@ import draftToHtml from "draftjs-to-html";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { AuthContext } from "../../Service/Auth.context";
 import { getDateWithFormat, getDateWithString } from "../../Utls/DateTimeUtls";
+import LoadingPage from "../LoadingPage/LoadingPage";
 const ROLE_ADMIN = 0;
 const ROLE_COOP = 1;
 
@@ -115,7 +116,6 @@ export default function UpdateJob() {
         setTags(values.language);
         setFlag(true);
         setRows(data.listApprove);
-        console.log(data.listApprove);
         const blocksFromHTML = convertFromHTML(data.description);
         const state = ContentState.createFromBlockArray(
           blocksFromHTML.contentBlocks,
@@ -211,7 +211,7 @@ export default function UpdateJob() {
     setNumPages(numPages);
   }
   const AdminManager = () => {
-    return (
+    return !values._id ? <LoadingPage/> : (
       <div className="container rounded bg-white mt-5 mb-5">
         <div className="row">
           <div className="col-md-3 border-right">
@@ -380,7 +380,7 @@ export default function UpdateJob() {
       setOpen(false);
     };
     // const { editorState } = values.description;
-    return (
+    return !values._id ? <LoadingPage/> : (
       <div className="container rounded bg-white mt-5 mb-5">
         <Modal
           hideBackdrop
@@ -586,6 +586,7 @@ export default function UpdateJob() {
                         key={column.id}
                         align={column.align}
                         style={{ minWidth: column.minWidth }}
+                        
                       >
                         {column.label}
                         {column.id!="cv" &&<img
