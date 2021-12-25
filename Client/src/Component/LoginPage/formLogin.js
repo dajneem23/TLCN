@@ -102,7 +102,7 @@ export default function SignIn({ submitFormLogin }) {
                 value={values.userName}
                 onChange={handleChange}
               />
-              {/* {errors.userName && <p className="error">{errors.userName}</p>} */}
+              {errors.userName && <p className="error">{errors.userName}</p>}
               <TextField
                 margin="normal"
                 fullWidth
@@ -122,7 +122,7 @@ export default function SignIn({ submitFormLogin }) {
                 value={values.password}
                 onChange={handleChange}
               />
-              {/* {errors.password && <p className="error">{errors.password}</p>} */}
+              {errors.password && <p className="error">{errors.password}</p>}
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
