@@ -226,6 +226,7 @@ export default function Detail() {
                       </div>
                       <div className="row mt-2">
                         <div className="col-md-12">
+                        Choose your CV:
                         <div className="file btn btn-lg">
                           <FileBase64
                             accept="image/*"
@@ -326,6 +327,19 @@ export default function Detail() {
                                 <Chip label={item} sx={{ marginRight: 1 }} />
                               );
                             })}
+                          </div>
+                        </div>
+                      </li>
+                      <li>
+                        <div className="row">
+                          <div className="col-md-5 col-5">
+                            <i className="fas fa-map-marker-alt text-red"></i>
+                            <strong className="margin-10px-left text-red">
+                              Deadline to approve:
+                            </strong>
+                          </div>
+                          <div className="col-md-7 col-7">
+                            <p>{getDateWithFormat(parseInt(job.endDate))}</p>
                           </div>
                         </div>
                       </li>

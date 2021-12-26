@@ -122,7 +122,7 @@ function Auth() {
     <div className="collapse navbar-collapse" id="navbarSupportedContent">
       <ul className="navbar-nav ml-auto">
       <li className="nav-item">
-          <a className="nav-link" onClick={() => alert("Chức năng đăng phát triển, hãy thử lại sau !")}>
+          <a className="nav-link" onClick={() => alert("This feature is in development, please try again later!")}>
             <ChatIcon/>Chatbox
           </a>
         </li>
