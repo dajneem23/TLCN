@@ -29,7 +29,7 @@ const ROLE_COOP = 1;
 const ROLE_INTER = 2;
 
 
-const App=()=> {
+const App = () => {
 
   const { user, setUser, isAuthenticated, setisAuthenticated, info, setinfo } = useContext(AuthContext);
 
@@ -58,7 +58,7 @@ const App=()=> {
         <Route path="/jobsmanager" component={(user && user.role == ROLE_ADMIN || user && user.role == ROLE_COOP) ? JobsManagement : NotFound404} />
         <Route path="/usersmanager" component={(user && user.role == ROLE_ADMIN) ? UserManagement : NotFound404} />
         <Route path="/notfound" component={NotFound404} />
-        {/* <Route path="/"  component={Home} /> */}
+        <Route path="/" component={Home} />
         <Route component={NotFound404} />
       </Switch>
       <Footer />

@@ -129,6 +129,10 @@ img {
     margin-bottom: 0
 }
 
+.text-red {
+    color: crimson;
+}
+
 
 .text-sky {
     color: #02c2c7
@@ -155,7 +159,7 @@ img {
 }
 
 .text-lightred {
-    color: #ff5722
+    color: #fa7046
 }
 
 a.text-sky:hover {

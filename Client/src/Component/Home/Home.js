@@ -12,6 +12,7 @@ import logo from "../../IMG/woekday.jpg"
 import createIcon from "../../IMG//icon/create.png"
 import uploadIcon from "../../IMG//icon/upload.png"
 import { Container, Grid } from '@mui/material';
+import LoadingPage from "../LoadingPage/LoadingPage"
 import { calculateTimeAgo, getDateWithFormat } from '../../Utls/DateTimeUtls'
 import { Job } from '../../Service/Job.service';
 
@@ -50,7 +51,7 @@ export default function Home() {
         })
     }, [])
 
-    return (
+    return listAllJobs.length==0 ? <LoadingPage/>:(
         <div>
             <Container maxWidth="xlg" className="container_home">
                 <Box sx={{ flexGrow: 2 }}>
@@ -116,13 +117,13 @@ export default function Home() {
                                 </div>
                             </a>
                         </Grid>
-                        <Grid className="card_upload_cv">
+                        {/* <Grid className="card_upload_cv">
                             <div className="card_create_cv_title">Already have CV</div>
                             <div>If you have CV in your device, upload here!</div>
                             <a href="/"><div className="create_cv_button">
                                 <img src={uploadIcon} className='create_icon' /> Upload CV
                             </div></a>
-                        </Grid>
+                        </Grid> */}
                     </Grid>
                 </Box>
             </Container>
