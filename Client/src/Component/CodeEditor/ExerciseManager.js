@@ -27,11 +27,13 @@ export default function Exercise() {
   const [listProblems, setListProblems] = React.useState([]);
   const [rows, setRows] = React.useState([]);
   const [isDeleting, setDeleting] = React.useState(false);
+  const [isLoading, setLoading] = React.useState(true);
 
   useEffect(() => {
     Compile.GetAllProblems().then((result) => {
       setListProblems(result);
       setRows(result);
+      setLoading(false);
     });
   }, []);
   const handleChangePage = (event, newPage) => {
@@ -79,7 +81,7 @@ export default function Exercise() {
     console.log(newRows);
   };
 
-  return rows.length==0? <LoadingPage/>:(
+  return isLoading ? <LoadingPage/>:(
     <div className="manager_ex_container">
       <div style={{ margin: 40, textAlign: 'center' }}>
         <h3>EXERCISE MANAGEMENT</h3>

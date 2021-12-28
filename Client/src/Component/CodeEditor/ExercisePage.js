@@ -77,6 +77,7 @@ export default function Exercise() {
   const [listProblems, setListProblems] = React.useState([]);
   const [rows, setRows] = React.useState([]);
   const { isAuthenticated } = React.useContext(AuthContext);
+  const [isLoading, setLoading] = React.useState(true);
 
   BasicListExercise.forEach((item) => {
     item.status = listDone.includes(item._id) ? "Done" : "-";
@@ -86,6 +87,7 @@ export default function Exercise() {
     Compile.GetAllProblems().then((result) => {
       setListProblems(result);
       setRows(result);
+      setLoading(false);
     });
   }, []);
 
@@ -116,7 +118,7 @@ export default function Exercise() {
     setFilter(!isAsc);
     console.log(newRows);
   };
-  return rows.length == 0 ? (
+  return isLoading ? (
     <LoadingPage />
   ) : (
     <div className="page_code_container">
