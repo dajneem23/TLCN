@@ -44,6 +44,7 @@ export default function JobsManagement() {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [isAsc, setFilter] = React.useState(true);
   const [rows, setRows] = React.useState([]);
+  const [isLoading, setLoading] = React.useState(true);
   let history = useHistory();
   useEffect(() => {
     if(user.role== ROLE_ADMIN){
@@ -51,12 +52,14 @@ export default function JobsManagement() {
       Job.GetAllJobs().then((result) => {
         setRows(result);
         console.log(result);
-      });
+        setLoading(false);
+      }).catch(error => setLoading(false));
     }
     else if(user.role == ROLE_COOP){
       Job.GetJobsByCoop().then((result)=>{
         setRows(result);
-      })
+        setLoading(false);
+      }).catch(error => setLoading(false))
     }
     else{
       history.push("/notfound")
@@ -87,7 +90,7 @@ export default function JobsManagement() {
     setFilter(!isAsc);
   };
 
-  return (
+  return isLoading ? <LoadingPage/> : (
     <div className="page_manager_container">
       <Container maxWidth="fixed" className="problem_container">
         <div className="page_title">LIST JOBS</div>
