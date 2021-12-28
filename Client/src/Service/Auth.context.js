@@ -20,7 +20,8 @@ export default ({children})=>{
         User.Info().then(data=>{
 //            if(!data.data) return;
             setUser(data.data?data.data.user:false || false);
-            setisAuthenticated(data.data?data.data.isAuthenticated :false || false);
+            setisAuthenticated(data.data ? data.data.isAuthenticated : false || false);
+            setIsloaded(true);
         })
         const timer = setTimeout(() => {
             setIsloaded(false);

@@ -24,6 +24,7 @@ JobRouter.get('/getAllJobs', async (req, res) => {
         listAllJobs: listJobs,
         msgError: false
     })
+    
 })
 
 /**
@@ -193,6 +194,9 @@ JobRouter.post('/update',async (req,res)=>{
 })
 JobRouter.delete("/:id", async (req, res) => {
     const jobId = req.params.id;
+    if(!jobId){
+        return res.status(500).json({"message":"missing required value"})
+    }
     Job.findOneAndUpdate({_id: jobId},{isDelete: true},(err, job)=>{
       if(err) return res.status(500).json({'message': err.message});
       if(!job)  return res.status(404).json({'message':"_id not found"})

@@ -23,12 +23,13 @@ const signToken=(userID,role,userName,fullname)=>{
 }
 
 UserRoute.post('/signup',(req,res)=>{
-    const {...content} =req.body    
+    const { ...content } = req.body    
     User.findOne({'userName':content.userName},(err,user)=>{
             if(err) {res.status(500).json({
-                message:{msgBody:"Error has occured 1"},
-                msgError:true })    
-            throw new Error(err)
+                message:{msgBody:err.message},
+                msgError: true
+            })   
+                return
             }
             if(user)res.status(400).json({
                 message:{msgBody:"Username is already taken "},
@@ -73,16 +74,15 @@ UserRoute.post('/signin',(req, res,next)=>{
         }
     })(req, res, next);
 })
-// ,passport.authenticate('jwt',{session : false})
-UserRoute.post('/update',async (req,res)=>{
-    // const {username,_id,role} = req.user;
+UserRoute.post('/update',passport.authenticate('jwt',{session : false}),async (req,res)=>{
+    const {username,_id,role} = req.user;
     const {...content} = req.body
     if(!content._id){
         return res.status(500).json({"message":"missing required value"})
     }
-    // if(role != admin || _id != content._id){
-    //     return res.status(403).json({'message' :' Forbidden You dont have permission to access on one page'});
-    // }
+    if(role != admin || _id != content._id){
+        return res.status(403).json({'message' :' Forbidden You dont have permission to access on one page'});
+    }
     try{
         User.findOneAndUpdate({_id: content._id},{...content,'_id':content._id},{new: true},(err, user)=>{
             if(err) return res.status(500).send(err.message )
