@@ -87,7 +87,7 @@ export default function JobsManagement() {
     setFilter(!isAsc);
   };
 
-  return rows.length==0 ? <LoadingPage/> : (
+  return (
     <div className="page_manager_container">
       <Container maxWidth="fixed" className="problem_container">
         <div className="page_title">LIST JOBS</div>
