@@ -32,9 +32,9 @@ app.use(cors({ credentials: true ,origin: [
 ],}))
 
 const uri=process.env.DB_URI;
-
+const LocalDB=process.env.mongodb_docker
 const  connection =async()=>{
-  await  mongoose.connect(uri,{
+  await  mongoose.connect(LocalDB,{
         useNewUrlParser:true,
         useUnifiedTopology:true
     });
