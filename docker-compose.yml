@@ -111,7 +111,7 @@ services:
     tty: true
   mongodb:
     image: mongo
-    container_name: mongo
+    container_name: mongodb
     ports:
       - 27017:27017
     environment:
