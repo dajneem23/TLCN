@@ -12,6 +12,7 @@ var server = require('http').createServer(app);
 dotenv.config();
 const appPort = process.env.APP_PORT;
 const socketPort = process.env.SOCKET_PORT;
+const MongoDocker=process.env.mongodb_docker
 const sessionMiddleware = session({
 	// name:'access_token',
 	secret: process.env.secretKey,
@@ -50,7 +51,7 @@ app.use(
 );
 
 (async () => {
-	await mongoose.connect(process.env.DB_URI, {
+	await mongoose.connect(MongoDocker, {
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
 	});
