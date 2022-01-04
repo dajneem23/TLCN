@@ -80,9 +80,9 @@ export default function JobsManagement() {
     const newRows = rows.sort((a, b) => {
       let sort = 1;
       if (isAsc) {
-        sort = a[order].toString().toLowerCase() > b[order].toString().toLowerCase() ? 1 : -1;
+        sort = (a[order] + "").toString().toLowerCase() > (b[order] + "").toString().toLowerCase() ? 1 : -1;
       } else {
-        sort = a[order].toString().toLowerCase() < b[order].toString().toLowerCase() ? 1 : -1;
+        sort = (a[order] + "").toString().toLowerCase() < (b[order] + "").toString().toLowerCase() ? 1 : -1;
       }
       return sort;
     });
