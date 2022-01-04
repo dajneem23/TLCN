@@ -92,6 +92,7 @@ JobRouter.post('/createNewJob', passport.authenticate('jwt', { session: false })
     }
 
     newJob.createBy = userName;
+    newJob.createDate = new Date().getTime();
     newJob.save(async (err, ok) => {
         if (err) {
             return res.status(500).json({
