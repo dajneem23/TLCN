@@ -77,12 +77,15 @@ export default function Seach() {
   const [sWidth, setScreenWidth] = useState(window.innerWidth);
   const [listAllJobs, setListAllJobs] = useState([]);
   const [wishList, setWishList] = useState([]);
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     window.addEventListener("resize", () => {
       setScreenWidth(window.innerWidth);
     });
     Job.GetAllJobs().then((result) => {
       setListAllJobs(result);
+      setLoading(true);
       if (!result) {
         alert('Server error!');
         return;
@@ -156,7 +159,7 @@ export default function Seach() {
   const changePage = ({ selected }) => {
     setPageNumber(selected);
   };
-  return listAllJobs.length==0 ? <LoadingPage/> : (
+  return !loading ? <LoadingPage/> : (
     <div>
       <Container maxWidth="xlg" className="container_home">
         <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "center" }}>
