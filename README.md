@@ -1,4 +1,4 @@
-***Đồ án môn học Diện toán đám mây***
+***Đồ án môn học Tiểu Luận Chuyên Ngành***
 ---
 **Tên đề tài:** Xây dựng trang web tìm kiếm việc làm ngành Công Nghệ Thông Tin<br/>
 **Giáo viên hướng dẫn đề tài:** <br/>
