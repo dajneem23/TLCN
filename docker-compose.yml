@@ -37,7 +37,7 @@ services:
       - gcc
       - mono
       - py
-      - mongo
+      - mongodb
   client:
     container_name: client 
     build:
