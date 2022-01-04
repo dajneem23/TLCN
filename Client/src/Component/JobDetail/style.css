@@ -9,7 +9,17 @@
 .team-single-text .section-heading.half {
     margin-bottom: 20px
 }
-
+.btn_apply{
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+    font-weight: bold;
+}
+.btn_submit_apply{
+    margin-top: 15px;
+    border-radius: 5px;
+}
 @media screen and (max-width: 1199px) {
     .team-single-text .section-heading h4,
     .section-heading h5 {
@@ -119,6 +129,10 @@ img {
     margin-bottom: 0
 }
 
+.text-red {
+    color: crimson;
+}
+
 
 .text-sky {
     color: #02c2c7
@@ -145,7 +159,7 @@ img {
 }
 
 .text-lightred {
-    color: #ff5722
+    color: #fa7046
 }
 
 a.text-sky:hover {

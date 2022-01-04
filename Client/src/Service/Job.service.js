@@ -76,5 +76,14 @@ export const Job = {
         } catch (error) {
             console.log(error);
         }
-    }
+    },
+    GetJobsByCoop: async () => {
+        try {
+            const result = await axios.get(`${jobPath}/getJobsByCoopId`, {
+            });
+            return result.data.listJobs;
+        } catch (error) {
+            console.log(error);
+        }
+    },
 }

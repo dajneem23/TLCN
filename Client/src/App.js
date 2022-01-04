@@ -29,7 +29,7 @@ const ROLE_COOP = 1;
 const ROLE_INTER = 2;
 
 
-const App=()=> {
+const App = () => {
 
   const { user, setUser, isAuthenticated, setisAuthenticated, info, setinfo } = useContext(AuthContext);
 
@@ -45,7 +45,7 @@ const App=()=> {
         <Route path="/profile" component={isAuthenticated ? Profile : Login} />
         <Route path="/createjob" component={user && user.role == ROLE_COOP ? PostNewJob : NotFound404} />
         <Route path="/editprofile" component={isAuthenticated ? EditProFile : Login} />
-        <Route path="/job/update/:id" component={UpdateJob} />
+        <Route path="/job/update/:id" component={isAuthenticated && (user.role == ROLE_ADMIN || user.role == ROLE_COOP) ? UpdateJob : NotFound404} />
         <Route path="/job/:id" component={JobDetail} />
         <Route path="/job" component={Search} />
         <Route path="/createexercise" component={isAuthenticated ? CreateExercise : Login} />
@@ -56,9 +56,9 @@ const App=()=> {
         <Route path="/chatbox/:id" component={isAuthenticated ? ChatBox : Login} />
         <Route path="/home" component={Home} />
         <Route path="/jobsmanager" component={(user && user.role == ROLE_ADMIN || user && user.role == ROLE_COOP) ? JobsManagement : NotFound404} />
-        <Route path="/usersmanager" component={(user && user.role == ROLE_ADMIN || user && user.role == ROLE_COOP) ? UserManagement : NotFound404} />
+        <Route path="/usersmanager" component={(user && user.role == ROLE_ADMIN) ? UserManagement : NotFound404} />
         <Route path="/notfound" component={NotFound404} />
-        {/* <Route path="/"  component={Home} /> */}
+        <Route path="/" component={Home} />
         <Route component={NotFound404} />
       </Switch>
       <Footer />

@@ -6,6 +6,9 @@ const passportConfig = require('../passport');
 const dotenv=require('dotenv')
 const User= require('../Models/User');
 const Job = require('../Models/Job');
+const ROLE_ADMIN = 0;
+const ROLE_COOP = 1;
+const ROLE_INTER = 2;
 dotenv.config();
 UserRoute.get('/authenticated',passport.authenticate('jwt',{session : false}),(req,res)=>{
     const {useNname,_id} = req.user;
@@ -153,7 +156,7 @@ UserRoute.post('/addWishList', passport.authenticate('jwt',{session : false}), a
 
 UserRoute.post('/approve', passport.authenticate('jwt',{session : false}), async (req, res) => {
     const {username,_id,role} = req.user;
-    const {jobId} = req.body;
+    const {jobId, fullname, phoneNumber, email, cv} = req.body;
 
     const currentUser = await User.findById(_id);
     const currentJob = await Job.findById(jobId);
@@ -166,12 +169,24 @@ UserRoute.post('/approve', passport.authenticate('jwt',{session : false}), async
         return res.status(403).json({ 'message': 'Can not find job', msgError: true });
     }
 
-    if (!currentJob.listApprove.some(e => e == _id)) {
-        currentJob.listApprove.push(_id);
+    if (!fullname || !phoneNumber || !email || !cv) {
+        return res.status(403).json({ 'message': 'Bad request, field required!', msgError: true });
+    }
+
+    const approve = {
+        userId: _id,
+        fullname,
+        phoneNumber,
+        email,
+        cv
+    }
+
+    if (!currentJob.listApprove.some(e => e.userId == _id)) {
+        currentJob.listApprove.push(approve);
     }
 
     if (!currentUser.listApprove.some(e => e == jobId)) {
-        currentUser.listApprove.push(_id);
+        currentUser.listApprove.push({jobId:currentJob._id, title: currentJob.title, cv:cv});
     }
 
     currentUser.save(err => {
@@ -201,6 +216,48 @@ UserRoute.post('/approve', passport.authenticate('jwt',{session : false}), async
     })
     
 })
+
+UserRoute.get('/getAllUsers',passport.authenticate('jwt',{session : false}), async (req,res)=>{
+    const {username,_id,role} = req.user;
+    if (role != ROLE_ADMIN) {
+        return res.status(401).json({
+            message:{msgBody:"Unauthenticated"},
+            msgError:true 
+        })
+    }
+
+    const allUsers = await User.find();
+    return res.status(200).json({
+        message: "Get succesfully",
+        users: allUsers,
+        msgError:false
+    })
+});
+
+UserRoute.delete("/:id", passport.authenticate('jwt', { session: false }), async (req, res) => {
+    const userId = req.params.id;
+    const {username,_id,role} = req.user;
+    if(!userId){
+        return res.status(500).json({"message":"missing required value"})
+    }
+    if (role != ROLE_ADMIN) {
+        return res.status(401).json({
+            message:{msgBody:"Unauthenticated"},
+            msgError:true 
+        })
+    }
+
+    const currentUser = await User.findById(userId);
+    if(!currentUser)  return res.status(404).json({'message':"_id not found"})
+    const status = currentUser.isdelete || false;
+
+    User.findOneAndUpdate({_id: userId},{isdelete: !status},(err, user)=>{
+      if(err) return res.status(500).json({'message': err.message});
+      if(!user)  return res.status(404).json({'message':"_id not found"})
+      
+      return res.status(200).json({message: "delete successfully", user: user, msgError: false})
+  })
+  });
 
  
 module.exports =UserRoute;

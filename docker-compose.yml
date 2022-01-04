@@ -37,6 +37,7 @@ services:
       - gcc
       - mono
       - py
+      - mongo
   client:
     container_name: client 
     build:
@@ -55,6 +56,7 @@ services:
     links:
       - server
     command: npm  start
+    restart: always
     # restart: always
   nginx:
     image: nginx:latest
@@ -107,6 +109,20 @@ services:
     # working_dir: /Server/Complie/codes
     restart: always
     tty: true
+  mongodb:
+    image: mongo
+    container_name: mongo
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_DATABASE=db
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+    volumes:
+      # seeding scripts
+      # named volumes
+      - ./database:/data/db
+    restart: always
 volumes:
   Server:
     external: true

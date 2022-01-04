@@ -18,6 +18,7 @@ import sortIcon from "../../IMG//icon/sort.png";
 import { useEffect } from "react";
 import { Compile } from "../../Service/Compile.service";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import LoadingPage from "../LoadingPage/LoadingPage"
 
 export default function Exercise() {
   const [page, setPage] = React.useState(0);
@@ -26,11 +27,13 @@ export default function Exercise() {
   const [listProblems, setListProblems] = React.useState([]);
   const [rows, setRows] = React.useState([]);
   const [isDeleting, setDeleting] = React.useState(false);
+  const [isLoading, setLoading] = React.useState(true);
 
   useEffect(() => {
     Compile.GetAllProblems().then((result) => {
       setListProblems(result);
       setRows(result);
+      setLoading(false);
     });
   }, []);
   const handleChangePage = (event, newPage) => {
@@ -67,9 +70,9 @@ export default function Exercise() {
     const newRows = rows.sort((a, b) => {
       let sort = 1;
       if (isAsc) {
-        sort = a[order] > b[order] ? 1 : -1;
+        sort = a[order].toString().toLowerCase() > b[order].toString().toLowerCase() ? 1 : -1;
       } else {
-        sort = a[order] < b[order] ? 1 : -1;
+        sort = a[order].toString().toLowerCase() < b[order].toString().toLowerCase() ? 1 : -1;
       }
       return sort;
     });
@@ -78,7 +81,7 @@ export default function Exercise() {
     console.log(newRows);
   };
 
-  return (
+  return isLoading ? <LoadingPage/>:(
     <div className="manager_ex_container">
       <div style={{ margin: 40, textAlign: 'center' }}>
         <h3>EXERCISE MANAGEMENT</h3>

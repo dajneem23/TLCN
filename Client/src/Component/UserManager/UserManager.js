@@ -13,17 +13,21 @@ import { Link } from "react-router-dom";
 import { BaseListJob } from "../Home/BaseListJob";
 import sortIcon from "../../IMG//icon/sort.png";
 import { getDateWithFormat } from "../../Utls/DateTimeUtls";
+import { User } from "../../Service/User.service";
+import LoadingPage from "../LoadingPage/LoadingPage";
+const ROLE_ADMIN = 0;
+const ROLE_COOP = 1;
+const ROLE_INTER = 2;
 
 const columns = [
   { id: "userName", label: "Full name", minWidth: 300 },
   { id: "role", label: "Role", minWidth: 100, align: "center" },
-  { id: "email", label: "Email", minWidth: 100, align: "center" },
-  { id: "dob", label: "DoB", minWidth: 100, align: "center" },
-  { id: "sex", label: "Sex", minWidth: 50, align: "center" },
-  { id: "address", label: "Address", minWidth: 200, align: "center" },
+  { id: "email", label: "Email", minWidth: 200 },
+  { id: "isdelete", label: "Status", minWidth: 100, align: "center" },
+  { id: "action", label: "Action", minWidth: 100, align: "center" },
 ];
 
-const titleStyle = {
+const textStyle = {
   fontSize: 15,
   fontWeight: "550",
   maxLines: 1,
@@ -31,16 +35,56 @@ const titleStyle = {
   textOverflow: "ellipsis",
 };
 
+const activeStyle = {
+  fontSize: 15,
+  fontWeight: "550",
+  maxLines: 1,
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+  color: 'green'
+};
+
+const blockStyle = {
+  fontSize: 15,
+  fontWeight: "550",
+  maxLines: 1,
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+  color: 'red'
+};
+
+const adminStyle = {
+  fontSize: 13,
+  color: 'crimson',
+  fontWeight: "550"
+}
+
+const coopStyle = {
+  fontSize: 13,
+  color: '#FF9933',
+  fontWeight: "550"
+}
+
+const internStyle = {
+  fontSize: 13,
+  color: 'blue',
+  fontWeight: "550"
+}
+
 export default function JobsManagement() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [isAsc, setFilter] = React.useState(true);
+  const [rows, setRows] = React.useState([]);
+  const [isLoading, setLoading] = React.useState(false);
 
-  // BaseListJob.forEach(item => {
-  //     item.status = listDone.includes(item._id) ? "Done" : "-";
-  // })
-
-  const [rows, setRows] = React.useState(BaseListJob);
+  React.useEffect(() => {
+    User.GetAllUsers().then(result => {
+      if (result) {
+        setRows(result)
+      }
+    }).catch(error => alert("Server error, please try later!"));
+  }, [])
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -55,9 +99,9 @@ export default function JobsManagement() {
     const newRows = rows.sort((a, b) => {
       let sort = 1;
       if (isAsc) {
-        sort = a[order] > b[order] ? 1 : -1;
+        sort = a[order].toString().toLowerCase() > b[order].toString().toLowerCase() ? 1 : -1;
       } else {
-        sort = a[order] < b[order] ? 1 : -1;
+        sort = a[order].toString().toLowerCase() < b[order].toString().toLowerCase() ? 1 : -1;
       }
       return sort;
     });
@@ -65,11 +109,49 @@ export default function JobsManagement() {
     setFilter(!isAsc);
   };
 
-  return (
-    <div className="page_container">
-      <Container maxWidth="lg" className="problem_container">
+  const onDelete = async (id) => {
+    const confirm = window.confirm("Do you want to delete this user?");
+
+    if (confirm) {
+      setLoading(true);
+      User.DeleteUser(id).then(result => {
+        if (result.status == 200) {
+          alert("Delete successfully!");
+          window.location.reload();
+        } else {
+          alert("Delete fail, please try later!");
+          setLoading(false)
+        }
+      }).catch((error) => {
+        setLoading(false)
+      });
+    }
+  }
+
+  const onActive = async (id) => {
+    const confirm = window.confirm("Do you want to active this user?");
+
+    if (confirm) {
+      setLoading(true);
+      User.DeleteUser(id).then(result => {
+        if (result.status == 200) {
+          alert("Active successfully!");
+          window.location.reload();
+        } else {
+          alert("Active fail, please try later!");
+          setLoading(false);
+        }
+      }).catch((error => {
+        setLoading(false);
+      }));
+    }
+  }
+
+  return rows.length==0 ? <LoadingPage/> : (
+    <div className="page_container_user_manager">
+      {!isLoading && <Container maxWidth="lg" className="problem_container">
         <div className="page_title">LIST USERS</div>
-        <Paper sx={{ width: "100%", overflow: "hidden" }}>
+        <Paper sx={{ width: "100%" }} >
           <TableContainer>
             <Table stickyHeader aria-label="sticky table">
               <TableHead>
@@ -102,19 +184,51 @@ export default function JobsManagement() {
                         role="checkbox"
                         tabIndex={-1}
                         key={row.id}
-                        component={Link}
-                        to={`/job/${row.id}`}
                       >
                         {columns.map((column) => {
                           const value = row[column.id];
                           let display = value;
-                          let style = {};
-                        //   if (column.id != "title") {
-                        //     display = getDateWithFormat(value);
-                        //   } else {
-                        //     style = { ...titleStyle };
-                        //   }
+                          let style = textStyle;
 
+                          if (column.id == "role") {
+                            switch (Number(value)) {
+                              case ROLE_ADMIN:
+                                display = "Admin"
+                                style = adminStyle
+                                break;
+                              case ROLE_COOP:
+                                display = "Company"
+                                style = coopStyle
+                                break;
+                              case ROLE_INTER:
+                                display = "Developer"
+                                style = internStyle
+                                break;
+                              default:
+                                break;
+                            }
+                          } else if (column.id == "verifyEmail") {
+                            if (value == false) {
+                              display = "Not verify"
+                            } else {
+                              display = "Verified"
+                            }
+                          } else if (column.id == "isdelete") {
+                            if (value) {
+                              style = blockStyle
+                              display = "Block"
+                            } else {
+                              style = activeStyle
+                              display = "Active"
+                              // display = <button className="btn btn-outline-danger">Active</button>
+                            }
+                          } else if (column.id == "action") {
+                            if (row.isdelete) {
+                              display = <button className="btn btn-success" type="button" onClick={() => onActive(row._id)}>Active</button>
+                            } else {
+                              display = <button className="btn btn-outline-danger" type="button" onClick={() => onDelete(row._id)}>Block</button>
+                            }
+                          }
                           return (
                             <TableCell
                               key={column.id}
@@ -141,7 +255,8 @@ export default function JobsManagement() {
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
         </Paper>
-      </Container>
+      </Container>}
+      {isLoading && <LoadingPage/>}
     </div>
   );
 }

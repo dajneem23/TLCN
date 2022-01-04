@@ -29,7 +29,6 @@ const useFormRegister = (callback, validate) => {
     e.preventDefault();
     setErrors(validate(values));
     setIsSubmitting(true);
-    console.log("fff");
   };
   const onSubmit = (e) => {
     setIsSubmitting(true);

@@ -13,7 +13,6 @@ const useFormLogin = (callback, validate) => {
     password: "",
   });
   let history = useHistory();
-  console.log(history)
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   //   const authContext   = useContext(AuthContext);

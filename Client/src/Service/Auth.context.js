@@ -21,17 +21,18 @@ export default ({children})=>{
 //            if(!data.data) return;
             setUser(data.data?data.data.user:false || false);
             setisAuthenticated(data.data?data.data.isAuthenticated :false || false);
+            setIsloaded(false);
         })
         const timer = setTimeout(() => {
             setIsloaded(false);
-          }, 1100);
+          },3500);
         return () => clearTimeout(timer);
     },[])
 
     return (
         <div>
         {isLoaded? <Loading/>:
-        <AuthContext.Provider value={{user,setUser,isAuthenticated,setisAuthenticated,info,setinfo}}>
+        <AuthContext.Provider value={{user,setUser,isAuthenticated,setisAuthenticated,info,setinfo, isLoaded,setIsloaded}}>
             {children}
         </AuthContext.Provider>
         }

@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/alt-text */
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
+import {useHistory} from "react-router-dom"
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -16,6 +17,8 @@ import sortIcon from "../../IMG//icon/sort.png";
 import AddIcon from "@mui/icons-material/Add";
 import { getDateWithFormat } from "../../Utls/DateTimeUtls";
 import { Job } from "../../Service/Job.service";
+import { AuthContext } from "../../Service/Auth.context";
+import LoadingPage from "../LoadingPage/LoadingPage"
 const columns = [
   { id: "title", label: "Title", minWidth: 300 },
   { id: "tinyDes", label: "Tiny Description", minWidth: 300 },
@@ -32,21 +35,37 @@ const titleStyle = {
   overflow: "hidden",
   textOverflow: "ellipsis",
 };
-
+const ROLE_ADMIN = 0;
+const ROLE_COOP = 1;
+const ROLE_INTER = 2;
 export default function JobsManagement() {
+  const { user, setUser } = useContext(AuthContext);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [isAsc, setFilter] = React.useState(true);
   const [rows, setRows] = React.useState([]);
+  const [isLoading, setLoading] = React.useState(true);
+  let history = useHistory();
   useEffect(() => {
-    Job.GetAllJobs().then((result) => {
-      setRows(result);
-      console.log(result);
-    });
+    if(user.role== ROLE_ADMIN){
+
+      Job.GetAllJobs().then((result) => {
+        setRows(result);
+        console.log(result);
+        setLoading(false);
+      }).catch(error => setLoading(false));
+    }
+    else if(user.role == ROLE_COOP){
+      Job.GetJobsByCoop().then((result)=>{
+        setRows(result);
+        setLoading(false);
+      }).catch(error => setLoading(false))
+    }
+    else{
+      history.push("/notfound")
+    }
   }, []);
-  // BaseListJob.forEach(item => {
-  //     item.status = listDone.includes(item._id) ? "Done" : "-";
-  // })
+ 
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -61,9 +80,9 @@ export default function JobsManagement() {
     const newRows = rows.sort((a, b) => {
       let sort = 1;
       if (isAsc) {
-        sort = a[order] > b[order] ? 1 : -1;
+        sort = a[order].toString().toLowerCase() > b[order].toString().toLowerCase() ? 1 : -1;
       } else {
-        sort = a[order] < b[order] ? 1 : -1;
+        sort = a[order].toString().toLowerCase() < b[order].toString().toLowerCase() ? 1 : -1;
       }
       return sort;
     });
@@ -71,7 +90,7 @@ export default function JobsManagement() {
     setFilter(!isAsc);
   };
 
-  return (
+  return isLoading ? <LoadingPage/> : (
     <div className="page_manager_container">
       <Container maxWidth="fixed" className="problem_container">
         <div className="page_title">LIST JOBS</div>
