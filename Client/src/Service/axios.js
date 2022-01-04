@@ -4,7 +4,7 @@ const HOST = 'http://localhost:4000';
 const axios =axiosBase.create({
     withCredentials :true,
     //this is devlopment host
-    baseURL: HOST,  //`${process.env.APIHOST}:${process.env.APIPORT}`
+    baseURL: AWS_URL,  //`${process.env.APIHOST}:${process.env.APIPORT}`
 })
 
 export default axios
